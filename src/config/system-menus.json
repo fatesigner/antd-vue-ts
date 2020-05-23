@@ -1,0 +1,124 @@
+[
+  {
+    "id": "8a14311aa7aa",
+    "label": "首页",
+    "children": [],
+    "url": "/",
+    "icon": ""
+  },
+  {
+    "id": "114d57ebaaac",
+    "label": "相关设置",
+    "children": [
+      {
+        "id": "1c5399c1aa0d",
+        "label": "代理设置",
+        "children": [],
+        "url": "/agent",
+        "icon": ""
+      },
+      {
+        "id": "8f52ad12fc64",
+        "label": "产品设置",
+        "children": [],
+        "url": "/production",
+        "icon": ""
+      },
+      {
+        "id": "e9a9e4f66f20",
+        "label": "baidu",
+        "children": [],
+        "url": "http://www.baidu.com",
+        "icon": "",
+        "comp": null
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "99ee47bbc467",
+    "label": "审单/查单",
+    "children": [
+      {
+        "id": "a60c7b0d62de",
+        "label": "代理申请单",
+        "children": [],
+        "url": "/agent-apply",
+        "icon": ""
+      },
+      {
+        "id": "271e4099f3d0",
+        "label": "公司发货单",
+        "children": [],
+        "url": "/predelivery",
+        "icon": ""
+      },
+      {
+        "id": "f70efcbe4e98",
+        "label": "零售订单",
+        "children": [],
+        "url": "/retail-orders",
+        "icon": ""
+      },
+      {
+        "id": "3779f370e088",
+        "label": "后台充值订单列表",
+        "children": [],
+        "url": "/prepaid",
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "6826e3f3f2de",
+    "label": "代理商信息",
+    "children": [
+      {
+        "id": "4cb9059e61b4",
+        "label": "代理商管理",
+        "children": [],
+        "url": "/agencies",
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "7e601504103e",
+    "label": "产品库存",
+    "children": [
+      {
+        "id": "20d15687e7ef",
+        "label": "公司库存",
+        "children": [],
+        "url": "/inventory",
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "af8cc005dfcf",
+    "label": "系统设置",
+    "children": [
+      {
+        "id": "1d606022b925",
+        "label": "菜单设置",
+        "url": "/system-settings/menus",
+        "children": []
+      },
+      {
+        "id": "a53167373fbb",
+        "label": "角色管理",
+        "url": "/system-settings/roles",
+        "children": [],
+        "target": "_self"
+      }
+    ]
+  }
+]

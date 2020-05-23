@@ -1,0 +1,98 @@
+{
+  "name": "sy",
+  "version": "1.0.0",
+  "description": "koa-vue-starter.",
+  "license": "MIT",
+  "keywords": [
+    "demo",
+    "semantic",
+    "release"
+  ],
+  "author": {
+    "name": "Jeremy Tang",
+    "email": "forgleaner@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/forgleaner/koa-vue-starter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/forgleaner/koa-vue-starter/issues"
+  },
+  "homepage": "https://github.com/forgleaner/koa-vue-starter#readme",
+  "scripts": {
+    "clean": "gulp clean --gulpfile build/tasks.js",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "lint-staged",
+    "test": "jest",
+    "coverage": "jest --coverage"
+  },
+  "prettier": "@forgleaner/eslint-config/.prettierrc",
+  "dependencies": {
+    "@forgleaner/sass-helpers": "1.0.0",
+    "@forgleaner/utils": "1.0.0",
+    "axios": "0.19.2",
+    "core-js": "3.6.5",
+    "crypto-js": "4.0.0",
+    "dayjs": "1.8.27",
+    "element-ui": "2.13.2",
+    "js-cookie": "2.2.1",
+    "lodash": "4.17.15",
+    "npm-check-updates": "6.0.1",
+    "reflect-metadata": "0.1.13",
+    "rxjs": "6.5.5",
+    "vue": "2.6.11",
+    "vue-dragula": "1.3.1",
+    "vue-i18n": "8.17.7",
+    "vue-progressbar": "0.7.5",
+    "vue-property-decorator": "8.4.2",
+    "vue-router": "3.2.0",
+    "vue-svgicon": "3.2.6",
+    "vuex": "3.4.0",
+    "vuex-module-decorators": "0.17.0",
+    "vuex-router-sync": "5.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.9.6",
+    "@babel/preset-env": "7.9.6",
+    "@babel/runtime-corejs3": "7.9.6",
+    "@forgleaner/cz-customizable": "6.3.0",
+    "@forgleaner/eslint-config": "1.3.0",
+    "@forgleaner/stylelint-config": "1.0.0",
+    "@types/gulp": "4.0.6",
+    "@types/jest": "25.2.3",
+    "@types/lodash": "4.14.152",
+    "@types/node": "14.0.4",
+    "@vue/cli-plugin-babel": "4.3.1",
+    "@vue/cli-plugin-eslint": "4.3.1",
+    "@vue/cli-plugin-typescript": "4.3.1",
+    "@vue/cli-service": "4.3.1",
+    "babel-plugin-component": "1.1.1",
+    "babel-plugin-lodash": "3.3.4",
+    "cross-env": "7.0.2",
+    "eslint": "7.0.0",
+    "globby": "11.0.0",
+    "gulp": "4.0.2",
+    "happypack": "5.0.1",
+    "husky": "4.2.5",
+    "jest": "26.0.1",
+    "lint-staged": "10.2.4",
+    "lodash-webpack-plugin": "^0.11.5",
+    "node-sass": "4.14.1",
+    "rimraf": "3.0.2",
+    "sass-loader": "8.0.2",
+    "speed-measure-webpack-plugin": "^1.3.3",
+    "ts-jest": "26.0.0",
+    "ts-loader": "7.0.4",
+    "ts-node": "8.10.1",
+    "typescript": "3.9.3",
+    "vue-template-compiler": "2.6.11",
+    "webpack-bundle-analyzer": "^3.8.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/@forgleaner/cz-customizable"
+    }
+  }
+}

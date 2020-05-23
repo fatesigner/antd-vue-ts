@@ -1,0 +1,29 @@
+.el-form-item__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #000;
+}
+
+.el-textarea__inner {
+  &[disabled] {
+    resize: none;
+  }
+}
+
+.el-textarea.is-disabled .el-textarea__inner {
+  color: #666;
+  background-color: #fbfbfb;
+}
+
+.el-input {
+  max-width: 100%;
+}
+
+.el-dialog__wrapper {
+  > .el-dialog {
+    display: inline-block;
+    width: auto;
+    margin-left: 50%;
+    transform: translate(-50%);
+  }
+}

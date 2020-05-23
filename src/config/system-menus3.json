@@ -1,0 +1,1853 @@
+[
+  {
+    "id": "9502685863ab87f0ad1134142788a385",
+    "label": "首页",
+    "children": [
+      {
+        "id": "737cfe1e9088785c52ee07912186d7d0",
+        "label": "中文成语一审",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "801828054c9f3975723f77e23c53ff66",
+    "label": "用户管理",
+    "children": [
+      {
+        "id": "3fe35fcf9bc40a128a10d79d14a06e71",
+        "label": "学生在线查询",
+        "children": [
+          {
+            "id": "b1830bca743c",
+            "label": "f123123",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "79c2aa1da51355a60d0ba231a7d476d1",
+        "label": "学生学习配置",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "00503d1b733b37b42edf5c4bebaa7592",
+        "label": "学生管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "5ba424a82216c4def36a349abed23def",
+        "label": "学生管理-查看",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "7f3df7d5882310cfc28472164769605a",
+        "label": "家长管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "91bf4cddc616c93ca17d79206e3b1371",
+    "label": "App端管理",
+    "children": [
+      {
+        "id": "1853f939083ab6242fc4d3a07c035988",
+        "label": "听读管理",
+        "children": [
+          {
+            "id": "01bf634edd64cd826cb2ee98ee8c4b99",
+            "label": "国内对标配置-学期配置",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "a4b03f433c74b8b79fedaf320a4520ae",
+            "label": "升级条件配置",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "b69a76b19e41d24466dbb4573b66256e",
+            "label": "定级测试结果列表",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "0dbbf6ccee473a51268e23805fb62da7",
+            "label": "阅读推荐配置",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "28cf8a8f8a42b56a41706bcfad1511ce",
+            "label": "强制流程套餐管理",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "871fd7482d5fb4a42ce25f1f306ed2a6",
+            "label": "定级测试配置2.0",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "b1054a042bbfa42cee93b9ae1372c180",
+            "label": "定级测试配置",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "ea0bac248bfe6af611b5ffcdf9799d6a",
+            "label": "定级题库配置",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "6efc993b656109af7b318e64e926dd02",
+            "label": "上传数据",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "d431d0458b5c224017f4fabc7f21705a",
+            "label": "国内对标配置",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "8450ba90f9509df002d43c27e6896527",
+        "label": "App模块升级",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "a1295732b1461eefc7df57a314a1436c",
+        "label": "模块-设置",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "d1b4c8b2fe47acd3ad8e0f1ca42652c9",
+        "label": "模块-app",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "d241e777a66f907d3e49723ba888d850",
+        "label": "模块-新增",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "76b9dda58884808bb10bb79475dd21f7",
+        "label": "游戏管理",
+        "children": [
+          {
+            "id": "013a5af8bf53aa2d3fb71cdc948d88fe",
+            "label": "游戏列表",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "a9bb5e208df11bce70ea20fb597b7472",
+            "label": "英文游戏",
+            "children": [
+              {
+                "id": "9a7585a79b8cc505dd4cc6d7081ef3b9",
+                "label": "配置游戏",
+                "children": [],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "5f102c4ad315d3ea78d47f98deac7877",
+                "label": "素材库",
+                "children": [],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "896941c2a51990e45538fce8e07b6f44",
+                "label": "词库",
+                "children": [],
+                "url": null,
+                "icon": ""
+              }
+            ],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "434a309380ec71486cca823d6faec9e0",
+            "label": "中文游戏",
+            "children": [
+              {
+                "id": "89c2b3ac0279e25f4dea82faa30bd09b",
+                "label": "配置游戏",
+                "children": [],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "5c5411f3050d7589d1446cd4b5434d38",
+                "label": "素材库",
+                "children": [],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "9f83f6bb6e5a9d8048452eec7b9cd641",
+                "label": "词库",
+                "children": [],
+                "url": null,
+                "icon": ""
+              }
+            ],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "e91b65bb8ad887175513665f4b64af6a",
+            "label": "配置管理",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "9abda01165261d86f8ff8ed4bdac0a4c",
+            "label": "增加检测游戏配置",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "ca83ce4d3fb059277216c9ac760813ed",
+            "label": "增加辨音游戏配置",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "f31cca8b14fa0a667e275ddef9fdb3f8",
+            "label": " 阅读时长贡献比例",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "f5f3783a2aa808c70712e02cdc5031d9",
+        "label": "纠错管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "a0c43f2d67ff00ac2dfc0eb64bcd8b8f",
+        "label": "奖励管理",
+        "children": [
+          {
+            "id": "9ef2ca8f13185fbcee9210b473f9614c",
+            "label": "任务管理",
+            "children": [
+              {
+                "id": "f906acf9186300f6f32e054c32ceb1c0",
+                "label": "任务",
+                "children": [],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "9b4d8709d4f51d7f430c5a42d251e20f",
+                "label": "强制任务奖励",
+                "children": [],
+                "url": null,
+                "icon": ""
+              }
+            ],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "747761c4456e0c5efc64bfa9cc108399",
+            "label": "金币管理",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "ba64186d5e9139948ea75c9e824c6cf1",
+            "label": "卡片管理",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "e7a42000b6cc6c2ea41b5e837570305b",
+            "label": "卡片-新增",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "3e53ab25f784c29c65525d31e549f726",
+            "label": "升级奖励",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "5411d0f47de172a70340aa1932af5413",
+        "label": "消耗管理",
+        "children": [
+          {
+            "id": "746454013aca19a61611f7997fad5f28",
+            "label": "金币消耗",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "d71974a5cdef5efac6cf43372b449c2f",
+    "label": "通用管理",
+    "children": [
+      {
+        "id": "03157e967ea80247cba0ee672bd67fda",
+        "label": "设备管理",
+        "children": [
+          {
+            "id": "8d4375a765f04811f9b2719233375468",
+            "label": "设备管理",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "60e6bcfca60a2a8fb6aa25e7c0cbc092",
+            "label": "设备分组",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "67870ce20d13e21d0cfb8ca101f69ddb",
+            "label": "token查询",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "a4a82464c9d7d6fe2d721fda2220ead7",
+        "label": "词典管理",
+        "children": [
+          {
+            "id": "5d1e918c4021e31e6c2f1b01ddeb17b0",
+            "label": "用户纠错",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "c50a6dd62e756b3e345d13316a688552",
+            "label": "词典阶段展示",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "c1173aed9c165dc83d5d0c8d3fd11b95",
+            "label": "词性管理",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "7cf0f654320b4f95adbc83af2131db31",
+            "label": "英语词典",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "1da19ccbf45c886436cd82bb46bfd2cf",
+        "label": "用户反馈",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "a5668fd762e47959609ecf0d9a333861",
+        "label": "消息管理",
+        "children": [
+          {
+            "id": "03af2926b600439ca3c776b16edfff28",
+            "label": "发送用户群信息",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "5eed339fecf0e9b27b389eee9332322c",
+            "label": "选择用户群",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "b2c697a1549035651e2feebcb72971ad",
+            "label": "信鸽推送升级消息",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "0bab274ad279c3b6e4639e3246c2b104",
+            "label": "消息模板列表",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "4f1446ecb7622772897be7f84e41882c",
+            "label": "消息任务列表",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "ed16562542e85cf2ff76e2abcef3b541",
+            "label": "消息模板表单",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "701b47711d5fc43a0d5e865900916cc6",
+            "label": "消息任务表单",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "9c8587e2bce6ddce7b247c94edb3417a",
+            "label": "发送历史列表",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "d22de7217f33f8d9707d6a3c4b53d8b8",
+            "label": "发送历史详情",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "6273cef7234d89286b06ab88f2173c4c",
+        "label": "数据字典",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "a54cf8f5f9700aac4f769e1bfc803c2b",
+        "label": "定时任务",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "3666ef1c07ac3df390e0c4ded8cc0007",
+        "label": "日志管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "7edd09c8dd7fb26fde775e6e4325e014",
+        "label": "阅读管理",
+        "children": [
+          {
+            "id": "b9a93f713a356a31f48853a3a790da11",
+            "label": "学习报告查询",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "31db54ad52985426f0556f15022d3e51",
+            "label": "视频升级查询",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "cda35b4745ab58e90c42f18495c29b22",
+            "label": "阅读记录查询",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "38770a438e57dd7634b637b9509f0e33",
+            "label": "阅读升级查询",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "fad0fa8892f6ed407e30c1e0dedb0658",
+            "label": "强制流程查询",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "77a7aab5c62671f6a58d8a112529aeae",
+            "label": "跟读记录查询",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "9183bc1ebb33f45d336462ccea7e7e94",
+            "label": "阅读队列查询",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "eed41bd6989d9071ae4d42e4ad89efc8",
+        "label": "金币日志查询",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "49b51218ba45c1afa15feb19685e2910",
+        "label": "视频管理",
+        "children": [
+          {
+            "id": "1a713486c07ff0d15e29b62c46cb0f60",
+            "label": "视频列表",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "c05ea914cbac206829ac94c96676ec22",
+            "label": " 阅读时长贡献比例",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "7c0d55d6185a0ea09ba1b693f895ede7",
+    "label": "客户管理",
+    "children": [
+      {
+        "id": "f444f6a20c21792bc68108382b836929",
+        "label": "活动管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "0e95883ef7ab455d070b26ae52660c8c",
+    "label": "综合管理",
+    "children": [
+      {
+        "id": "6414cbec9425acfac5fbdb096384f2ca",
+        "label": "综合业务管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "213648c6092354bacd69f1c512595c79",
+        "label": "网站管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "43ee3af9eb9ca70fad561ec8187c368d",
+    "label": "查询统计",
+    "children": [
+      {
+        "id": "f4f83a7293bfb94e03dfcf1ba3577991",
+        "label": "查询统计",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "5c8042bd6c601270b2bbd9b20bccc68b",
+    "label": "消息中心",
+    "children": [
+      {
+        "id": "944abf0a8fc22fe1f1154a389a574154",
+        "label": "消息管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "f780d0d3083d849ccbdb1b1baee4911d",
+        "label": "模板管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "d7d6e2e4e2934f2c9385a623fd98c6f3",
+    "label": "系统管理",
+    "children": [
+      {
+        "id": "0beeefa12fdc75ead0db8157c3b3aebf",
+        "label": "内容管理组",
+        "children": [
+          {
+            "id": "0efc4b4bf56fa7b2c64596b2321ba6b6",
+            "label": "英文",
+            "children": [
+              {
+                "id": "002019db266ab4a631de82f6ca244569",
+                "label": "英文三审",
+                "children": [
+                  {
+                    "id": "5f9dfab9589dc5eb714ae0836fa039e7",
+                    "label": "英文词卡三审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "8eef4c96ac22d07cf1cfe9255660c7c7",
+                    "label": "英文韵文三审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "b9ddfac9e647ccca2ce79c01170089c4",
+                    "label": "英文句子三审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "e226c283c70033d36b49c40193771dbf",
+                    "label": "英文绘本三审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "27d53f7c216c8f460f343a83579e5147",
+                "label": "英文配图",
+                "children": [
+                  {
+                    "id": "0a0149ecc4ecb70ee0b50d47bd651768",
+                    "label": "英文句子配图",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "9667256bb53214a1cc76e88b4bc68ac4",
+                    "label": "英文韵文配图",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "a9475fd91b5d60ff064be1d268650bc6",
+                    "label": "英文词卡配图",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "d2afa9fa86cd0b57e17a1b5f22d4bd98",
+                    "label": "英文绘本配图",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "694b37689aa91b8b170843495a6a32ad",
+                "label": "英文一审",
+                "children": [
+                  {
+                    "id": "220b80f1933c5b08ebe4b753888e7848",
+                    "label": "英文韵文一审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "3c8fc5eebc86d292ad1d569e5ecc6a60",
+                    "label": "英文绘本一审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "aece031accc5b315cb89246751c3b3ef",
+                    "label": "英文句子一审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "b25e1f33a5b92eb0b91ea07cf43f76c7",
+                    "label": "英文词卡一审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "8149fb5afd0e63120d5422e2bb46e3d7",
+                "label": "英文配音",
+                "children": [
+                  {
+                    "id": "25f34c227693ae364272aa0dff260c9e",
+                    "label": "英文韵文配音",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "2689ccb1146201c7d0eb093c8b48f2ef",
+                    "label": "英文词卡配音",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "7805249b6e2c8e3c43a6e00581dc3349",
+                    "label": "英文句子配音",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "8b8539e377d050d4dd19cb767cac6512",
+                    "label": "英文绘本配音",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "8955b94758a8e575d4cf3cd1854957fc",
+                "label": "英文编辑",
+                "children": [
+                  {
+                    "id": "8268c8b75291e6295ea5fc9dfb668387",
+                    "label": "英文绘本编辑",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "b6b23d92041671378eac2d2c792551d0",
+                    "label": "英文句子编辑",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "d01dab3674b61afb1dc9fa6eeaba4e8e",
+                    "label": "英文韵文编辑",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "fcbe5a44c87d201edabaf83543411551",
+                    "label": "英文词卡编辑",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "95482f60e9c98079364791260d0b62f7",
+                "label": "英文二审",
+                "children": [
+                  {
+                    "id": "2e981a6cbf6dcc6fbc004e7e2165337c",
+                    "label": "英文韵文二审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "46ed7998554ac3ab350c5ce3f728697e",
+                    "label": "英文词卡二审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "9835607c0cdc046ff4972e5477949a91",
+                    "label": "英文句子二审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "bd8de12a062e3a772b71428e7a565323",
+                    "label": "英文绘本二审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "ed22c47db20d5332e8814f305e33af3d",
+                "label": "英文翻译",
+                "children": [
+                  {
+                    "id": "0b56a3c5d59261ece15e4660cd1181c2",
+                    "label": "英文绘本翻译",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "14d238cb6f2414551cbe5590dc50cdef",
+                    "label": "英文句子翻译",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "2df8204decac33286d7e9fc9e43c7f14",
+                    "label": "英文韵文翻译",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "3cf3bd54a067ccd0ab0597a96614517b",
+                    "label": "英文词卡翻译",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "f4c65b10b7b8904f35c9caa854b3823f",
+                "label": "英文六审",
+                "children": [
+                  {
+                    "id": "2598810d1a428fbe35cfc631c75da27f",
+                    "label": "英文韵文六审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "8702d910837d9a3325c2527337ab156d",
+                    "label": "英文绘本六审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "8c2869669c7aad7084f1fc86ed7ba387",
+                    "label": "英文句子六审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "e056ebffab2c660af98f99980acddf09",
+                    "label": "英文词卡六审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              }
+            ],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "9cd53183abc8d3513899d35856dc021b",
+            "label": "中文",
+            "children": [
+              {
+                "id": "44e9cb6ea6845a89d321f200f8ced557",
+                "label": "中文配图",
+                "children": [
+                  {
+                    "id": "39ceaa378e762e9afb06cc128e6825ff",
+                    "label": "中文成语配图",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "66834904955645116e21bab20fa7c656",
+                    "label": "中文韵文配图",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "8a277fd8a3f4d2c65830569f13c67733",
+                    "label": "中文绘本配图",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "f688720b14302be7521be44beb7056b1",
+                    "label": "中文词语配图",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "9874630a70518e2335b956aae21a5bc2",
+                "label": "中文三审",
+                "children": [
+                  {
+                    "id": "0a77d30a513308a95ebfe6d6b7d48e39",
+                    "label": "中文韵文三审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "0d2ae0cb03ce06ecd15ede7a914d42a1",
+                    "label": "中文绘本三审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "8c53c92d8fcf760da170879e8f7b61e2",
+                    "label": "中文成语三审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "f93f307bf3648601bc2905bd752b504b",
+                    "label": "中文词语三审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "c03b31185f5d95b7d53197f3b3ba33aa",
+                "label": "中文编辑",
+                "children": [
+                  {
+                    "id": "138ef4e0dc246f2c1885a80c3616caf6",
+                    "label": "中文词语编辑",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "76f471878003a48f9dc2da144996cf51",
+                    "label": "中文成语编辑",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "e74b6a0c32895531be53d62bdda2ab57",
+                    "label": "中文韵文编辑",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "ff4ad99f865f13a3527c61fcb3422322",
+                    "label": "中文绘本编辑",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "c9d071b43958bfb7127424f40a945c9f",
+                "label": "中文六审",
+                "children": [
+                  {
+                    "id": "06d6ee9dfb9d5301578b80767ef93a77",
+                    "label": "中文成语六审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "411e10a53e6818eb13a691df534f7484",
+                    "label": "中文韵文六审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "5dd651e5300bd645bb257fcaff4edf09",
+                    "label": "中文绘本六审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "da1de06c56fa056eb78a2a6013afd11d",
+                    "label": "中文词语六审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "dbe01396d40f47a3cdc839b1880eb36f",
+                "label": "中文配音",
+                "children": [
+                  {
+                    "id": "059775e96659db408c4dc332c5f6ddad",
+                    "label": "中文绘本配音",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "465a61499553f40cf78e4995d9feae10",
+                    "label": "中文韵文配音",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "6678d56ea9ce49550fe5fad02b87e014",
+                    "label": "中文词语配音",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "943f0663f782a81ab5ffd68f03f1cd17",
+                    "label": "中文成语配音",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "e480a9f928816256e076c18df36b5de7",
+                "label": "中文一审",
+                "children": [
+                  {
+                    "id": "448596f8157cd80feabe6b1670fab000",
+                    "label": "中文韵文一审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "530d907c8e200216b51104ac3a231643",
+                    "label": "中文词语一审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "79c2cd2c5519ccc8c00330700f3228d9",
+                    "label": "中文成语一审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "afaa383c28c44f40fa3e4242d797b48c",
+                    "label": "中文绘本一审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              },
+              {
+                "id": "e5df6d82a9cdd3ec66b9d34842d66738",
+                "label": "中文二审",
+                "children": [
+                  {
+                    "id": "0367801e4058cd89c1af0756b7ae2d0f",
+                    "label": "中文绘本二审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "7687d80ab5ecb0bd53fb6db9f7326ab4",
+                    "label": "中文成语二审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "d13a0ebf3acdb01b6254d4662e8f71ed",
+                    "label": "中文韵文二审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  },
+                  {
+                    "id": "e7d1b0766ac9e513168864d7c4fc78fb",
+                    "label": "中文词语二审",
+                    "children": [],
+                    "url": null,
+                    "icon": ""
+                  }
+                ],
+                "url": null,
+                "icon": ""
+              }
+            ],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "db77675e03ea648d038f0787317487b4",
+        "label": "在线用户查询",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "ef7e8ab609421f23b3eed38faaebf810",
+        "label": "英文词典移动",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "f743f26a0d57c57a8ec127f52a92b479",
+        "label": "在线用户统计",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "54dd5457a3190740005c1bfec55b1c34",
+        "label": "菜单管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "e8af452d8948ea49d37c934f5100ae6a",
+        "label": "角色管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "190c2b43bec6a5f7a4194a85db67d96a",
+        "label": "角色维护",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "3f915b2769fc80648e92d04e84ca059d",
+        "label": "用户管理（内部）",
+        "children": [
+          {
+            "id": "03a153e7dbfa8dd43062017b83c567d3",
+            "label": "批量导入用户",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "1a0811914300741f4e11838ff37a1d3a",
+            "label": "手机号禁用",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "7593c9e3523a17bca83b8d7fe8a34e58",
+            "label": "添加用户按钮",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "45c966826eeff4c99b8f8ebfe74511fc",
+        "label": "部门管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "53a9230444d33de28aa11cc108fb1dba",
+        "label": "我的消息",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "5c2f42277948043026b7a14692456828",
+        "label": "我的部门",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "ebb9d82ea16ad864071158e0c449d186",
+        "label": "分类字典",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "f1cb187abf927c88b89470d08615f5ac",
+        "label": "数据字典",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "e08cb190ef230d5d4f03824198773950",
+        "label": "系统通告",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "2a470fc0c3954d9dbb61de6d80846549",
+    "label": "常见案例",
+    "children": [
+      {
+        "id": "4148ec82b6acd69f470bea75fe41c357",
+        "label": "单表模型示例",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "4356a1a67b564f0988a484f5531fd4d9",
+        "label": "内嵌Table",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "655563cd64b75dcf52ef7bcdd4836953",
+        "label": "图片预览",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "9a90363f216a6a08f32eecb3f0bf12a3",
+        "label": "常用选择组件",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "6ad53fd1b220989a8b71ff482d683a5a",
+        "label": "一对多Tab示例",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "fb367426764077dcf94640c843733985",
+        "label": "一对多示例",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "0620e402857b8c5b605e1ad9f4b89350",
+        "label": "异步树列表Demo",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "c431130c0bc0ec71b0a5be37747bb36a",
+        "label": "一对多JEditable",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "e1979bb53e9ea51cecc74d86fd9d2f64",
+        "label": "PDF预览",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "e6bfd1fcabfd7942fdd05f076d1dad38",
+        "label": "打印测试",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "265de841c58907954b8877fb85212622",
+        "label": "图片拖拽排序",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "339329ed54cf255e1f9392e84f136901",
+        "label": "helloworld",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "58b9204feaf07e47284ddb36cd2d8468",
+        "label": "图片翻页",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "a400e4f4d54f79bf5ce160ae432231af",
+        "label": "百度",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "3fac0d3c9cd40fa53ab70d4c583821f8",
+        "label": "分屏",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "c6cf95444d80435eb37b2f9db3971ae6",
+        "label": "数据回执模拟",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "7960961b0063228937da5fa8dd73d371",
+        "label": "JEditableTable示例",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "2e42e3835c2b44ec9f7bc26c146ee531",
+    "label": "结果页",
+    "children": [
+      {
+        "id": "00a2a0ae65cdca5e93209cdbde97cbe6",
+        "label": "成功",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "13212d3416eb690c2e1d5033166ff47a",
+        "label": "失败",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "4875ebe289344e14844d8e3ea1edd73f",
+    "label": "详情页",
+    "children": [
+      {
+        "id": "cc50656cf9ca528e6f2150eba4714ad2",
+        "label": "基础详情页",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "b3c824fc22bd953e2eb16ae6914ac8f9",
+        "label": "高级详情页",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "c65321e57b7949b7a975313220de0422",
+    "label": "异常页",
+    "children": [
+      {
+        "id": "65a8f489f25a345836b7f44b1181197a",
+        "label": "403",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "d2bbf9ebca5a8fa2e227af97d2da7548",
+        "label": "404",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "b4dfc7d5dd9e8d5b6dd6d4579b1aa559",
+        "label": "500",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "08e6b9dc3c04489c8e1ff2ce6f105aa4",
+    "label": "系统监控",
+    "children": [
+      {
+        "id": "700b7f95165c46cc7a78bf227aa8fed3",
+        "label": "性能监控",
+        "children": [
+          {
+            "id": "8d1ebd663688965f1fd86a2f0ead3416",
+            "label": "Redis监控",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "024f1fd1283dc632458976463d8984e1",
+            "label": "Tomcat信息",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "8b3bff2eee6f1939147f5c68292a1642",
+            "label": "服务器信息",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "d07a2c87a451434c99ab06296727ec4f",
+            "label": "JVM信息",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "fc810a2267dd183e4ef7c71cc60f4670",
+            "label": "请求追踪",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "97c8629abc7848eccdb6d77c24bb3ebb",
+            "label": "磁盘监控",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "58857ff846e61794c69208e9d3a85466",
+        "label": "日志管理",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "841057b8a1bef8f6b4b20f9a618a7fa6",
+        "label": "数据日志",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "aedbf679b5773c1f25e9f7b10111da73",
+        "label": "SQL监控",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "2dbbafa22cda07fa5d169d741b81fe12",
+        "label": "在线文档",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "b1cb0a3fedf7ed0e4653cb5a229837ee",
+        "label": "定时任务",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "540a2936940846cb98114ffb0d145cb8",
+    "label": "列表页",
+    "children": [
+      {
+        "id": "418964ba087b90a84897b62474496b93",
+        "label": "查询表格",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "ae4fed059f67086fd52a73d913cf473d",
+        "label": "内联编辑表格",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "05b3c82ddb2536a4a5ee1a4c46b5abef",
+        "label": "用户列表",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "4f84f9400e5e92c95f05b554724c2b58",
+        "label": "角色列表",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "73678f9daa45ed17a3674131b03432fb",
+        "label": "权限列表",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "f23d9bfff4d9aa6b68569ba2cff38415",
+        "label": "标准列表",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "7ac9eb9ccbde2f7a033cd4944272bf1e",
+        "label": "卡片列表",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "fb07ca05a3e13674dbf6d3245956da2e",
+        "label": "搜索列表",
+        "children": [
+          {
+            "id": "078f9558cdeab239aecb2bda1a8ed0d1",
+            "label": "搜索列表（文章）",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "200006f0edf145a2b50eacca07585451",
+            "label": "搜索列表（应用）",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "de13e0f6328c069748de7399fcc1dbbd",
+            "label": "搜索列表（项目）",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "717f6bee46f44a3897eca9abd6e2ec44",
+    "label": "个人页",
+    "children": [
+      {
+        "id": "d86f58e7ab516d3bc6bfb1fe10585f97",
+        "label": "个人中心",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "6e73eb3c26099c191bf03852ee1310a1",
+        "label": "个人设置",
+        "children": [
+          {
+            "id": "1367a93f2c410b169faa7abcbad2f77c",
+            "label": "基本设置",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "4f66409ef3bbd69c1d80469d6e2a885e",
+            "label": "账户绑定",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "882a73768cfd7f78f3a37584f7299656",
+            "label": "个性化设置",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "ec8d607d0156e198b11853760319c646",
+            "label": "安全设置",
+            "children": [],
+            "url": null,
+            "icon": ""
+          },
+          {
+            "id": "fedfbf4420536cacc0218557d263dfea",
+            "label": "新消息通知",
+            "children": [],
+            "url": null,
+            "icon": ""
+          }
+        ],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "8fb8172747a78756c11916216b8b8066",
+        "label": "工作台",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "e3c13679c73a4f829bcff2aba8fd68b1",
+    "label": "表单页",
+    "children": [
+      {
+        "id": "277bfabef7d76e89b33062b16a9a5020",
+        "label": "基础表单",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "6531cf3421b1265aeeeabaab5e176e6d",
+        "label": "分步表单",
+        "children": [],
+        "url": null,
+        "icon": ""
+      },
+      {
+        "id": "e5973686ed495c379d829ea8b2881fc6",
+        "label": "高级表单",
+        "children": [],
+        "url": null,
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  }
+]
