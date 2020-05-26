@@ -36,7 +36,7 @@ module.exports = {
     }
   },
   devServer: {
-    host: '192.168.8.6',
+    host: 'localhost',
     port: 8080,
     open: true,
     overlay: {

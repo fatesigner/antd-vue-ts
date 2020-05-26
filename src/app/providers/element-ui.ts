@@ -12,6 +12,8 @@ import { i18n } from '../i18n';
 import { EleLoading } from '../../lib/element-ui-helper/components/loading';
 import { ElePagination } from '../../lib/element-ui-helper/components/pagination';
 import { EleTable } from '../../lib/element-ui-helper/components/table';
+import { EleDialog } from '../../lib/element-ui-helper/components/dialog';
+import { EleLazyDialog } from '../../lib/element-ui-helper/components/lazy';
 
 // 注册 Notification
 Vue.prototype.$notify = Notification;
@@ -24,3 +26,5 @@ Vue.use(ElementUI, {
 Vue.component('EleLoading', EleLoading);
 Vue.component('ElePagination', ElePagination);
 Vue.component('EleTable', EleTable);
+Vue.component('EleDialog', EleDialog);
+Vue.component('EleLazyDialog', EleLazyDialog);

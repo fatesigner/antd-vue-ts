@@ -50,12 +50,18 @@
         <el-link v-else type="primary" @click="onLook(row)">查看</el-link>
       </template>
     </ele-table>
-    <el-dialog custom-class="action-dialog" :title="actionDialog.title" :visible.sync="actionDialog.visible">
+    <ele-lazy-dialog
+      class="action-dialog"
+      :title="actionDialog.title"
+      :visible.sync="actionDialog.visible"
+      :comp="actionDialog.comp"
+    />
+    <!--<ele-dialog custom-class="action-dialog" :title="actionDialog.title" :visible.sync="actionDialog.visible">
       <div class="vui-padding vui-tc" v-if="actionDialog.loading">
         <ele-loading :size="40" />
       </div>
       <div v-else class="vui-row">
-        <div class="vui-col-auto" style="width: 360px;">
+        <div class="vui-col-auto">
           <el-form class="vui-col" label-width="80px">
             <div class="top">
               <h2>当前状态：{{ actionDialog.currentStatus }}</h2>
@@ -84,8 +90,8 @@
                 title=""
               />
               <div class="vui-orange" v-else>{{ actionDialog.data.actualAmount | currency }}</div>
-              <!--<p>在2020年5月31日前成为战略服务商可一次性享受19880元创业金</p>
-              <p>成为校长级或者升级为校长级可一次性享有6680元创业金</p>-->
+              &lt;!&ndash;<p>在2020年5月31日前成为战略服务商可一次性享受19880元创业金</p>
+              <p>成为校长级或者升级为校长级可一次性享有6680元创业金</p>&ndash;&gt;
             </el-form-item>
             <el-form-item label="当前余额" v-if="actionDialog.data.amount">
               {{ (actionDialog.data.amount.amount + actionDialog.data.amount.rebateAmount) | currency }}
@@ -146,24 +152,18 @@
             </template>
           </el-form>
         </div>
-        <div class="vui-col-auto" v-if="actionDialog.records.length" style="width: 360px;">
+        <div class="vui-col-auto" v-if="actionDialog.records.length">
           <el-form class="vui-col" label-width="80px">
             <template v-for="record in actionDialog.records">
               <div class="vui-mt10" v-if="!!record.id">
                 {{ record.title }}
-                <p style="color: #999;">{{ record.createTime | dateFormat }}</p>
+                <p class="vui-g9">{{ record.createTime | dateFormat }}</p>
               </div>
               <div class="vui-mt10" v-else>
                 <Checkbox v-model="record.checked">{{ record.title }}</Checkbox>
               </div>
               <div class="vui-mt10" v-if="!!record.id">
-                <el-input
-                  type="textarea"
-                  :disabled="!!record.id"
-                  v-model="record.remark"
-                  style="width: 300px;"
-                  title=""
-                />
+                <el-input type="textarea" :disabled="!!record.id" v-model="record.remark" title="" />
               </div>
               <div class="vui-mt10" v-else>
                 <el-input
@@ -183,10 +183,10 @@
                 </div>
               </div>
               <template v-else>
-                <ImgSelect style="margin-top: 10px;" :imgList="record.approvalImage" :hasPlace="false" :maxLength="3" />
+                <ImgSelect class="vui-mt10" :imgList="record.approvalImage" :hasPlace="false" :maxLength="3" />
                 <p>最多上传三张，单张10M之内</p>
-                <p style="color: green;">{{ record.desc }}</p>
-                <div style="margin-top: 10px;">
+                <p class="vui-orange">{{ record.desc }}</p>
+                <div class="vui-mt10">
                   <ele-button type="primary" @click="handle(record, record.checkStatus1, 1)">提交</ele-button>
                   <ele-button type="text" @click="handle(record, record.checkStatus2, 2)">取消本次订单</ele-button>
                 </div>
@@ -195,13 +195,12 @@
           </el-form>
         </div>
       </div>
-    </el-dialog>
+    </ele-dialog>-->
   </layout>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { IsNullOrUndefined, IsNumber } from '@forgleaner/utils/type-check';
-import { IColumn, IRequestData } from '../../../lib/element-ui-helper/components/table';
 
 import { Layout } from '../../layout';
 import { SessionService } from '../../services/session.service';
@@ -209,6 +208,7 @@ import { ApiService } from '../../services/api.service';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { RadioButtons } from '../../shared/radio-buttons';
 import { AgentLevel, AgentType, CheckedStatus, PaidStatus, PaymentType, RechargeType, Role } from '../../global';
+import { IColumn, IRequestData } from '../../../lib/element-ui-helper/components/table';
 
 @Component({
   name: 'Prepaid',
@@ -315,6 +315,7 @@ export default class extends Vue {
   ];
 
   actionDialog = {
+    comp: () => import('./PrepaidAudit.vue'),
     loading: false,
     visible: false,
     title: '',
@@ -327,7 +328,7 @@ export default class extends Vue {
   };
 
   @Watch('radioButtons')
-  onRadioButtonsChange(val) {
+  onRadioButtonsChange() {
     this.query.pageNo = 1;
     this.loadData();
   }
@@ -469,35 +470,20 @@ export default class extends Vue {
 
 <style lang="scss" scoped>
 .action-dialog {
-  max-width: 80%;
-  margin-top: 20px;
-
-  .el-dialog__header {
-    text-align: center;
-  }
-
-  .el-dialog__title {
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .el-dialog__body {
-    padding-top: 0;
-  }
-
   .top {
     text-align: center;
+
     .h2 {
-      color: green;
       font-size: 20px;
+      color: green;
     }
   }
 
   .el-form-item {
-    margin: 10px 0;
     padding: 5px 10px;
-    border-radius: 4px;
+    margin: 10px 0;
     background-color: #eee;
+    border-radius: 4px;
   }
 
   h2 {
