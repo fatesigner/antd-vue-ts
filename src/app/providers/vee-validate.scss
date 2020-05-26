@@ -1,0 +1,14 @@
+.invalid {
+  .ivu-select-selection,
+  .ivu-input {
+    border: 1px solid #e64545;
+  }
+}
+
+.invalid-message {
+  padding: 5px;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: bold;
+  color: #e64545;
+}

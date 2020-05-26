@@ -4,7 +4,7 @@ const types = czConfig.types.map(x => x.value);
 
 module.exports = {
   extends: [
-    "@commitlint/config-conventional"
+    '@commitlint/config-conventional'
   ],
   rules: {
     'type-enum': [

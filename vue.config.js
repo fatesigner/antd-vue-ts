@@ -31,12 +31,12 @@ module.exports = {
   productionSourceMap: false,
   pages: {
     index: {
-      entry: './src/entry-client.ts',
+      entry: './src/main.ts',
       template: './src/client/index.html'
     }
   },
   devServer: {
-    host: '192.168.2.3',
+    host: '192.168.8.6',
     port: 8080,
     open: true,
     overlay: {
@@ -46,10 +46,10 @@ module.exports = {
     progress: false,
     proxy: {
       '/salesSystem': {
-        // target: 'http://192.168.2.166:8182',
-        // target: 'http://192.168.2.233:8080/',
-        // target: 'http://192.168.2.3:8080/',
-        // target: 'http://192.168.2.173:8182/',
+        // target: 'http://192.168.8.166:8182',
+        // target: 'http://192.168.8.233:8080/',
+        // target: 'http://192.168.8.3:8080/',
+        // target: 'http://192.168.8.173:8182/',
         target: 'http://test.sales.muyuhuajiaoyu.com/',
         changeOrigin: true,
         pathRewrite: {

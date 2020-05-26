@@ -1,0 +1,46 @@
+.el-form-item__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #000;
+}
+
+.el-textarea__inner {
+  &[disabled] {
+    resize: none;
+  }
+}
+
+.el-textarea.is-disabled .el-textarea__inner {
+  color: #666;
+  background-color: #fbfbfb;
+}
+
+.el-input {
+  max-width: 100%;
+}
+
+.el-dialog__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  > .el-dialog {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    min-width: 300px;
+    max-width: 91%;
+    max-height: 91%;
+    margin: 0 !important;
+    overflow: hidden;
+
+    > .el-dialog__body {
+      overflow: auto;
+    }
+  }
+
+  .el-dialog__title {
+    font-weight: 500;
+  }
+}
