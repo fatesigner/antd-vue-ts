@@ -10,6 +10,20 @@ export interface IAction {
   title: string;
 }
 
+export interface ITable<T = any, T2 = any, T3 = any> {
+  columns: IColumn[];
+  query?: {
+    [key in string]: any;
+  };
+  result: {
+    loading: boolean;
+    totalCount?: number;
+    data: any[];
+  };
+  loadData: () => Promise<any[]>;
+  onRequest?: (request: IRequestData) => void;
+}
+
 export interface IColumn<T = any, T2 = any, T3 = any> {
   label: string;
   name: '__index' | UnionType<T>;

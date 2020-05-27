@@ -72,7 +72,7 @@ export class Strutree<
         const childrenNodes = node[this.config.childrenKey] as T[];
         for (const [index, childNode] of childrenNodes.entries()) {
           const _parentNodes = [...parentNodes, node];
-          console.log('__ test foreach ' + node[this.config.labelKey]);
+          // console.log('__ test foreach ' + node[this.config.labelKey]);
           if (callback(childNode, index, _parentNodes)) {
             forEach(childNode, index, _parentNodes);
           } else {
@@ -102,7 +102,7 @@ export class Strutree<
     const every = (nodes: T[], parentNodes: T[]): boolean => {
       let continued = true;
       for (const [index, childNode] of nodes.entries()) {
-        console.log('_______'.repeat(parentNodes.length) + childNode[this.config.labelKey]);
+        // console.log('_______'.repeat(parentNodes.length) + childNode[this.config.labelKey]);
         continued = callback(childNode, index, parentNodes);
         if (continued) {
           const childrenNodes = childNode[this.config.childrenKey] as T[];
@@ -176,7 +176,7 @@ export class Strutree<
   // 指定节点向前移动
   moveForward(nodes: T[], id: string) {
     const node = this.find(nodes, (x) => x.id === id);
-    console.log(JSON.stringify(node.parentNodes));
+    // console.log(JSON.stringify(node.parentNodes));
     if (node.index > 0) {
       const temp = node.parentNodes[node.parentNodes.length - 1].children[node.index];
       this.config.applyFunc(

@@ -22,6 +22,7 @@
 import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
 
 import EleLazyComp from './EleLazyComp.vue';
+import de from 'element-ui/src/locale/lang/de';
 
 @Component({
   name: 'EleLazyDialog',
@@ -47,6 +48,13 @@ export default class extends Vue {
   events_: any = {};
   width_: string | number = '';
   height_: string | number = '';
+
+  @Watch('props', {
+    immediate: true
+  })
+  onPropsChange(val) {
+    console.log(val);
+  }
 
   @Watch('events', {
     immediate: true

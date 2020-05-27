@@ -71,7 +71,7 @@ export default class extends Vue {
     immediate: true
   })
   onPropsChange(val) {
-    this.props_ = val;
+    console.log(val);
   }
 
   @Watch('events', {

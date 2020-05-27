@@ -1,5 +1,5 @@
 /**
- * inde
+ * index
  */
 
 export * from './components';
