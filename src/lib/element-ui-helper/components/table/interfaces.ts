@@ -1,5 +1,5 @@
 /**
- * table
+ * interfaces
  */
 
 import { IField } from '../../../form-renderer/field';

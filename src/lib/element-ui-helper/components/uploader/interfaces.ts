@@ -1,6 +1,8 @@
 /**
- * model
+ * interfaces
  */
+
+import { Prop } from 'vue-property-decorator';
 
 export enum IUploaderContentType {
   image = 'application/image',
@@ -12,7 +14,7 @@ export interface IUploaderFile {
   data?: any;
   value: string;
   src: string;
-  blob: File | Blob;
+  file: File | Blob;
   type: IUploaderContentType;
   uploading: boolean;
   error: {
@@ -27,7 +29,21 @@ export interface IUploaderFile {
 
 export interface IUploaderActionParams {
   index: number;
-  blob: File | Blob;
+  file: File | Blob;
   src: string;
   data?: any;
+}
+
+export interface IUploaderOptions {
+  files?: IUploaderFile[];
+  action?: () => Promise<any>;
+  data?: any;
+  immediate?: boolean;
+  multiple?: boolean;
+  parallel?: boolean;
+  required?: boolean;
+  deletable?: boolean;
+  maxCount?: number;
+  maxSize?: number;
+  width?: number;
 }

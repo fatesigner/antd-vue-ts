@@ -102,6 +102,9 @@ module.exports = {
       }
     }
 
+    // 解决 webpack v4 动态导入的报错
+    config.output.jsonpFunction = 'jsonpFunction';
+
     config.performance = _.merge(config.performance, {
       hints: 'warning',
       maxEntrypointSize: 2 * 1024 * 1024 * 1024,

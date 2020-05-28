@@ -2,7 +2,7 @@
  * image-compressor
  */
 
-import { ICompressImage, ICompressImageOptions, ICompressImageResponse } from './model';
+import { ICompressImage, ICompressImageOptions, ICompressImageResponse } from './interfaces';
 
 const DefaultOptions: ICompressImageOptions = {
   quality: 0.6

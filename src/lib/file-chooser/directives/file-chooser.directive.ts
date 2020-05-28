@@ -2,8 +2,10 @@
  * file-chooser.directive
  */
 
+import { DispatchEvent } from '../../vue-common/dispatch-event';
+
 import { FileChooserService } from '../file-chooser';
-import { IFileChooserOptions } from '../model';
+import { IFileChooserOptions } from '../interfaces';
 
 export interface IVueFileChooserOptions {}
 
@@ -32,14 +34,10 @@ export function FileChooserDirectiveForVue(_Vue, opts: IVueFileChooserOptions) {
         options,
         (res) => {
           // vnode.context.$emit('fileChooserChange', res);
-          if (vnode.componentInstance) {
-            vnode.componentInstance.$emit('fileChooserChange', res); // use {detail:} to be uniform
-          } else {
-            vnode.elm.dispatchEvent(new Event('fileChooserChange', res as any));
-          }
+          DispatchEvent(vnode, 'fileChooserChange', res);
         },
         (reason) => {
-          vnode.context.$emit('fileChooserError', reason);
+          DispatchEvent(vnode, 'fileChooserError', reason);
         }
       );
     },

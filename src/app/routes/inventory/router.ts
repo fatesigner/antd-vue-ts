@@ -3,7 +3,7 @@
  */
 
 import { Role } from '../../global';
-import { IAppRouteConfig } from '../model';
+import { IAppRouteConfig } from '../interfaces';
 
 const Router: IAppRouteConfig = {
   path: '/inventory',

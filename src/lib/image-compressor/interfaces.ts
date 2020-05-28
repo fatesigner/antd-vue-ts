@@ -1,5 +1,5 @@
 /**
- * model
+ * interfaces
  */
 
 export interface ICompressImageOptions {

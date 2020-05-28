@@ -3,16 +3,26 @@
  */
 
 import { DeepExtend } from '@forgleaner/utils';
+import { IPreviewImageImageData } from '../interfaces';
 
 export interface IPhotoswipeOptions {
   /**
+   * 当前显示图片的 http 链接
+   */
+  index?: number;
+
+  /**
+   * 需要预览的图片 http 链接列表
+   */
+  items?: IPreviewImageImageData[];
+  /**
    * 需要代理的Dom
    */
-  handlerEl: any;
+  handlerEl?: any;
   /**
    * item 选择器
    */
-  itemSelector: string;
+  itemSelector?: string;
   /**
    * img 选择器
    */

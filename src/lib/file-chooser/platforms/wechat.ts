@@ -2,6 +2,10 @@
  * wechat
  */
 
+import { On } from '@forgleaner/utils/document';
+import { GetGUID } from '@forgleaner/utils/random';
+import { ConvertBase64ToBlob, ConvertBlobToFile } from '@forgleaner/utils';
+
 import { ChooseImage, GetLocalImgData } from '../../wx-jssdk';
 
 import { DefaultOptions } from '../file-chooser';
@@ -11,10 +15,7 @@ import {
   IFileChooserErrorType,
   IFileChooserOptions,
   IFileChooserService
-} from '../model';
-import { GetGUID } from '@forgleaner/utils/random';
-import { ConvertBase64ToBlob, ConvertBlobToFile } from '@forgleaner/utils';
-import { On } from '@forgleaner/utils/document';
+} from '../interfaces';
 
 export const FileChooserService: IFileChooserService = {
   openFileChooser(options?: IFileChooserOptions) {

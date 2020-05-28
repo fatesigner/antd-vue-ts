@@ -108,14 +108,16 @@
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Debounce } from '@forgleaner/utils';
 
-import { ElePagination } from '../pagination';
-import { IAction, IColumn, IPagination, IRequestData } from './table';
-import { FormRender } from '../../../form-renderer/vue';
 import { IFormRenderer } from '../../../form-renderer';
 import { IField } from '../../../form-renderer/field';
-import { Debounce } from '@forgleaner/utils';
-import EleLoading from '../loading/EleLoading.vue';
+import { FormRender } from '../../../form-renderer/vue';
+
+import { EleLoading } from '../loading';
+import { ElePagination } from '../pagination';
+
+import { IAction, IColumn, IPagination, IRequestData } from './interfaces';
 
 @Component({
   name: 'EleTable',

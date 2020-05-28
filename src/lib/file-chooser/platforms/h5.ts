@@ -3,9 +3,9 @@
  */
 
 import { GetGUID } from '@forgleaner/utils/random';
+import { BrowserPlatform } from '@forgleaner/utils/user-agent';
 import { IsNullOrUndefined } from '@forgleaner/utils/type-check';
 import { AddEventListener, CreateElement, On, RemoveElement } from '@forgleaner/utils/document';
-import { BrowserPlatform } from '@forgleaner/utils/user-agent';
 
 import { CompressImage, DefaultOptions, ValidateFile } from '../file-chooser';
 import {
@@ -13,7 +13,7 @@ import {
   IFileChooserErrorResponse,
   IFileChooserOptions,
   IFileChooserService
-} from '../model';
+} from '../interfaces';
 
 function CreateInputEl(
   options: IFileChooserOptions,

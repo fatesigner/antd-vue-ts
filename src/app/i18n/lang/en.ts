@@ -2,7 +2,7 @@
  * en
  */
 
-import { I18nkeysType } from '../model';
+import { I18nkeysType } from '../interfaces';
 
 export const en: I18nkeysType = {
   route: {

@@ -84,6 +84,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { IsNullOrUndefined, IsNumber } from '@forgleaner/utils/type-check';
+
 import { ITableOperationData } from '../../../lib/element-ui-helper/components/table';
 
 import { Layout } from '../../layout';
@@ -91,7 +92,7 @@ import { ApiService } from '../../services/api.service';
 import { SessionService } from '../../services/session.service';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { RadioButtons } from '../../shared/radio-buttons';
-import { AgentType, CheckedStatus, PaidStatus, PaymentType, Role } from '../../global';
+import { AgentType, CheckedStatus, PaidStatus, Role } from '../../global';
 
 @Component({
   name: 'Withdraw',

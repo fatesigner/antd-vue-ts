@@ -5,26 +5,9 @@
 import { GetGUID } from '@forgleaner/utils/random';
 import { IsFunction } from '@forgleaner/utils/type-check';
 
-import PhotoSwipe from '../lib/photoswipe/dist/photoswipe';
-import PhotoSwipeUI_Default from '../lib/photoswipe/dist/photoswipe-ui-default';
-
-import '../lib/photoswipe/dist/default-skin/default-skin.scss';
-import '../lib/photoswipe/src/css/main.scss';
-
-import { PhotoswipeBaseOptions } from '../photoswipe/photoswipe.type';
-
 import { DefaultOptions } from '../default';
-import { IPreviewImage, IPreviewImageOptions } from '../model';
-
-let template: Element = document.getElementById('photoSwipeTemplate');
-let templateStr;
-if (!template) {
-  templateStr = require('!!raw-loader!../photoswipe/photoswipe.html');
-  const el = document.createElement('div');
-  el.innerHTML = templateStr;
-  template = el.children[0];
-  document.getElementsByTagName('body')[0].appendChild(template);
-}
+import { IPreviewImage, IPreviewImageOptions } from '../interfaces';
+import { PhotoswipeBaseOptions, Photoswipe } from '../photoswipe';
 
 export const PreviewImage: IPreviewImage = function (options?: IPreviewImageOptions) {
   return new Promise((resolve) => {
@@ -56,9 +39,7 @@ export const PreviewImage: IPreviewImage = function (options?: IPreviewImageOpti
     }
 
     // 实例化
-    const instance: any = new PhotoSwipe(template, PhotoSwipeUI_Default, psItems, {
-      index: options_.index,
-      galleryUID: '1',
+    const _photoswipe: any = new Photoswipe({ items:  psItems, index: options_.index}, {
       loop: baseOpts.loop,
       history: baseOpts.history,
       focus: baseOpts.focus,
@@ -72,13 +53,13 @@ export const PreviewImage: IPreviewImage = function (options?: IPreviewImageOpti
       tapToToggleControls: baseOpts.tapToToggleControls
     });
 
-    instance.listen('close', () => {
+    _photoswipe.instance.listen('close', () => {
       if (IsFunction(options_.onDismiss)) {
         options_.onDismiss();
       }
     });
 
-    instance.init();
+    _photoswipe.instance.init();
 
     if (IsFunction(options_.onPresent)) {
       options_.onPresent();
@@ -88,8 +69,8 @@ export const PreviewImage: IPreviewImage = function (options?: IPreviewImageOpti
       dismiss: () => {
         // eslint-disable-next-line no-async-promise-executor,promise/param-names
         return new Promise(async (resolve2) => {
-          if (instance) {
-            instance.close();
+          if (_photoswipe.instance) {
+            _photoswipe.instance.close();
           }
           window.setTimeout(function () {
             resolve2();

@@ -29,11 +29,11 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import { ApiService } from '../../../services/api.service';
-import { EleTable } from '../../../../lib/element-ui-helper/components/table';
-import { IColumn, IRequestData } from '../../../../lib/element-ui-helper/components/table/table';
 import { FieldRuleRequired, FieldText } from '../../../../lib/form-renderer/field';
+import { EleTable, IColumn, IRequestData } from '../../../../lib/element-ui-helper/components/table';
+
 import Layout from '../../../layout/Layout.vue';
+import { ApiService } from '../../../services/api.service';
 
 // 定义该表格的所有字段
 const columnsKey = ['agentName', 'name', 'describe', 'createTime'] as const;
@@ -134,5 +134,4 @@ export default class extends Vue {
 }
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

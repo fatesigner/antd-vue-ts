@@ -1,9 +1,10 @@
 ﻿<template>
   <div class="radio-buttons">
     <ele-loading v-if="loading" size="36" />
-    <el-form-item v-for="row in rows_" :label="row.label">
+    <el-form-item v-for="row in rows_" :key="row.name" :label="row.label">
       <el-button
         v-for="option in row.options"
+        :key="option.value"
         :type="option.value === row.value ? 'primary' : ''"
         :disabled="!option.count"
         size="small"
@@ -17,7 +18,7 @@
 <script lang="ts">
 import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
 
-import { IRadioButtons } from './model';
+import { IRadioButtons } from './interfaces';
 
 @Component({
   name: 'RadioButtons'

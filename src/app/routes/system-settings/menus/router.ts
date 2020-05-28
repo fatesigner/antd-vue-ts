@@ -3,7 +3,7 @@
  */
 
 import { Role } from '../../../global';
-import { IAppRouteConfig } from '../../model';
+import { IAppRouteConfig } from '../../interfaces';
 import { I18nkeys } from '../../../i18n';
 
 const Router: IAppRouteConfig = {

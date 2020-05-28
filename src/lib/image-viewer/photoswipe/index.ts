@@ -3,4 +3,4 @@
  */
 
 export * from './interfaces';
-export * from './image-viewer';
+export * from './photoswipe';

@@ -26,11 +26,17 @@
           </transition-slide>
           <transition-zoom>
             <dd class="uploader-done" v-if="!file.uploading && file.value && !file.src" title="已上传">
-              <span class="uploader-done-in"><i size="16" class="el-icon-check" color="#fff"></i></span>
+              <span class="uploader-done-in"><i class="el-icon-check" /></span>
             </dd>
           </transition-zoom>
           <dd class="uploader-action" v-if="!file.uploading && file.value && !file.src">
-            <el-button small color="orange" title="查看图片" @click="previewImage(index)">查看 </el-button>
+            <el-button
+              size="mini"
+              title="查看图片"
+              type="primary"
+              @click="previewImage(index)"
+              icon="el-icon-view"
+            ></el-button>
           </dd>
           <transition-zoom>
             <dd
@@ -39,7 +45,7 @@
               @click="removeFile(file, index)"
               :title="file.src ? '取消' : '删除'"
             >
-              <span class="uploader-remove-in"><i size="16" class="el-icon-close" color="#fff"></i></span>
+              <span class="uploader-remove-in"><i class="el-icon-close" /></span>
             </dd>
           </transition-zoom>
           <dd class="uploader-uploading" v-if="file.uploading">
@@ -92,7 +98,7 @@ import { FileChooserDirectiveForVue } from '../../../file-chooser/directives/fil
 import { TransitionGroupZoom } from '../../../vue-common/components/transition-group';
 import { TransitionSlide, TransitionZoom } from '../../../vue-common/components/transition';
 
-import { IUploaderActionParams, IUploaderContentType, IUploaderFile } from './model';
+import { IUploaderActionParams, IUploaderContentType, IUploaderFile } from './interfaces';
 
 Vue.use(FileChooserDirectiveForVue);
 
@@ -113,7 +119,8 @@ export default class extends Vue {
   @Prop({ default: false }) parallel: boolean;
   @Prop({ default: false }) required: boolean;
   @Prop({ default: false }) deletable: boolean;
-  @Prop({ default: null }) count: number;
+  @Prop({ default: 1000 }) maxCount: number;
+  @Prop({ default: 10 * 1024 }) maxSize: number;
   @Prop({ default: 128 }) width: number;
 
   get self() {
@@ -128,7 +135,7 @@ export default class extends Vue {
   };
 
   get hasMore() {
-    return this.count <= 0 || this.files_.length < this.count;
+    return this.maxCount <= 0 || this.files_.length < this.maxCount;
   }
 
   @Watch('files', {
@@ -148,23 +155,37 @@ export default class extends Vue {
     this.singleFileChooser.options.multiple = val;
   }
 
+  @Watch('maxCount', {
+    immediate: true
+  })
+  onMaxCountChange(val) {
+    this.fileChooser.options.maxCount = val;
+  }
+
+  @Watch('maxSize', {
+    immediate: true
+  })
+  onMaxSizeChange(val) {
+    this.fileChooser.options.maxSize = val;
+  }
+
   @Emit('failed')
   emitFailed(error) {}
 
   fileChooser = {
     options: {
       name: GetGUID(10),
-      count: 1000,
+      maxCount: 1000,
       multiple: this.multiple,
       maxSize: 10 * 1024,
       compress: {
         quality: 0.6
       }
     },
-    async onFileChooserChange(res: IFileChooserChangeResponse, self) {
+    async onFileChooserChange(res: IFileChooserChangeResponse, self: any) {
       if (res.files.length) {
-        if (this.count && this.count > 0 && res.files.length + self.files_.length >= this.count) {
-          self.emitFailed(new Error(`限制上传${this.count}张`));
+        if (this.maxCount && this.maxCount > 0 && res.files.length + self.files_.length >= this.maxCount) {
+          self.emitFailed(new Error(`限制上传${this.maxCount}张`));
         } else {
           const index = self.files_.length;
           for (const file of res.files) {
@@ -173,7 +194,7 @@ export default class extends Vue {
               data: {},
               value: '',
               src: '',
-              blob: file,
+              file: file,
               type: IUploaderContentType.image,
               uploading: false,
               error: {
@@ -217,7 +238,7 @@ export default class extends Vue {
   singleFileChooser = {
     options: {
       name: GetGUID(10),
-      count: 1,
+      maxCount: 1,
       multiple: this.multiple,
       maxSize: 10 * 1024,
       compress: {
@@ -234,7 +255,7 @@ export default class extends Vue {
         await GetImageSrc(res.files[0]).then((src) => {
           file.src = src;
         });
-        file.blob = res.files[0];
+        file.file = res.files[0];
         Vue.set(self.files_, index, file);
         // 立即上传
         if (self.immediate) {
@@ -251,13 +272,13 @@ export default class extends Vue {
       Vue.set(self.files_, index, file);
     },
     async upload(index, self) {
+      const file = self.files_[index];
       if (self.action) {
-        const file = self.files_[index];
         file.uploading = true;
         Vue.set(self.files_, index, file);
         const p: IUploaderActionParams = {
           index,
-          blob: file.blob,
+          file: file.file,
           src: file.src,
           data: file.data
         };
@@ -276,6 +297,11 @@ export default class extends Vue {
             file.uploading = false;
           });
         Vue.set(self.files_, index, file);
+      } else {
+        file.value = file.src;
+        file.src = '';
+        file.uploading = false;
+        Vue.set(self.files_, index, file);
       }
     }
   };
@@ -283,7 +309,7 @@ export default class extends Vue {
   removeFile(file, index) {
     if (file.src) {
       file.src = '';
-      file.blob = null;
+      file.file = null;
     }
     if (file.value) {
       Vue.set(this.files_, index, file);
@@ -347,7 +373,7 @@ export default class extends Vue {
       value: '',
       src:
         'http://rpbd-1257837343.cos.ap-shanghai.myqcloud.com/201911/jx_license_order_doc/d4f02777-02f3-47bb-986c-9353a1ebaa88.jpg',
-      blob: null,
+      file: null,
       type: IUploaderContentType.image,
       uploading: false,
       error: {
@@ -430,23 +456,20 @@ export default class extends Vue {
 
 .uploader-remove {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -5px;
+  right: -5px;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   padding: 2px;
-  font-size: 18px;
   cursor: pointer;
-  background-color: #e0dcdc;
+  background-color: #fff;
+  border: 1px solid #ddb5b5;
   border-radius: 50%;
-
-  .mu-icon {
-    font-size: 12px;
-  }
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.13);
 }
 
 .uploader-remove-in {
@@ -455,32 +478,29 @@ export default class extends Vue {
   justify-content: center;
   width: 100%;
   height: 100%;
-  background-color: #f3f3f3;
   border-radius: 50%;
 
   > i {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 
 .uploader-done {
   position: absolute;
-  top: -8px;
-  left: -8px;
+  top: -5px;
+  left: -5px;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 18px;
+  height: 18px;
   padding: 2px;
   cursor: pointer;
-  background-color: #ececec;
+  background-color: green;
+  border: 1px solid #ddb5b5;
   border-radius: 50%;
-
-  .mu-icon {
-    font-size: 12px;
-  }
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.13);
 }
 
 .uploader-done-in {
@@ -489,8 +509,13 @@ export default class extends Vue {
   justify-content: center;
   width: 100%;
   height: 100%;
-  background-color: green;
   border-radius: 50%;
+
+  > i {
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+  }
 }
 
 .uploader-error {

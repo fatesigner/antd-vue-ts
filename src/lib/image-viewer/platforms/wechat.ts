@@ -2,12 +2,13 @@
  * wechat
  */
 
+import { ForEach } from '@forgleaner/utils';
 import { GetGUID } from '@forgleaner/utils/random';
+
 import { PreviewImage as PreviewImage_Wx } from '../../wx-jssdk';
 
 import { DefaultOptions } from '../default';
-import { IPreviewImage, IPreviewImageOptions } from '../model';
-import { ForEach } from '@forgleaner/utils';
+import { IPreviewImage, IPreviewImageOptions } from '../interfaces';
 
 export const PreviewImage: IPreviewImage = function (options?: IPreviewImageOptions) {
   return new Promise((resolve) => {

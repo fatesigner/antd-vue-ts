@@ -1,8 +1,8 @@
 /**
- * localekeys
+ * interfaces
  */
 
-import { I18nkeysType } from './model';
+import { I18nkeysType } from './interfaces';
 
 export const I18nkeys: I18nkeysType = {
   route: {

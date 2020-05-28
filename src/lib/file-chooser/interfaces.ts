@@ -1,5 +1,5 @@
 /**
- * model
+ * interfaces
  */
 
 import { FileType } from '@forgleaner/utils/document';
@@ -12,7 +12,7 @@ export interface IFileChooserOptions {
   width?: string;
   height?: string;
   multiple?: boolean;
-  count?: number;
+  maxCount?: number;
   /**
    * @description fileTypeLimits
    */

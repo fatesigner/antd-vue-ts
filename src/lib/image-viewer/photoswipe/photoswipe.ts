@@ -5,22 +5,17 @@
 import { AddEventListener, Closest, RemoveEventListener } from '@forgleaner/utils/document';
 import { IsFunction } from '@forgleaner/utils/type-check';
 
-import PhotoSwipeUI_Default from '../lib/photoswipe/dist/photoswipe-ui-default.js';
-import PhotoSwipe from '../lib/photoswipe/dist/photoswipe.js';
+import PhotoSwipeUI_Default from './lib/dist/photoswipe-ui-default.js';
+import PhotoSwipe from './lib/dist/photoswipe.js';
 
 import './photoswipe.scss';
 
-import {
-  IPhotoswipeBaseOptions,
-  IPhotoswipeOptions,
-  PhotoswipeBaseOptions,
-  PhotoswipeOptions
-} from './photoswipe.type';
+import { IPhotoswipeBaseOptions, IPhotoswipeOptions, PhotoswipeBaseOptions, PhotoswipeOptions } from './interfaces';
 
 let template: Element = document.getElementById('photoSwipeTemplate');
 let templateStr;
 if (!template) {
-  templateStr = require('!!raw-loader!./photoswipe.html');
+  templateStr = require('!!raw-loader!./photoswipe.html').default;
   const el = document.createElement('div');
   el.innerHTML = templateStr;
   template = el.children[0];
@@ -43,14 +38,18 @@ export class Photoswipe {
 
     this.baseOpts = new PhotoswipeBaseOptions(baseOpts);
 
-    // 监听 handlerEl click 事件
-    this.onHandlerElClick = (e: any) => {
-      const target = Closest(e.target, this.options.itemSelector);
-      if (target) {
-        this.itemClick(target);
-      }
-    };
-    AddEventListener(this.options.handlerEl, 'click', this.onHandlerElClick);
+    if (this.options.handlerEl) {
+      // 监听 handlerEl click 事件
+      this.onHandlerElClick = (e: any) => {
+        const target = Closest(e.target, this.options.itemSelector);
+        if (target) {
+          this.itemClick(target);
+        }
+      };
+      AddEventListener(this.options.handlerEl, 'click', this.onHandlerElClick);
+    } else {
+      this.createInstance(this.options.items, this.options.index);
+    }
 
     // 绑定 body click 事件 以解决关闭异常的问题
     this.onBodyClick = (e: any) => {
@@ -60,6 +59,47 @@ export class Photoswipe {
       }
     };
     AddEventListener(document.body, 'click', this.onBodyClick);
+  }
+
+  private createInstance(data, index) {
+    if (this.instance) {
+      this.instance.close();
+    }
+
+    const opts: any = {
+      index: index,
+      loop: this.baseOpts.loop,
+      history: this.baseOpts.history,
+      focus: this.baseOpts.focus,
+      mainClass: this.baseOpts.mainClass,
+      barsSize: this.baseOpts.barsSize,
+      captionEl: this.baseOpts.captionEl,
+      fullscreenEl: this.baseOpts.fullscreenEl,
+      shareEl: this.baseOpts.shareEl,
+      bgOpacity: this.baseOpts.bgOpacity,
+      tapToClose: this.baseOpts.tapToClose,
+      tapToToggleControls: this.baseOpts.tapToToggleControls
+    };
+
+    if (this.options.handlerEl) {
+      opts.getThumbBoundsFn = (index) => {
+        const thumbnail = data[index].el;
+        const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+        const rect = thumbnail.getBoundingClientRect();
+        return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+      };
+    }
+
+    // 实例化
+    this.instance = new PhotoSwipe(template, PhotoSwipeUI_Default, data, opts);
+
+    this.instance.listen('close', () => {
+      if (IsFunction(this.options.onDismiss)) {
+        this.options.onDismiss();
+      }
+    });
+
+    this.instance.init();
   }
 
   close() {
@@ -110,37 +150,7 @@ export class Photoswipe {
       }
     }
 
-    if (this.instance) {
-      this.instance.close();
-    }
-
-    // 实例化
-    this.instance = new PhotoSwipe(template, PhotoSwipeUI_Default, data, {
-      index: index_,
-      getThumbBoundsFn(index) {
-        const thumbnail = data[index].el;
-        const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
-        const rect = thumbnail.getBoundingClientRect();
-        return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
-      },
-      loop: this.baseOpts.loop,
-      history: this.baseOpts.history,
-      focus: this.baseOpts.focus,
-      mainClass: this.baseOpts.mainClass,
-      barsSize: this.baseOpts.barsSize,
-      captionEl: this.baseOpts.captionEl,
-      fullscreenEl: this.baseOpts.fullscreenEl,
-      shareEl: this.baseOpts.shareEl,
-      bgOpacity: this.baseOpts.bgOpacity,
-      tapToClose: this.baseOpts.tapToClose,
-      tapToToggleControls: this.baseOpts.tapToToggleControls
-    });
-
-    this.instance.listen('close', () => {
-      if (IsFunction(this.options.onDismiss)) {
-        this.options.onDismiss();
-      }
-    });
+    this.createInstance(data, index_);
 
     this.instance.init();
 

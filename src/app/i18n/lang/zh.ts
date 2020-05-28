@@ -2,7 +2,7 @@
  * zh
  */
 
-import { I18nkeysType } from '../model';
+import { I18nkeysType } from '../interfaces';
 
 export const zh: I18nkeysType = {
   route: {

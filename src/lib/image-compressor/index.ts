@@ -2,5 +2,5 @@
  * index
  */
 
-export * from './model';
+export * from './interfaces';
 export * from './image-compressor';

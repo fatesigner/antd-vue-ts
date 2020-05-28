@@ -1,5 +1,5 @@
 /**
- * model
+ * interfaces
  */
 
 import { IRouteConfig } from '../interfaces/router';

@@ -84,6 +84,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { IsNullOrUndefined, IsNumber } from '@forgleaner/utils/type-check';
+
 import { ITableOperationData } from '../../../lib/element-ui-helper/components/table';
 
 import { Layout } from '../../layout';
@@ -262,7 +263,7 @@ export default class extends Vue {
     ) {
       return 2;
     }
-    return null;
+    return 2;
   }
 
   loadData() {

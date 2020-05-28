@@ -17,6 +17,7 @@ import '../styles/element-ui.override.scss';
 import '../styles/common.scss';
 
 import './providers/element-ui';
+import './providers/qiniu';
 import './providers/vue-svgicon';
 import './providers/vee-validate';
 

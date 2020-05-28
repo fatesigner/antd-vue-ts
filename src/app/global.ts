@@ -271,3 +271,29 @@ export const RewardType = ConvertModelArrToEnum([
     name: '按订货总额比例奖励'
   }
 ]);
+
+export const ShipType = ConvertModelArrToEnum([
+  {
+    value: 1,
+    text: '自主发货',
+    name: '自主发货'
+  },
+  {
+    value: 2,
+    text: '公司代发',
+    name: '公司代发'
+  }
+]);
+
+export const ReceiverType = ConvertModelArrToEnum([
+  {
+    value: 1,
+    text: '自营仓储',
+    name: '自营仓储'
+  },
+  {
+    value: 2,
+    text: '公司代存',
+    name: '公司代存'
+  }
+]);

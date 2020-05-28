@@ -2,5 +2,5 @@
  * index
  */
 
+export * from './interfaces';
 export * from './file-chooser';
-export * from './model';

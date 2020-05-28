@@ -16,18 +16,16 @@ import {
   IFileChooserErrorType,
   IFileChooserOptions,
   IFileChooserService
-} from './model';
+} from './interfaces';
 
 import './file-chooser.scss';
 import { BrowserClient } from '@forgleaner/utils/user-agent';
-
-export * from './model';
 
 export const DefaultOptions: IFileChooserOptions = {
   width: '100%',
   height: '100%',
   multiple: false,
-  count: 1,
+  maxCount: 1,
   fileTypeLimits: [],
   minSize: 0,
   accept: '',
@@ -96,10 +94,10 @@ export { FileChooserService };
 // 验证文件
 export function ValidateFile(files: File[], options: IFileChooserOptions): IFileChooserErrorResponse {
   let validRes;
-  if (options.multiple && files.length > options.count) {
+  if (options.multiple && files.length > options.maxCount) {
     validRes = {
       type: IFileChooserErrorType.InvalidCount,
-      message: '仅支持选择' + options.count + '个文件！'
+      message: '仅支持选择' + options.maxCount + '个文件！'
     };
   }
   for (let i = 0, l = files.length; i < l; i++) {
