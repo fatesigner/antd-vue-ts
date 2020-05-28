@@ -25,10 +25,24 @@
         "icon": ""
       },
       {
-        "id": "8f52ad12fc64",
+        "id": "8f52ad12ffs4",
         "label": "产品设置",
         "children": [],
         "url": "/production",
+        "icon": ""
+      },
+      {
+        "id": "8f52ad12fc64",
+        "label": "返利设置",
+        "children": [],
+        "url": "/rebate",
+        "icon": ""
+      },
+      {
+        "id": "fa52ad12fc6g",
+        "label": "提现管理",
+        "children": [],
+        "url": "/withdraw",
         "icon": ""
       },
       {

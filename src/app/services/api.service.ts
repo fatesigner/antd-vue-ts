@@ -176,7 +176,7 @@ export class ApiServiceStatic {
     });
   }
 
-  rebateConfig_list(params) {
+  rebateConfig_list(params?) {
     return Http.get('/rebateConfig/list', {
       params: params
     });

@@ -27,7 +27,7 @@ const buildOptions = {
 
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
-  lintOnSave: process.env.NODE_ENV === 'development',
+  lintOnSave: false,
   productionSourceMap: false,
   pages: {
     index: {

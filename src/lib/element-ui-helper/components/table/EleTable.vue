@@ -28,6 +28,7 @@
       :row-key="rowKey"
       :hide-bottom="true"
       :pagination="pagination_"
+      :size="size"
       stripe
       @request="onRefresh"
     >
@@ -136,6 +137,7 @@ export default class extends Vue {
   @Prop({ default: false }) loading: boolean;
   @Prop({ default: true }) refresher: boolean;
   @Prop({ default: true }) pagination: boolean;
+  @Prop({ default: '' }) size: string;
   @Prop({ default: false }) sizeAdaption: boolean;
   @Prop({ default: 'id' }) rowKey: string;
   @Prop({ default: '暂无数据' }) noDataLabel: string;
@@ -344,7 +346,6 @@ export default class extends Vue {
         > th {
           position: sticky;
           z-index: 1;
-          font-size: 14px;
           font-weight: bold;
           color: #333;
           text-align: left;
@@ -374,7 +375,6 @@ export default class extends Vue {
 
   .no-data {
     padding: 30px 20px 30px;
-    font-size: 14px;
     color: #999;
     text-align: center;
   }

@@ -1,6 +1,6 @@
 /**
  * 图片浏览器
- * 基于 photoswipe、微信jssdk
+ * 基于 photoswipe、微信 jssdk
  */
 
 import { BrowserClient } from '@forgleaner/utils/user-agent';

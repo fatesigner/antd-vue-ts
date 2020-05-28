@@ -18,11 +18,11 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import { Strutree } from '../../../../lib/strutree/strutree';
+import { Strutree } from '../../../../lib/strutree';
+import { TransitionCollapse } from '../../../../lib/vue-common/components/transition';
 
 import { IMenu } from '../../../interfaces/memu';
 import SideMenuItem from './SideMenuItem.vue';
-import { TransitionCollapse } from '../../../shared/transition';
 import { SidebarStore } from './store';
 
 const strutree = new Strutree<IMenu>({

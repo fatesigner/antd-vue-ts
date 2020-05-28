@@ -2,8 +2,8 @@
  * file-chooser
  */
 
-import { FilterExtensions, GetContentSize } from '@forgleaner/utils/document';
 import { ConvertToBytesUnit } from '@forgleaner/utils';
+import { FilterExtensions, GetContentSize } from '@forgleaner/utils/document';
 
 import { CompressImage as CompressorImage } from '../image-compressor';
 
@@ -19,6 +19,7 @@ import {
 } from './model';
 
 import './file-chooser.scss';
+import { BrowserClient } from '@forgleaner/utils/user-agent';
 
 export * from './model';
 
@@ -44,8 +45,24 @@ const error = new Error(
 class FileChooserCreator implements IFileChooserService {
   actionSheet: IFileChooserActionSheet = null;
 
+  constructor() {
+    this.init();
+  }
+
+  async init() {
+    // 判断所处平台
+    if (BrowserClient.Wechat) {
+      const _ = await import('./platforms/wechat');
+      this.openFileChooser = _.FileChooserService.openFileChooser;
+      this.createFileChooser = _.FileChooserService.createFileChooser;
+    } else {
+      const _ = await import('./platforms/h5');
+      this.openFileChooser = _.FileChooserService.openFileChooser;
+      this.createFileChooser = _.FileChooserService.createFileChooser;
+    }
+  }
+
   openFileChooser(options?: IFileChooserOptions) {
-    throw error;
     return new Promise<IFileChooserChangeResponse>(function (resolve) {
       resolve();
     });
@@ -56,11 +73,10 @@ class FileChooserCreator implements IFileChooserService {
     resolve?: (res: IFileChooserChangeResponse) => void,
     reject?: (error: IFileChooserErrorResponse) => void
   ) {
-    throw error;
     return {
       actionSheet: this.actionSheet,
       trigger: null,
-      destory: null
+      destroy: null
     };
   }
 }
@@ -88,7 +104,7 @@ export function ValidateFile(files: File[], options: IFileChooserOptions): IFile
   }
   for (let i = 0, l = files.length; i < l; i++) {
     const file = files[i];
-    if (!FilterExtensions(file, options.fileTypeLimits.join(','))) {
+    if (options.fileTypeLimits.length && !FilterExtensions(file, options.fileTypeLimits.join(','))) {
       validRes = {
         type: IFileChooserErrorType.InvalidType,
         message: '仅支持' + options.fileTypeLimits.join(',') + '的文件格式！'

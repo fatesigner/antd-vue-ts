@@ -36,12 +36,7 @@
               <ValidationProvider name="验证码" rules="required" v-slot="{ classes, errors }">
                 <div class="input-wrap">
                   <label>
-                    <input
-                      type="text"
-                      v-model="form.validateCode"
-                      placeholder="输入验证码"
-                      @keyup.enter="onSubmit"
-                    />
+                    <input type="text" v-model="form.validateCode" placeholder="输入验证码" @keyup.enter="onSubmit" />
                   </label>
                   <transition-slide direction="up">
                     <div class="invalid-message" v-if="errors.length">{{ errors[0] }}</div>
@@ -60,10 +55,11 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+import { TransitionSlide } from '../../../lib/vue-common/components/transition';
+
 import { Title } from '../../global';
 import { LayoutEmpty } from '../../layout';
 import { GraphicCode } from '../../shared/graphic-code';
-import { TransitionSlide } from '../../shared/transition';
 import { ProgressBarStore } from '../../layout/components/progress-bar';
 import { ApiService } from '../../services/api.service';
 import { CommonService } from '../../services/common.service';

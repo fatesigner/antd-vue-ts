@@ -2,13 +2,13 @@
   <layout class="mitigate-settings">
     <el-button class="vui-mb10" type="primary" icon="el-icon-plus" @click="add">新增</el-button>
     <ele-table
-      :data="result.data"
-      :columns="columns"
+      :data="table.result.data"
+      :columns="table.columns"
       :indexed="true"
-      :loading="result.loading"
-      :total.sync="result.totalCount"
-      :page-no.sync="query.pageNo"
-      :page-size.sync="query.pageSize"
+      :loading="table.result.loading"
+      :total.sync="table.result.totalCount"
+      :page-no.sync="table.query.pageNo"
+      :page-size.sync="table.query.pageSize"
       @request="onRequest"
     >
       <template v-slot:orderProductList="{ row }">
@@ -79,22 +79,53 @@
             </ValidationProvider>
           </el-form-item>
           <el-form-item label="订货数量">
-            <ValidationProvider name="订货数量" rules="required" v-slot="{ classes, errors }">
-              <ele-table
-                :data="result.product"
-                :columns="productColumns"
-                :indexed="true"
-                :loading="result.loading"
-                :total.sync="result.totalCount"
-                :page-no.sync="query.pageNo"
-                :page-size.sync="query.pageSize"
-                :refresher="false"
-                :pagination="false"
-                @request="onRequest"
-              >
-              </ele-table>
-              <p class="invalid-message" v-if="errors.length">{{ errors[0] }}</p>
-            </ValidationProvider>
+            <ele-table
+              style="margin-top: -10px;"
+              :data="tableProduct.result.data"
+              :columns="tableProduct.columns"
+              :indexed="true"
+              :loading="tableProduct.result.loading"
+              :total.sync="tableProduct.result.totalCount"
+              :page-no.sync="tableProduct.query.pageNo"
+              :page-size.sync="tableProduct.query.pageSize"
+              :refresher="false"
+              :pagination="false"
+              size="mini"
+            >
+              <template v-slot:check="{ row, $index }">
+                <el-checkbox v-model="actionDialog.form.productList[$index].checked" />
+              </template>
+              <template v-slot:firstOrderNum="{ row, $index }">
+                <el-input
+                  class="vui-hnm"
+                  v-if="actionDialog.form.productList[$index].checked"
+                  type="number"
+                  size="mini"
+                  v-model.number="actionDialog.form.productList[$index].firstOrderNum"
+                  title=""
+                />
+              </template>
+              <template v-slot:orderNum="{ row, $index }">
+                <el-input
+                  class="vui-hnm"
+                  v-if="actionDialog.form.productList[$index].checked"
+                  type="number"
+                  size="mini"
+                  v-model.number="actionDialog.form.productList[$index].orderNum"
+                  title=""
+                />
+              </template>
+              <template v-slot:orderPrice="{ row, $index }">
+                <el-input
+                  class="vui-hnm"
+                  v-if="actionDialog.form.productList[$index].checked"
+                  type="number"
+                  size="mini"
+                  v-model.number="actionDialog.form.productList[$index].orderPrice"
+                  title=""
+                />
+              </template>
+            </ele-table>
           </el-form-item>
           <el-form-item label="推荐奖励">
             <ValidationProvider name="推荐奖励" rules="required|numeric" v-slot="{ classes, errors }">
@@ -117,7 +148,7 @@
                 :class="classes"
                 class="vui-hnm vui-ml5"
                 type="number"
-                v-model.number="actionDialog.form.derateMoney"
+                v-model.number="actionDialog.form.recommValue"
                 style="width: 160px;"
                 title=""
               >
@@ -129,7 +160,52 @@
             <p class="vui-g9">按每台奖励：推荐当前级别代理订货数（每台）奖励</p>
           </el-form-item>
           <el-form-item label="考核期">
-            <p class="vui-mt10 vui-g9">
+            <ele-table
+              style="margin-top: -10px;"
+              :data="tableKhq.result.data"
+              :columns="tableKhq.columns"
+              :indexed="true"
+              :loading="tableKhq.result.loading"
+              :total.sync="tableKhq.result.totalCount"
+              :page-no.sync="tableKhq.query.pageNo"
+              :page-size.sync="tableKhq.query.pageSize"
+              :refresher="false"
+              :pagination="false"
+              size="mini"
+              @request="onRequest"
+            >
+              <template v-slot:exemption="{ row }">
+                <ValidationProvider name="免考期" rules="required" v-slot="{ classes, errors }">
+                  <el-input class="vui-hnm" type="number" size="mini" v-model.number="row.exemption" title=""
+                    ><template slot="append">天</template></el-input
+                  >
+                  <p class="invalid-message" v-if="errors.length">{{ errors[0] }}</p>
+                </ValidationProvider>
+              </template>
+              <template v-slot:examine="{ row }">
+                <ValidationProvider name="考核期" rules="required" v-slot="{ classes, errors }">
+                  <el-input class="vui-hnm vui-mb10" type="number" size="mini" v-model.number="row.examine" title=""
+                    ><template slot="append">天</template></el-input
+                  >
+                  <el-input class="vui-hnm" type="number" size="mini" v-model.number="row.examineNum" title=""
+                    ><template slot="append">台</template></el-input
+                  >
+                  <p class="invalid-message" v-if="errors.length">{{ errors[0] }}</p>
+                </ValidationProvider>
+              </template>
+              <template v-slot:purchase="{ row }">
+                <ValidationProvider name="预警器" rules="required" v-slot="{ classes, errors }">
+                  <el-input class="vui-hnm vui-mb10" type="number" size="mini" v-model.number="row.purchase" title=""
+                    ><template slot="append">天</template></el-input
+                  >
+                  <el-input class="vui-hnm" type="number" size="mini" v-model.number="row.purchaseNum" title=""
+                    ><template slot="append">台</template></el-input
+                  >
+                  <p class="invalid-message" v-if="errors.length">{{ errors[0] }}</p>
+                </ValidationProvider>
+              </template>
+            </ele-table>
+            <p class="vui-g9">
               已成为当前代理级别起开始计时，免考期内无要求，考核期内需满足总进货量要求，否则不足台数进入预警列表/提醒（所有产品版本）
             </p>
             <p class="vui-green">（当前仅有4级代理商具备考核设置）</p>
@@ -140,7 +216,7 @@
                 :class="classes"
                 type="textarea"
                 v-model="actionDialog.form.remark"
-                :rows="2"
+                :rows="3"
                 style="width: 320px;"
                 title=""
               />
@@ -165,13 +241,23 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { IColumn, IRequestData } from '../../../lib/element-ui-helper/components/table';
+import { IColumn, IRequestData, ITableOperationData } from '../../../lib/element-ui-helper/components/table';
 
 import { Layout } from '../../layout';
 import { ApiService } from '../../services/api.service';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { RadioButtons } from '../../shared/radio-buttons';
-import { AgentLevel, DerateCondition, DerateStatus, DerateType, RewardType } from '../../global';
+import {
+  AgentLevel,
+  AgentType,
+  DerateCondition,
+  DerateStatus,
+  DerateType,
+  PaidStatus,
+  PaymentType,
+  RechargeType,
+  RewardType
+} from '../../global';
 import { DateFormatPipe, DateFormatPipeKey } from '../../pipes/date-format.pipe';
 
 @Component({
@@ -185,88 +271,131 @@ export default class extends Vue {
   AgentLevel = AgentLevel;
   RewardType = RewardType;
 
-  query = {
-    pageNo: 1,
-    pageSize: 10
-  };
-
-  result = {
-    loading: false,
-    totalCount: 0,
-    data: [],
-    product: []
-  };
-
-  productColumns: IColumn[] = [
-    {
-      label: '#',
-      name: 'select',
-      width: 35
+  table: ITableOperationData = {
+    columns: [
+      {
+        label: '序号',
+        name: 'id',
+        width: 50,
+        fixed: true,
+        template: (row, index) => {
+          return index + 1;
+        }
+      },
+      {
+        label: '代理名称',
+        name: 'name',
+        width: 100,
+        template: (row) => {
+          return `${row.name}<br/>等级：${row.level}`;
+        }
+      },
+      {
+        label: '首次申请/订货量',
+        name: 'orderProductList',
+        width: 260
+      },
+      {
+        label: '进货起订量',
+        name: 'purchaseCondition',
+        width: 260
+      },
+      {
+        label: '推荐奖金',
+        name: 'recommValue',
+        width: 180,
+        template: (row) => {
+          return `${CurrencyPipe(row.recommValue)}/台`;
+        }
+      },
+      {
+        label: '备注',
+        name: 'remark',
+        width: 180
+      },
+      { label: '操作', name: 'actions', width: 80, fixed: 'right' }
+    ],
+    query: {
+      pageNo: 1,
+      pageSize: 10
     },
-    {
-      label: '产品名称',
-      name: 'productName'
-    },
-    {
-      label: '首次申请量（台）',
-      name: 'firstOrderNum',
-      width: 150
-    },
-    {
-      label: '进货量（台）',
-      name: 'orderNum',
-      width: 150
-    },
-    {
-      label: '订货价格(￥)',
-      name: 'orderPrice',
-      width: 150
+    result: {
+      loading: false,
+      totalCount: 0,
+      data: []
     }
-  ];
+  };
 
-  columns: IColumn[] = [
-    {
-      label: '序号',
-      name: 'id',
-      width: 50,
-      fixed: true,
-      template: (row, index) => {
-        return index + 1;
+  tableProduct: ITableOperationData = {
+    columns: [
+      {
+        label: '#',
+        name: 'check',
+        width: 35
+      },
+      {
+        label: '产品名称',
+        name: 'productName'
+      },
+      {
+        label: '首次申请量（台）',
+        name: 'firstOrderNum',
+        width: 120
+      },
+      {
+        label: '进货量（台）',
+        name: 'orderNum',
+        width: 120
+      },
+      {
+        label: '订货价格(￥)',
+        name: 'orderPrice',
+        width: 120
       }
+    ],
+    query: {
+      pageNo: 1,
+      pageSize: 10
     },
-    {
-      label: '代理名称',
-      name: 'name',
-      width: 100,
-      template: (row) => {
-        return `${row.name}<br/>等级：${row.level}`;
+    result: {
+      data: []
+    }
+  };
+
+  tableKhq: ITableOperationData = {
+    columns: [
+      {
+        label: '免考期',
+        name: 'exemption',
+        width: 120
+      },
+      {
+        label: '考核期',
+        name: 'examine',
+        width: 120
+      },
+      {
+        label: '预警期',
+        name: 'purchase',
+        width: 120
       }
+    ],
+    query: {
+      pageNo: 1,
+      pageSize: 10
     },
-    {
-      label: '首次申请/订货量',
-      name: 'orderProductList',
-      width: 260
-    },
-    {
-      label: '进货起订量',
-      name: 'purchaseCondition',
-      width: 260
-    },
-    {
-      label: '推荐奖金',
-      name: 'recommValue',
-      width: 180,
-      template: (row) => {
-        return `${CurrencyPipe(row.recommValue)}/台`;
-      }
-    },
-    {
-      label: '备注',
-      name: 'remark',
-      width: 180
-    },
-    { label: '操作', name: 'actions', width: 80, fixed: 'right' }
-  ];
+    result: {
+      data: [
+        {
+          exemption: null,
+          examine: null,
+          examineNum: null,
+          purchase: null,
+          purchaseNum: null
+        }
+      ]
+    }
+  };
 
   actionDialog = {
     loading: false,
@@ -274,22 +403,18 @@ export default class extends Vue {
     visible: false,
     form: {
       id: '',
-      derateType: 1,
-      derateTarget: 1,
-      derateCondition: 1,
-      derateMoney: null,
-      timeRange: null
+      productList: []
     }
   };
 
   onRequest(request: IRequestData) {
-    this.query.pageNo = request.params.pageNo;
-    this.query.pageSize = request.params.pageSize;
+    this.table.query.pageNo = request.params.pageNo;
+    this.table.query.pageSize = request.params.pageSize;
     this.loadData();
   }
 
   getProductName(productId) {
-    const item = this.result.product.find((x) => x.id === productId);
+    const item = this.tableProduct.result.data.find((x) => x.id === productId);
     if (item) {
       return item.productName;
     }
@@ -301,21 +426,25 @@ export default class extends Vue {
   }
 
   add() {
-    this.actionDialog.form.derateType = 1;
-    this.actionDialog.form.derateTarget = 1;
-    this.actionDialog.form.derateCondition = 1;
-    this.actionDialog.form.derateMoney = null;
-    this.actionDialog.form.timeRange = null;
     this.actionDialog.visible = true;
+    this.actionDialog.form.productList = this.tableProduct.result.data.map((x) => ({
+      id: x.id,
+      checked: false,
+      firstOrderNum: '',
+      orderNum: '',
+      orderPrice: ''
+    }));
   }
 
   update(row) {
     this.actionDialog.form.id = row.id;
-    this.actionDialog.form.derateType = row.derateType;
-    this.actionDialog.form.derateTarget = row.derateTarget;
-    this.actionDialog.form.derateCondition = row.derateCondition;
-    this.actionDialog.form.derateMoney = row.derateMoney;
-    this.actionDialog.form.timeRange = [new Date(row.startTime), new Date(row.endTime)];
+    this.actionDialog.form.productList = this.tableProduct.result.data.map((x) => ({
+      id: x.id,
+      checked: false,
+      firstOrderNum: '',
+      orderNum: '',
+      orderPrice: ''
+    }));
     this.actionDialog.visible = true;
   }
 
@@ -342,18 +471,14 @@ export default class extends Vue {
   onSubmit() {
     (this.$refs.validator as any).validate().then((success) => {
       if (success) {
+        const data: any = this.actionDialog.form;
+        data.orderProductList = this.actionDialog.form.productList.filter((x) => x.checked);
+        if (!data.orderProductList.length) {
+          return this.$notify.error('请至少选择一个产品！');
+        }
         this.actionDialog.uploading = true;
-        const data = {
-          id: this.actionDialog.form.id,
-          derateType: this.actionDialog.form.derateType,
-          derateTarget: this.actionDialog.form.derateTarget,
-          derateCondition: this.actionDialog.form.derateCondition,
-          derateMoney: this.actionDialog.form.derateMoney,
-          startTime: this.$options.filters[DateFormatPipeKey](this.actionDialog.form.timeRange[0]),
-          endTime: this.$options.filters[DateFormatPipeKey](this.actionDialog.form.timeRange[1])
-        };
         if (data.id) {
-          ApiService.derate_update(data)
+          ApiService.agentLevel_update(data)
             .then(() => {
               this.$notify({
                 title: 'success',
@@ -375,7 +500,7 @@ export default class extends Vue {
               (this.$refs.validator as any).reset();
             });
         } else {
-          ApiService.derate_add(data)
+          ApiService.agentLevel_add(data)
             .then(() => {
               this.$notify({
                 title: 'success',
@@ -402,24 +527,24 @@ export default class extends Vue {
   }
 
   loadData() {
-    this.result.loading = true;
+    this.table.result.loading = true;
     return Promise.all([
       ApiService.product_list({ pageNo: 1, pageSize: 10000 }),
-      ApiService.agentLevel_page({ pageNo: this.query.pageNo, pageSize: this.query.pageSize })
+      ApiService.agentLevel_page({ pageNo: this.table.query.pageNo, pageSize: this.table.query.pageSize })
     ])
       .then((res: any) => {
         const [data1, data2] = res;
-        this.result.product = data1;
+        this.tableProduct.result.data = data1;
         if (data2 && data2.rows) {
-          this.result.data = data2.rows;
-          this.result.totalCount = data2.totalCount;
+          this.table.result.data = data2.rows;
+          this.table.result.totalCount = data2.totalCount;
         } else {
-          this.result.data = [];
-          this.result.totalCount = 0;
+          this.table.result.data = [];
+          this.table.result.totalCount = 0;
         }
       })
       .finally(() => {
-        this.result.loading = false;
+        this.table.result.loading = false;
       });
   }
 }

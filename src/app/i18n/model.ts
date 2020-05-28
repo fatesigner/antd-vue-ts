@@ -29,10 +29,12 @@ export interface I18nkeysType extends IKeys {
     dashboard: string;
     agentType: string;
     predelivery: string;
+    rebate: string;
     prepaid: string;
     menus: string;
     roles: string;
     mitigate: string;
+    withdraw: string;
   };
   navbar: {
     logOut: string;

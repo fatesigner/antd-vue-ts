@@ -2,6 +2,6 @@
  * index
  */
 
-import Uploader from './uploader.vue';
+import EleUploader from './EleUploader.vue';
 
-export { Uploader };
+export { EleUploader };

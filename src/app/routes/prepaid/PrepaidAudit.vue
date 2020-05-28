@@ -5,9 +5,9 @@
     </div>
     <div v-else class="vui-row">
       <div class="vui-col-auto">
-        <el-form class="vui-col" label-width="80px">
+        <el-form class="vui-col" label-width="80px" style="width: 320px;">
           <div class="top">
-            <h2>当前状态：{{ currentStatus }}</h2>
+            <h2 class="top-title">当前状态：{{ currentStatus }}</h2>
             <p>订单号：{{ data.rechargeNo }}</p>
             <p>时间：{{ data.createTime | dateFormat }}</p>
           </div>
@@ -24,17 +24,15 @@
           </el-form-item>
           <el-form-item label="实付金额">
             <el-input
-              v-if="___financial"
-              v-model.number="___actuallyAmount"
+              v-if="financial"
+              v-model.number="actuallyAmount"
               placeholder="输入实付金额"
-              style="width: 15em;"
+              style="width: 150px;"
               title=""
             />
             <div class="vui-orange" v-else>{{ data.actualAmount | currency }}</div>
-            &lt;!&ndash;
-            <p>在2020年5月31日前成为战略服务商可一次性享受19880元创业金</p>
-            <p>成为校长级或者升级为校长级可一次性享有6680元创业金</p>
-            &ndash;&gt;
+            <!--<p>在2020年5月31日前成为战略服务商可一次性享受19880元创业金</p>
+            <p>成为校长级或者升级为校长级可一次性享有6680元创业金</p>-->
           </el-form-item>
           <el-form-item label="当前余额" v-if="data.amount">
             {{ (data.amount.amount + data.amount.rebateAmount) | currency }}
@@ -93,15 +91,15 @@
           </template>
         </el-form>
       </div>
-      <div class="vui-col-auto" v-if="actionDialog.records.length">
+      <div class="vui-col-auto" v-if="records.length" style="width: 300px;">
         <el-form class="vui-col" label-width="80px">
-          <template v-for="record in actionDialog.records">
+          <template v-for="record in records">
             <div class="vui-mt10" v-if="!!record.id">
               {{ record.title }}
               <p class="vui-g9">{{ record.createTime | dateFormat }}</p>
             </div>
             <div class="vui-mt10" v-else>
-              <Checkbox v-model="record.checked">{{ record.title }}</Checkbox>
+              <el-checkbox v-model="record.checked">{{ record.title }}</el-checkbox>
             </div>
             <div class="vui-mt10" v-if="!!record.id">
               <el-input type="textarea" :disabled="!!record.id" v-model="record.remark" title="" />
@@ -124,12 +122,13 @@
               </div>
             </div>
             <template v-else>
-              <ImgSelect class="vui-mt10" :imgList="record.approvalImage" :hasPlace="false" :maxLength="3" />
-              <p>最多上传三张，单张10M之内</p>
+              <!--<ele-uploader class="vui-mt10" :files="record.files" :immediate="true" :multiple="true" :width="100" />-->
+              <!--<ImgSelect class="vui-mt10" :imgList="record.approvalImage" :hasPlace="false" :maxLength="3" />-->
+              <p class="vui-mt10">最多上传三张，单张10M之内</p>
               <p class="vui-orange">{{ record.desc }}</p>
               <div class="vui-mt10">
-                <ele-button type="primary" @click="handle(record, record.checkStatus1, 1)">提交</ele-button>
-                <ele-button type="text" @click="handle(record, record.checkStatus2, 2)">取消本次订单</ele-button>
+                <el-button type="primary" @click="handle(record, record.checkStatus1, 1)">提交</el-button>
+                <el-button type="text" @click="handle(record, record.checkStatus2, 2)">取消本次订单</el-button>
               </div>
             </template>
           </template>
@@ -140,9 +139,10 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+
+import { CheckedStatus, PaymentType } from '../../global';
 import { ApiService } from '../../services/api.service';
 import { SessionService } from '../../services/session.service';
-import { CheckedStatus } from '../../global';
 
 @Component({
   name: 'PrepaidAudit'
@@ -151,28 +151,30 @@ export default class extends Vue {
   @Prop({ default: null }) data: any;
   @Prop({ default: null }) audioStatus: number;
 
-  data_: any = {};
+  PaymentType = PaymentType;
+
+  data_: any;
   loading = true;
   title = '';
   remarkLengthLimit = 100;
   records = [];
   currentStatus = '';
-  ___actuallyAmount = null;
-  ___financial = false;
+  actuallyAmount = null;
+  financial = false;
 
-  @Watch('data')
+  @Watch('data', {
+    immediate: true
+  })
   onDataChange(val) {
     this.data_ = val;
-  }
-
-  mounted() {
+    this.loading = true;
     // 获取详情
     ApiService.agentAccountFlow_detail(this.data_.id)
       .then((data: any) => {
         this.data_.amount = data.amount;
         this.data_.picture = data.picture;
         this.data_.recommender = data.recommender;
-        this.___actuallyAmount = data.actualAmount;
+        this.actuallyAmount = data.actualAmount;
 
         if (
           this.data_.checkStatus == CheckedStatus.enum.completed ||
@@ -192,7 +194,8 @@ export default class extends Vue {
           checkStatus1: null,
           checkStatus2: null,
           remark: '',
-          approvalImage: []
+          approvalImage: [],
+          files: []
         };
 
         if (this.audioStatus === 1) {
@@ -205,7 +208,7 @@ export default class extends Vue {
           record.checkStatus2 = CheckedStatus.enum.财务审核不通过;
           record.title = '财务审核 ' + SessionService.user.realname;
           record.desc = '提示；提交将视为已确认支付，进入仓储“待发货”';
-          this.___financial = true;
+          this.financial = true;
         }
         this.records = [...data.approvalFlows];
         if (record.title) {
@@ -216,6 +219,57 @@ export default class extends Vue {
         this.loading = false;
       });
   }
+
+  // 审核、取消操作
+  async handle(record, status, approvalOpinion) {
+    if (!record.checked) {
+      this.$notify.warning('请确认并勾选您当前的角色');
+      return;
+    }
+    if (!record.remark) {
+      this.$notify.warning('请输入备注信息');
+      return;
+    }
+    if (record.remark.length > this.remarkLengthLimit) {
+      this.$notify.warning(`备注超出字数，允许的字符长度为${this.remarkLengthLimit}`);
+      return;
+    }
+    let actuallyAmount = this.data.actualAmount;
+    if (this.financial && !this.actuallyAmount) {
+      this.$notify.warning('请输入实付金额');
+      return;
+    } else if (this.actuallyAmount < 0) {
+      this.$notify.warning('实付金额不得小于0');
+      return;
+    } else {
+      actuallyAmount = this.actuallyAmount;
+    }
+    /* await this.$uploadService.uploadMutiple(
+      record.approvalImage.filter((ele) => ele.file),
+      1,
+      (res, ele) => {
+        ele.fileKey = ele.key;
+      }
+    ); */
+    ApiService.agentAccountFlow_update({
+      id: this.data.id,
+      checkStatus: status,
+      actuallyAmount: actuallyAmount,
+      flow: {
+        ifFinishCheck: 1,
+        approvalOpinion: approvalOpinion,
+        remark: record.remark,
+        title: record.title
+      },
+      approvalImage: record.approvalImage.map((x) => ({
+        url: x.url,
+        fileKey: x.fileKey
+      }))
+    }).then(() => {
+      this.$notify.success('操作成功!');
+      this.$emit('close');
+    });
+  }
 }
 </script>
 
@@ -223,11 +277,11 @@ export default class extends Vue {
 .prepaid-audit {
   .top {
     text-align: center;
+  }
 
-    .h2 {
-      font-size: 20px;
-      color: green;
-    }
+  .top-title {
+    font-size: 20px;
+    color: green;
   }
 
   .el-form-item {

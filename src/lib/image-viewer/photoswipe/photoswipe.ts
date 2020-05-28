@@ -2,29 +2,32 @@
  * photoswipe
  */
 
-import { Closest } from '../../utils/document';
-import { AddEventListener, RemoveEventListener } from '../../utils/event';
-import { IsFunction } from '../../utils/typeCheck';
+import { AddEventListener, Closest, RemoveEventListener } from '@forgleaner/utils/document';
+import { IsFunction } from '@forgleaner/utils/type-check';
 
 import PhotoSwipeUI_Default from '../lib/photoswipe/dist/photoswipe-ui-default.js';
 import PhotoSwipe from '../lib/photoswipe/dist/photoswipe.js';
 
 import './photoswipe.scss';
 
-import { IPhotoswipeBaseOptions, IPhotoswipeOptions, PhotoswipeBaseOptions, PhotoswipeOptions } from './photoswipe.type';
+import {
+  IPhotoswipeBaseOptions,
+  IPhotoswipeOptions,
+  PhotoswipeBaseOptions,
+  PhotoswipeOptions
+} from './photoswipe.type';
 
 let template: Element = document.getElementById('photoSwipeTemplate');
 let templateStr;
 if (!template) {
-  templateStr = require('./photoswipe.html');
-  let el = document.createElement('div');
+  templateStr = require('!!raw-loader!./photoswipe.html');
+  const el = document.createElement('div');
   el.innerHTML = templateStr;
   template = el.children[0];
   document.getElementsByTagName('body')[0].appendChild(template);
 }
 
 export class Photoswipe {
-
   options: IPhotoswipeOptions;
 
   baseOpts: IPhotoswipeBaseOptions;
@@ -33,17 +36,16 @@ export class Photoswipe {
 
   onBodyClick: any;
 
-  private instince: any;
+  private instance: any;
 
   constructor(opts: IPhotoswipeOptions, baseOpts?: IPhotoswipeBaseOptions) {
-
     this.options = new PhotoswipeOptions(opts);
 
     this.baseOpts = new PhotoswipeBaseOptions(baseOpts);
 
     // 监听 handlerEl click 事件
     this.onHandlerElClick = (e: any) => {
-      let target = Closest(e.target, this.options.itemSelector);
+      const target = Closest(e.target, this.options.itemSelector);
       if (target) {
         this.itemClick(target);
       }
@@ -52,7 +54,7 @@ export class Photoswipe {
 
     // 绑定 body click 事件 以解决关闭异常的问题
     this.onBodyClick = (e: any) => {
-      let target = Closest(e.target, '.pswp', true);
+      const target = Closest(e.target, '.pswp', true);
       if (target && target.getAttribute('aria-hidden') === 'true' && target.classList.length > 1) {
         target.classList = 'pswp';
       }
@@ -61,8 +63,8 @@ export class Photoswipe {
   }
 
   close() {
-    if (this.instince) {
-      this.instince.close();
+    if (this.instance) {
+      this.instance.close();
     }
   }
 
@@ -73,21 +75,21 @@ export class Photoswipe {
     if (this.onBodyClick) {
       RemoveEventListener(document.body, 'click', this.onBodyClick);
     }
-    if (this.instince) {
-      this.instince.destroy();
-      this.instince = undefined;
+    if (this.instance) {
+      this.instance.destroy();
+      this.instance = undefined;
     }
   }
 
   private itemClick(target: Element) {
     // 处理数据
-    let $items = this.options.handlerEl.querySelectorAll(this.options.itemSelector);
+    const $items = this.options.handlerEl.querySelectorAll(this.options.itemSelector);
 
     if (!$items.length) {
       return;
     }
 
-    let data = [];
+    const data = [];
     let el;
     let size;
     let index_ = -1;
@@ -108,17 +110,17 @@ export class Photoswipe {
       }
     }
 
-    if (this.instince) {
-      this.instince.close();
+    if (this.instance) {
+      this.instance.close();
     }
 
     // 实例化
-    this.instince = new PhotoSwipe(template, PhotoSwipeUI_Default, data, {
+    this.instance = new PhotoSwipe(template, PhotoSwipeUI_Default, data, {
       index: index_,
       getThumbBoundsFn(index) {
-        let thumbnail = data[index].el;
-        let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
-        let rect = thumbnail.getBoundingClientRect();
+        const thumbnail = data[index].el;
+        const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+        const rect = thumbnail.getBoundingClientRect();
         return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
       },
       loop: this.baseOpts.loop,
@@ -134,13 +136,13 @@ export class Photoswipe {
       tapToToggleControls: this.baseOpts.tapToToggleControls
     });
 
-    this.instince.listen('close', () => {
+    this.instance.listen('close', () => {
       if (IsFunction(this.options.onDismiss)) {
         this.options.onDismiss();
       }
     });
 
-    this.instince.init();
+    this.instance.init();
 
     if (IsFunction(this.options.onPresent)) {
       this.options.onPresent();

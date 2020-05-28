@@ -2,7 +2,7 @@
  * photoSwipe.type
  */
 
-import { DeepExtend } from '../../utils/extend';
+import { DeepExtend } from '@forgleaner/utils';
 
 export interface IPhotoswipeOptions {
   /**
@@ -46,7 +46,7 @@ export interface IPhotoswipeBaseOptions {
   history?: boolean;
   focus?: boolean;
   mainClass?: string;
-  barsSize?: { top: number, bottom: number };
+  barsSize?: { top: number; bottom: number };
   captionEl?: boolean;
   fullscreenEl?: boolean;
   shareEl?: boolean;

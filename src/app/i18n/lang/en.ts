@@ -11,9 +11,11 @@ export const en: I18nkeysType = {
       unauthorized: 'unauthorized'
     },
     mitigate: 'mitigate',
+    withdraw: 'withdraw',
     dashboard: 'dashboard',
     agentType: 'agent type',
     predelivery: 'predelivery',
+    rebate: 'rebate',
     prepaid: 'prepaid',
     menus: 'menus settings',
     roles: 'roles settings'

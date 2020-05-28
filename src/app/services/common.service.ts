@@ -79,13 +79,6 @@ class CommonServiceStatic {
     return menuLinks;
   }
 
-  getScrollTop(dom) {
-    if (!dom) {
-      dom = document;
-    }
-    return dom.documentElement.scrollTop || dom.body.scrollTop;
-  }
-
   getOffset(element, target = null) {
     const offset = {
       left: 0,

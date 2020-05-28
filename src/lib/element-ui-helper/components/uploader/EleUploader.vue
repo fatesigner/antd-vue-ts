@@ -26,35 +26,35 @@
           </transition-slide>
           <transition-zoom>
             <dd class="uploader-done" v-if="!file.uploading && file.value && !file.src" title="已上传">
-              <span class="uploader-done-in"><mu-icon size="16" value="done" color="#fff"></mu-icon></span>
+              <span class="uploader-done-in"><i size="16" class="el-icon-check" color="#fff"></i></span>
             </dd>
           </transition-zoom>
           <dd class="uploader-action" v-if="!file.uploading && file.value && !file.src">
-            <mu-button small color="orange" title="查看图片" @click="previewImage(index)">查看 </mu-button>
+            <el-button small color="orange" title="查看图片" @click="previewImage(index)">查看 </el-button>
           </dd>
           <transition-zoom>
             <dd
               class="uploader-remove"
               v-if="!file.uploading && ((deletable && file.value) || file.src)"
-              @click="removeFile(index)"
+              @click="removeFile(file, index)"
               :title="file.src ? '取消' : '删除'"
             >
-              <span class="uploader-remove-in"><mu-icon size="16" value="clear" color="#fff"></mu-icon></span>
+              <span class="uploader-remove-in"><i size="16" class="el-icon-close" color="#fff"></i></span>
             </dd>
           </transition-zoom>
           <dd class="uploader-uploading" v-if="file.uploading">
-            <mu-circular-progress color="orange" :size="36" :stroke-width="4"></mu-circular-progress>
+            <ele-loading size="26" />
           </dd>
           <transition-zoom>
             <dd class="uploader-action" v-if="!file.uploading && file.src">
-              <mu-button
-                small
-                color="orange"
+              <el-button
+                size="mini"
                 title="开始上传"
+                type="warning"
                 :disabled="file.uploading"
                 @click="singleFileChooser.upload(index, self)"
                 >上传
-              </mu-button>
+              </el-button>
             </dd>
           </transition-zoom>
         </dl>
@@ -64,7 +64,7 @@
           <transition-slide>
             <dd class="uploader-error" v-if="error.message" :title="error.message">{{ error.message }}</dd>
           </transition-slide>
-          <mu-button
+          <el-button
             class="uploader-choose"
             flat
             color="#999"
@@ -73,8 +73,8 @@
             @fileChooserChange="fileChooser.onFileChooserChange($event, self)"
             @fileChooserError="fileChooser.onFileChooserError($event, self)"
           >
-            <mu-icon value="add" size="36"></mu-icon>
-          </mu-button>
+            <i class="el-icon-plus" size="36"></i>
+          </el-button>
         </dl>
       </li>
     </transition-group-zoom>
@@ -86,15 +86,18 @@ import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
 import { GetImageSize, GetImageSrc } from '@forgleaner/utils/document';
 import { GetGUID } from '@forgleaner/utils/random';
 
-import { TransitionSlide, TransitionZoom } from '../../../vue-common/components/transition';
-import { TransitionGroupZoom } from '../../../vue-common/components/transition-group';
-import { IFileChooserChangeResponse } from '../../../file-chooser';
 import { PreviewImage } from '../../../image-viewer';
+import { IFileChooserChangeResponse } from '../../../file-chooser';
+import { FileChooserDirectiveForVue } from '../../../file-chooser/directives/file-chooser.directive';
+import { TransitionGroupZoom } from '../../../vue-common/components/transition-group';
+import { TransitionSlide, TransitionZoom } from '../../../vue-common/components/transition';
 
 import { IUploaderActionParams, IUploaderContentType, IUploaderFile } from './model';
 
+Vue.use(FileChooserDirectiveForVue);
+
 @Component({
-  name: 'Uploader',
+  name: 'EleUploader',
   components: {
     TransitionSlide,
     TransitionZoom,
@@ -102,7 +105,7 @@ import { IUploaderActionParams, IUploaderContentType, IUploaderFile } from './mo
   }
 })
 export default class extends Vue {
-  @Prop({ default: [] }) files: IUploaderFile[];
+  @Prop({ default: () => [] }) files: IUploaderFile[];
   @Prop({ default: null, type: [Object, Promise, Function] }) action: Promise<any>;
   @Prop({ default: null }) data: any;
   @Prop({ default: false }) immediate: boolean;
@@ -277,8 +280,7 @@ export default class extends Vue {
     }
   };
 
-  removeFile(index) {
-    const file = this.files_[index];
+  removeFile(file, index) {
     if (file.src) {
       file.src = '';
       file.blob = null;
@@ -370,6 +372,7 @@ export default class extends Vue {
 <style lang="scss" scoped>
 .uploader-files {
   position: relative;
+  margin: -10px;
   overflow: hidden;
 
   > li {
@@ -427,19 +430,19 @@ export default class extends Vue {
 
 .uploader-remove {
   position: absolute;
+  top: -8px;
+  right: -8px;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  top: -8px;
-  right: -8px;
-  width: 26px;
-  font-size: 18px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   padding: 2px;
-  border-radius: 50%;
+  font-size: 18px;
   cursor: pointer;
-  background-color: #ececec;
+  background-color: #e0dcdc;
+  border-radius: 50%;
 
   .mu-icon {
     font-size: 12px;
@@ -452,24 +455,28 @@ export default class extends Vue {
   justify-content: center;
   width: 100%;
   height: 100%;
+  background-color: #f3f3f3;
   border-radius: 50%;
-  background-color: #000;
+
+  > i {
+    font-size: 14px;
+  }
 }
 
 .uploader-done {
   position: absolute;
+  top: -8px;
+  left: -8px;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  top: -8px;
-  left: -8px;
   width: 26px;
   height: 26px;
   padding: 2px;
-  border-radius: 50%;
-  background-color: #ececec;
   cursor: pointer;
+  background-color: #ececec;
+  border-radius: 50%;
 
   .mu-icon {
     font-size: 12px;
@@ -482,25 +489,25 @@ export default class extends Vue {
   justify-content: center;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   background-color: green;
+  border-radius: 50%;
 }
 
 .uploader-error {
   position: absolute;
   top: 0;
-  left: 0;
   right: 0;
-  font-size: 12px;
-  line-height: 14px;
+  left: 0;
   max-height: 66px;
   padding: 2px;
-  word-break: break-all;
   overflow: hidden;
-  pointer-events: none;
-  background-color: rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  line-height: 14px;
   color: red;
+  word-break: break-all;
+  pointer-events: none;
   cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .uploader-action {
@@ -508,9 +515,9 @@ export default class extends Vue {
   right: -2px;
   bottom: -2px;
 
-  .mu-button {
+  .el-button {
     min-width: initial;
-    padding: 0;
+    padding: 2px;
     vertical-align: top;
   }
 }

@@ -1,5 +1,11 @@
 <template>
-  <el-dialog :title="title" :visible.sync="visible_" :width="width" :max-width="maxWidth">
+  <el-dialog
+    :title="title"
+    :visible.sync="visible_"
+    :width="width"
+    :max-width="maxWidth"
+    :close-on-click-modal="closeOnClickModal"
+  >
     <ele-lazy-comp
       :class="[className]"
       :comp="comp_"
@@ -22,7 +28,6 @@
 import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
 
 import EleLazyComp from './EleLazyComp.vue';
-import de from 'element-ui/src/locale/lang/de';
 
 @Component({
   name: 'EleLazyDialog',
@@ -35,6 +40,7 @@ export default class extends Vue {
   @Prop({ default: undefined }) events: any[];
   @Prop({ default: undefined, type: Object }) props: object;
   @Prop({ default: false }) keepAlive: boolean;
+  @Prop({ default: true }) closeOnClickModal: boolean;
   @Prop({ default: 20 }) delay: number;
   @Prop({ default: 2000 }) timeout: number;
   @Prop({ default: 'auto', type: [String, Number] }) width: string | number;
@@ -48,13 +54,6 @@ export default class extends Vue {
   events_: any = {};
   width_: string | number = '';
   height_: string | number = '';
-
-  @Watch('props', {
-    immediate: true
-  })
-  onPropsChange(val) {
-    console.log(val);
-  }
 
   @Watch('events', {
     immediate: true

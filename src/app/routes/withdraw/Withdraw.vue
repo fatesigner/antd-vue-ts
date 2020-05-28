@@ -11,7 +11,7 @@
           <el-input
             class="vui-mr10"
             v-model="table.query.rechargeNo"
-            placeholder="输入充值单号..."
+            placeholder="输入单号..."
             style="width: 200px;"
             title=""
             clearable
@@ -91,10 +91,10 @@ import { ApiService } from '../../services/api.service';
 import { SessionService } from '../../services/session.service';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { RadioButtons } from '../../shared/radio-buttons';
-import { AgentLevel, AgentType, CheckedStatus, PaidStatus, PaymentType, RechargeType, Role } from '../../global';
+import { AgentType, CheckedStatus, PaidStatus, PaymentType, Role } from '../../global';
 
 @Component({
-  name: 'Prepaid',
+  name: 'Withdraw',
   components: {
     Layout,
     RadioButtons
@@ -115,29 +115,29 @@ export default class extends Vue {
         }
       },
       { label: '提交人', name: 'agentName', width: 200 },
-      { label: '充值项', name: 'title', width: 150 },
+      { label: '级别', name: 'levelName', width: 100 },
       {
-        label: '充值金额',
-        name: 'actualAmount',
+        label: '提现金额',
+        name: 'rebateAmount',
         width: 150,
         template: (row) => {
-          return `${CurrencyPipe(row.actualAmount)}`;
+          return `${CurrencyPipe(row.rebateAmount)}`;
         }
       },
       {
-        label: '充值方式',
-        name: 'payType',
-        width: 100,
+        label: '提现前金额',
+        name: 'beforeAmount',
+        width: 150,
         template: (row) => {
-          return `${PaymentType.desc[row.payType]}`;
+          return `${CurrencyPipe(row.beforeAmount)}`;
         }
       },
       {
-        label: '充值后可用金额',
-        name: 'handleAmount',
+        label: '当前余额',
+        name: 'accRebateAmount',
         width: 150,
         template: (row) => {
-          return `${CurrencyPipe(row.handleAmount)}`;
+          return `${CurrencyPipe(row.accRebateAmount + row.amount)}`;
         }
       },
       {
@@ -166,22 +166,10 @@ export default class extends Vue {
             options: AgentType.arr.map((x) => ({ label: x.text, value: x.value, count: 0 }))
           },
           {
-            label: '级别',
-            name: 'agentLevel',
-            value: null,
-            options: AgentLevel.arr.map((x) => ({ label: x.text, value: x.value, count: 0 }))
-          },
-          {
             label: '状态',
             name: 'status',
             value: null,
             options: PaidStatus.arr.map((x) => ({ label: x.text, value: x.value, count: 0 }))
-          },
-          {
-            label: '充值类型',
-            name: 'rechargeType',
-            value: null,
-            options: RechargeType.arr.map((x) => ({ label: x.text, value: x.value, count: 0 }))
           }
         ],
         data: null,
@@ -200,7 +188,7 @@ export default class extends Vue {
   };
 
   actionDialog = {
-    comp: () => import('./PrepaidAudit.vue'),
+    comp: () => import('./WithdrawAudit.vue'),
     visible: false,
     title: '',
     data: null,
@@ -234,7 +222,7 @@ export default class extends Vue {
   async created() {
     this.loadData();
     // 获取 radio 选项
-    this.table.query.radioButtons.data = await ApiService.agentAccountFlow_statistics();
+    this.table.query.radioButtons.data = await ApiService.withdraw_statistics();
   }
 
   // 点击查看
@@ -247,19 +235,7 @@ export default class extends Vue {
 
   // 判断指定订单的状态是否为专员或者财务待审核
   getAuditStatus(row) {
-    if (
-      SessionService.user.roles.indexOf(Role.enum.sale_commissioner) > -1 &&
-      (row.checkStatus == 1 || row.checkStatus == 14) &&
-      row.status == 2 &&
-      row.receiverId == 1
-    ) {
-      return 1;
-    } else if (
-      SessionService.user.roles.indexOf(Role.enum.sale_financial) > -1 &&
-      row.checkStatus == 11 &&
-      row.status == 2 &&
-      row.receiverId == 1
-    ) {
+    if (SessionService.user.roles.indexOf(Role.enum.sale_financial) > -1 && row.checkStatus == 1 && row.status == 2) {
       return 2;
     }
     return null;
@@ -280,7 +256,7 @@ export default class extends Vue {
       }
     }
     this.table.result.loading = true;
-    return ApiService.agentAccountFlow_page(params)
+    return ApiService.withdraw_page(params)
       .then((res: any) => {
         if (res && res.rows) {
           this.table.result.data = res.rows;

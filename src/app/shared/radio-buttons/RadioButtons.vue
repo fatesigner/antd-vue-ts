@@ -1,21 +1,21 @@
 ﻿<template>
-  <el-form label-width="80px">
+  <div class="radio-buttons">
     <ele-loading v-if="loading" size="36" />
-    <el-form-item v-for="item in data_" :label="item.label">
-      <el-radio-group v-model="item.model" class="vui-mr5">
-        <el-radio-button :label="null">全部</el-radio-button>
-      </el-radio-group>
-      <el-radio-group v-model="item.model">
-        <el-radio-button v-for="option in item.options" :label="option.value" :disabled="!option.count">{{
-          option.label
-        }}</el-radio-button>
-      </el-radio-group>
+    <el-form-item v-for="row in rows_" :label="row.label">
+      <el-button
+        v-for="option in row.options"
+        :type="option.value === row.value ? 'primary' : ''"
+        :disabled="!option.count"
+        size="small"
+        @click="itemClick(option, row)"
+        >{{ option.label }}</el-button
+      >
     </el-form-item>
-  </el-form>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
 
 import { IRadioButtons } from './model';
 
@@ -23,38 +23,85 @@ import { IRadioButtons } from './model';
   name: 'RadioButtons'
 })
 export default class extends Vue {
-  @Prop({ default: () => [] }) data: IRadioButtons[];
+  @Prop({ default: () => [] }) rows: IRadioButtons[];
+  @Prop({ default: () => {} }) data: { [key: string]: any[] };
 
-  data_: IRadioButtons[] = [];
+  rows_: IRadioButtons[] = [];
 
   loading = true;
 
-  @Watch('data', {
+  @Watch('rows', {
     immediate: true
   })
+  onRowsChange(val) {
+    if (val) {
+      console.log(' watch rows');
+      // this.rows_ = val;
+      this.convertData();
+    }
+  }
+
+  @Watch('data')
   onDataChange(val) {
     if (val) {
       console.log(' watch data');
-      let count = 0;
-      this.data_ = val.map((x) => {
-        const options = x.options.map((x2) => {
-          count += parseInt(x2.count);
-          return {
-            label: x2.label + `(${x2.count})`,
-            value: x2.value,
-            count: x2.count
-          };
-        });
+      this.convertData();
+    }
+  }
+
+  @Emit('change')
+  emitChange() {
+    return this.rows_.reduce((prev, cur) => {
+      prev[cur.name] = cur.value;
+      return prev;
+    }, {});
+  }
+
+  convertData() {
+    this.rows_ = [];
+    this.rows.forEach((row) => {
+      let countTotal = 0;
+      const options = row.options.map((option) => {
+        let count = 0;
+        if (this.data && Object.prototype.hasOwnProperty.call(this.data, row.name)) {
+          const _item = this.data[row.name].find((x) => x.code == option.value);
+          if (_item) {
+            count += parseInt(_item.count);
+          }
+        }
+        countTotal += count;
         return {
-          label: x.label,
-          model: null,
-          options
+          label: option.label + `(${count})`,
+          value: option.value,
+          count: count
         };
       });
-      this.$nextTick(() => {
-        this.loading = false;
+      options.unshift({
+        label: `全部(${countTotal})`,
+        value: null,
+        count: countTotal
       });
-    }
+      this.rows_.push({
+        label: row.label,
+        name: row.name,
+        value: null,
+        options
+      });
+    });
+    this.loading = false;
+  }
+
+  itemClick(option, row) {
+    row.value = option.value;
+    this.emitChange();
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.radio-buttons {
+  .el-button {
+    margin: 2px;
+  }
+}
+</style>

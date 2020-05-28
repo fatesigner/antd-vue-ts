@@ -10,17 +10,20 @@ export interface IAction {
   title: string;
 }
 
-export interface ITable<T = any, T2 = any, T3 = any> {
-  columns: IColumn[];
-  query?: {
+export interface ITableOperationData<
+  TQuery extends {
     [key in string]: any;
-  };
-  result: {
+  } = any,
+  TResult extends {
     loading: boolean;
     totalCount?: number;
     data: any[];
-  };
-  loadData: () => Promise<any[]>;
+  } = any
+> {
+  columns: IColumn[];
+  query?: TQuery;
+  result: TResult;
+  loadData?: () => Promise<any[]>;
   onRequest?: (request: IRequestData) => void;
 }
 

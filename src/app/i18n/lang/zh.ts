@@ -11,9 +11,11 @@ export const zh: I18nkeysType = {
       unauthorized: '未授权'
     },
     mitigate: '减免设置',
+    withdraw: '提现管理',
     dashboard: '首页',
     agentType: '代理设置',
     predelivery: '公司发货单',
+    rebate: '返利设置',
     prepaid: '充值管理',
     menus: '菜单管理',
     roles: '角色管理'

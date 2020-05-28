@@ -31,7 +31,7 @@ export default class extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .transition-group-zoom-xy-enter-active,
 .transition-group-zoom-xy-leave-active,
 .transition-group-zoom-xy-move {

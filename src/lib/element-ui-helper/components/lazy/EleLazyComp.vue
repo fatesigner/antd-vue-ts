@@ -1,7 +1,7 @@
 <template>
   <transition-group
     tag="div"
-    class="lazy-component-wapper"
+    class="lazy-component-wrapper"
     :name="transition ? 'lazy-component' : ''"
     :style="{ width: width_, height: height_ }"
   >
@@ -15,9 +15,9 @@
       v-if="compLoaded"
       :style="{ 'max-width': width_, 'max-height': height_ }"
     >
-      <component :is="comp_" v-dynamic-events="events_" v-bind="props_" />
+      <component :is="comp_" v-dynamic-events="events_" v-bind="props" />
     </div>
-    <div class="lazy-component-solt" key="solt" v-if="initialized">
+    <div class="lazy-component-slot" key="slot" v-if="initialized">
       <slot :initialized="initialized" />
     </div>
   </transition-group>
@@ -57,7 +57,6 @@ export default class extends Vue {
   initialized = false;
   compLoaded = false;
   comp_: any = null;
-  props_: any = {};
   events_: any = [];
   width_: string | number = '';
   height_: string | number = '';
@@ -65,13 +64,6 @@ export default class extends Vue {
   @Watch('comp')
   onCompChange() {
     this.loadComp();
-  }
-
-  @Watch('props', {
-    immediate: true
-  })
-  onPropsChange(val) {
-    console.log(val);
   }
 
   @Watch('events', {
@@ -182,12 +174,12 @@ export default class extends Vue {
   justify-content: center;
 }
 
-.lazy-component-wapper,
+.lazy-component-wrapper,
 .lazy-component-loading,
 .lazy-component-error,
 .lazy-component-skeleton,
 .lazy-component-comp,
-.lazy-component-solt {
+.lazy-component-slot {
   width: 100%;
   height: 100%;
 
@@ -197,7 +189,7 @@ export default class extends Vue {
   }
 }
 
-.lazy-component-solt {
+.lazy-component-slot {
   overflow-y: auto;
 }
 </style>

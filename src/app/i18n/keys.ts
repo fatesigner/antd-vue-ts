@@ -11,9 +11,11 @@ export const I18nkeys: I18nkeysType = {
       unauthorized: 'error.unauthorized'
     },
     mitigate: 'mitigate',
+    withdraw: 'withdraw',
     dashboard: 'dashboard',
     agentType: 'agentType',
     predelivery: 'predelivery',
+    rebate: 'rebate',
     prepaid: 'prepaid',
     menus: 'menus',
     roles: 'roles'

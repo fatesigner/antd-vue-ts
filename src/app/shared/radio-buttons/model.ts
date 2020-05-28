@@ -3,7 +3,7 @@
  */
 
 export interface IRadioButtons {
-  title: string;
+  label: string;
   name: string;
   value: string;
   options: IRadioButtonOption[];

@@ -55,7 +55,7 @@ export enum IFileChooserErrorType {
 export interface IFileChooser {
   actionSheet: IFileChooserActionSheet;
   trigger: () => void;
-  destory: () => void;
+  destroy: () => void;
 }
 
 export interface IFileChooserService {

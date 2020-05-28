@@ -18,3 +18,24 @@
   outline: 0;
   transition: opacity 0.2s;
 }
+
+.uploader-remove {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 2px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #ececec;
+  border-radius: 50%;
+
+  .mu-icon {
+    font-size: 12px;
+  }
+}

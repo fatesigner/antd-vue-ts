@@ -13,32 +13,37 @@ import '../lib/photoswipe/src/css/main.scss';
 
 import { PhotoswipeBaseOptions } from '../photoswipe/photoswipe.type';
 
-import { DefaultOptions } from '../image-viewer.default';
+import { DefaultOptions } from '../default';
 import { IPreviewImage, IPreviewImageOptions } from '../model';
 
 let template: Element = document.getElementById('photoSwipeTemplate');
 let templateStr;
 if (!template) {
-  templateStr = require('../photoswipe/photoswipe.html');
-  let el = document.createElement('div');
+  templateStr = require('!!raw-loader!../photoswipe/photoswipe.html');
+  const el = document.createElement('div');
   el.innerHTML = templateStr;
   template = el.children[0];
   document.getElementsByTagName('body')[0].appendChild(template);
 }
 
-export const PreviewImage: IPreviewImage = function(options?: IPreviewImageOptions) {
+export const PreviewImage: IPreviewImage = function (options?: IPreviewImageOptions) {
   return new Promise((resolve) => {
-    let options_: IPreviewImageOptions = Object.assign({}, DefaultOptions, {
-      name: GetGUID(10),
-      clickable: false
-    }, options);
+    const options_: IPreviewImageOptions = Object.assign(
+      {},
+      DefaultOptions,
+      {
+        name: GetGUID(10),
+        clickable: false
+      },
+      options
+    );
 
-    let baseOpts = new PhotoswipeBaseOptions({});
+    const baseOpts = new PhotoswipeBaseOptions({});
 
-    let psItems = [];
+    const psItems = [];
 
     for (let i = 0, l = options_.items.length; i < l; i++) {
-      let item = options_.items[i];
+      const item = options_.items[i];
       psItems.push({
         el: undefined,
         w: item.width,
@@ -51,7 +56,7 @@ export const PreviewImage: IPreviewImage = function(options?: IPreviewImageOptio
     }
 
     // 实例化
-    let instince: any = new PhotoSwipe(template, PhotoSwipeUI_Default, psItems, {
+    const instance: any = new PhotoSwipe(template, PhotoSwipeUI_Default, psItems, {
       index: options_.index,
       galleryUID: '1',
       loop: baseOpts.loop,
@@ -67,13 +72,13 @@ export const PreviewImage: IPreviewImage = function(options?: IPreviewImageOptio
       tapToToggleControls: baseOpts.tapToToggleControls
     });
 
-    instince.listen('close', () => {
+    instance.listen('close', () => {
       if (IsFunction(options_.onDismiss)) {
         options_.onDismiss();
       }
     });
 
-    instince.init();
+    instance.init();
 
     if (IsFunction(options_.onPresent)) {
       options_.onPresent();
@@ -81,11 +86,12 @@ export const PreviewImage: IPreviewImage = function(options?: IPreviewImageOptio
 
     resolve({
       dismiss: () => {
+        // eslint-disable-next-line no-async-promise-executor,promise/param-names
         return new Promise(async (resolve2) => {
-          if (instince) {
-            instince.close();
+          if (instance) {
+            instance.close();
           }
-          window.setTimeout(function() {
+          window.setTimeout(function () {
             resolve2();
           }, 300);
         });

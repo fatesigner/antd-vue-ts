@@ -3,35 +3,45 @@
  */
 
 import { GetGUID } from '@forgleaner/utils/random';
-import { IsFunction } from '@forgleaner/utils/type-check';
 import { PreviewImage as PreviewImage_Wx } from '../../wx-jssdk';
 
-import { DefaultOptions } from '../image-viewer.default';
-import { IPreviewImage, IPreviewImageImageData, IPreviewImageOptions } from '../model';
+import { DefaultOptions } from '../default';
+import { IPreviewImage, IPreviewImageOptions } from '../model';
+import { ForEach } from '@forgleaner/utils';
 
-export const PreviewImage: IPreviewImage = function(options?: IPreviewImageOptions) {
+export const PreviewImage: IPreviewImage = function (options?: IPreviewImageOptions) {
   return new Promise((resolve) => {
-    let options_: IPreviewImageOptions = Extend({}, DefaultOptions, {
-      name: GetGUID(10),
-      clickable: false
-    }, options);
+    const options_: IPreviewImageOptions = Object.assign(
+      {},
+      DefaultOptions,
+      {
+        name: GetGUID(10),
+        clickable: false
+      },
+      options
+    );
     let current = '';
-    let urls = [];
-    ForEach<IPreviewImageImageData>(options.items, (value, i: number) => {
-      urls.push(value.src);
-      if (options.index === i) {
-        current = value.src;
-      }
-      return true;
-    });
+    const urls = [];
+    ForEach(
+      options.items,
+      (prev, cur, i: number) => {
+        prev.push(cur.src);
+        if (options.index === i) {
+          current = cur.src;
+        }
+        return prev;
+      },
+      []
+    );
     PreviewImage_Wx({
       current,
       urls
     });
     resolve({
       dismiss: () => {
+        // eslint-disable-next-line promise/param-names,no-async-promise-executor
         return new Promise(async (resolve2) => {
-          window.setTimeout(function() {
+          window.setTimeout(function () {
             resolve2();
           }, 300);
         });
