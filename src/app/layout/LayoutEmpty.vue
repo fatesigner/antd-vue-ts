@@ -1,8 +1,6 @@
 <template>
-  <div class="app-wrapper layout-empty">
-    <div class="app-container">
-      <slot />
-    </div>
+  <div class="app-wrapper">
+    <slot />
     <slot name="append" />
     <progress-bar />
   </div>
@@ -26,16 +24,7 @@ export default class extends Vue {}
 
 .layout-empty {
   &.app-wrapper {
-    display: flex;
-    flex-direction: column;
     height: 100%;
-  }
-
-  .app-container {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    overflow: hidden;
   }
 }
 </style>

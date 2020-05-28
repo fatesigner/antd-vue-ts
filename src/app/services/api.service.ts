@@ -39,9 +39,11 @@ Http.interceptors.response.use(
 
 export class ApiServiceStatic {
   login(params) {
-    // 加密 password
-    params.password = CommonService.encrypt(params.password);
-    return Http.post('/sys/login', params);
+    return Http.post('/sys/login', {
+      ...params,
+      // 加密 password
+      password: CommonService.encrypt(params.password)
+    });
   }
 
   logout() {

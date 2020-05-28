@@ -128,6 +128,7 @@ export default class extends Vue {
 
     &.sidebar-hidden {
       margin-left: 0;
+
       .sidebar {
         width: 0 !important;
       }
@@ -139,6 +140,7 @@ export default class extends Vue {
 
     &.animation {
       transition: margin-left 0.28s;
+
       .sidebar {
         transition: width 0.28s;
       }
@@ -150,14 +152,14 @@ export default class extends Vue {
   }
 
   .app-toolbar {
-    margin-bottom: 10px;
     padding: 10px;
+    margin-bottom: 10px;
     background-color: #fff;
   }
 
   .app-container {
-    flex: 1;
     position: relative;
+    flex: 1;
     padding: 10px;
     overflow-x: auto;
     overflow-y: auto;

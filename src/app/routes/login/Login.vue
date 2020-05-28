@@ -1,71 +1,73 @@
 <template>
-  <layout-empty>
-    <div class="login">
-      <div class="vui-row vui-align-items-center">
-        <img class="vui-mr10" src="../../../assets/img/logo.jpg" width="36" height="36" alt="" title="" />
-        <h2>{{ title }}</h2>
-      </div>
-      <div class="field-warp">
-        <div class="vui-mb20">
-          <div class="field-content input">
-            <label>
-              <input v-model="form.username.value" placeholder="输入用户名" />
-            </label>
-            <transition-slide direction="up">
-              <div class="error-message" v-if="form.username.error.visible">{{ form.username.error.message }}</div>
-            </transition-slide>
-          </div>
-        </div>
-        <div class="vui-mb20">
-          <div class="field-content input">
-            <label>
-              <input type="password" v-model="form.password.value" placeholder="输入密码" />
-            </label>
-            <transition-slide direction="up">
-              <div class="error-message" v-if="form.password.error.visible">{{ form.password.error.message }}</div>
-            </transition-slide>
-          </div>
-        </div>
-        <div class="vui-mb20">
-          <div class="vui-row vui-no-padding">
-            <div class="input vui-mr10">
+  <layout-empty class="login">
+    <div class="top">
+      <img src="../../../assets/img/logo.jpg" alt="" title="" />
+      <h1>{{ title }}</h1>
+    </div>
+    <ValidationObserver ref="validator">
+      <ul class="fields">
+        <li>
+          <div class="input-wrap">
+            <ValidationProvider name="用户名" rules="required" v-slot="{ classes, errors }">
               <label>
-                <input type="text" v-model="form.validateCode.value" placeholder="输入验证码" />
+                <input v-model="form.username" placeholder="输入用户名" @keyup.enter="onSubmit" />
               </label>
               <transition-slide direction="up">
-                <div class="error-message" v-if="form.validateCode.error.visible">
-                  {{ form.validateCode.error.message }}
-                </div>
+                <div class="invalid-message" v-if="errors.length">{{ errors[0] }}</div>
               </transition-slide>
-            </div>
-            <GraphicCode ref="codeCom" @graphChange="form.validateCode.grapCode = $event" />
+            </ValidationProvider>
           </div>
-        </div>
-        <el-button
-          class="full-width"
-          color="orange full-width"
-          push
-          size="lg"
-          type="submit"
-          :loading="uploading"
-          @click="onSubmit"
-          >登录</el-button
-        >
-      </div>
-    </div>
+        </li>
+        <li>
+          <div class="input-wrap">
+            <ValidationProvider name="密码" rules="required" v-slot="{ classes, errors }">
+              <label>
+                <input type="password" v-model="form.password" placeholder="输入密码" @keyup.enter="onSubmit" />
+              </label>
+              <transition-slide direction="up">
+                <div class="invalid-message" v-if="errors.length">{{ errors[0] }}</div>
+              </transition-slide>
+            </ValidationProvider>
+          </div>
+        </li>
+        <li>
+          <div class="vui-row vui-no-padding">
+            <div class="input-wrap vui-mr10">
+              <ValidationProvider name="验证码" rules="required" v-slot="{ classes, errors }">
+                <div class="input-wrap">
+                  <label>
+                    <input
+                      type="text"
+                      v-model="form.validateCode"
+                      placeholder="输入验证码"
+                      @keyup.enter="onSubmit"
+                    />
+                  </label>
+                  <transition-slide direction="up">
+                    <div class="invalid-message" v-if="errors.length">{{ errors[0] }}</div>
+                  </transition-slide>
+                </div>
+              </ValidationProvider>
+            </div>
+            <GraphicCode ref="codeCom" @graphChange="grapCode = $event" />
+          </div>
+        </li>
+        <el-button class="btn-submit" size="lg" type="primary" :loading="uploading" @click="onSubmit">登录</el-button>
+      </ul>
+    </ValidationObserver>
   </layout-empty>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import { SessionService } from '../../services/session.service';
 import { Title } from '../../global';
+import { LayoutEmpty } from '../../layout';
 import { GraphicCode } from '../../shared/graphic-code';
 import { TransitionSlide } from '../../shared/transition';
 import { ProgressBarStore } from '../../layout/components/progress-bar';
-import { LayoutEmpty } from '../../layout';
 import { ApiService } from '../../services/api.service';
 import { CommonService } from '../../services/common.service';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   name: 'LoginPage',
@@ -77,108 +79,22 @@ import { CommonService } from '../../services/common.service';
 })
 export default class extends Vue {
   title = Title;
-
   uploading = false;
+  grapCode = '';
 
   form = {
-    username: {
-      value: '',
-      getValue() {
-        return this.value.trim();
-      },
-      verify() {
-        const value = this.getValue();
-        if (!value) {
-          this.error.message = '请输入用户名';
-          this.error.visible = true;
-          return false;
-        }
-        this.error.visible = false;
-        return true;
-      },
-      error: {
-        message: '',
-        visible: false
-      }
-    },
-    password: {
-      value: '',
-      getValue() {
-        return this.value;
-      },
-      verify() {
-        const value = this.getValue();
-        if (!value) {
-          this.error.message = '请输入密码';
-          this.error.visible = true;
-          return false;
-        }
-        this.error.visible = false;
-        return true;
-      },
-      error: {
-        message: '',
-        visible: false
-      }
-    },
-    validateCode: {
-      value: '',
-      grapCode: '',
-      getValue() {
-        return this.value;
-      },
-      verify() {
-        const value = this.getValue();
-        if (!value) {
-          this.error.message = '请输入验证码';
-          this.error.visible = true;
-          return false;
-        } else if (value !== this.grapCode) {
-          this.error.message = '验证码不正确';
-          this.error.visible = true;
-          return false;
-        }
-        this.error.visible = false;
-        return true;
-      },
-      error: {
-        message: '',
-        visible: false
-      }
-    }
+    username: '',
+    password: '',
+    validateCode: ''
   };
-
-  dialog = {
-    visible: false,
-    message: ''
-  };
-
-  // 验证表单
-  verify() {
-    return new Promise((resolve, reject) => {
-      let valid = true;
-      const formData = {};
-      Object.keys(this.form).forEach((key) => {
-        valid = this.form[key].verify();
-        formData[key] = this.form[key].getValue();
-      });
-
-      if (valid) {
-        resolve(formData);
-      } else {
-        reject(new Error());
-      }
-    });
-  }
 
   // 提交表单
   onSubmit() {
-    this.verify()
-      .then((formData: any) => {
+    (this.$refs.validator as any).validate().then((success) => {
+      if (success) {
         this.uploading = true;
-        console.log(ProgressBarStore);
         this.$store.dispatch(ProgressBarStore.actionKeys.present);
-        ApiService.login(formData)
+        ApiService.login(this.form)
           .then((data: any) => {
             // 保存用户信息至 session
             SessionService.login({
@@ -207,24 +123,24 @@ export default class extends Vue {
             this.uploading = false;
             this.$store.dispatch(ProgressBarStore.actionKeys.dismiss);
           });
-      })
-      .catch(() => {});
+      }
+    });
   }
 
   mounted() {
     if (process.env.NODE_ENV === 'development') {
-      CommonService.appendRoleRadios(this.$el.querySelector('.login .field-warp'), null, (role) => {
+      CommonService.appendRoleRadios(this.$el.querySelector('.login .fields'), null, (role) => {
         // 设置指定角色的测试账号
-        this.form.username.value = role.testAccount.username;
-        this.form.password.value = role.testAccount.password;
-        this.form.validateCode.value = this.form.validateCode.grapCode;
+        this.form.username = role.testAccount.username;
+        this.form.password = role.testAccount.password;
+        this.form.validateCode = this.grapCode;
       });
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../../theme/default.theme';
 
 .login {
@@ -232,11 +148,27 @@ export default class extends Vue {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background-color: #f2f3f5;
+  height: 100%;
 
-  .field-warp {
-    margin: 10px auto 0;
+  .top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+
+    img {
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    h1 {
+      font-size: 26px;
+    }
+  }
+
+  .fields {
+    > li {
+      margin-bottom: 20px;
+    }
 
     .button2 {
       width: 100%;
@@ -256,49 +188,73 @@ export default class extends Vue {
       }
     }
 
-    .input {
+    .input-wrap {
       position: relative;
       overflow: hidden;
-      border-color: rgb(223, 225, 230);
-      border-style: solid;
-      border-width: 2px;
       border-radius: 3px;
 
       input {
         width: 100%;
         height: 39px;
         padding: 6px;
-        border: none;
+        background-color: rgb(250, 251, 252);
+        border: 2px solid #dfe1e6;
+        transition: background-color 0.2s ease-in-out 0s, border-color 0.2s ease-in-out 0s;
+
+        &:focus {
+          background-color: #fff !important;
+          border-color: map-get($colors, primary);
+          outline: none;
+        }
+
+        &:hover {
+          background-color: rgb(235, 236, 240);
+        }
       }
     }
   }
 
-  .error-message {
+  .invalid-message {
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: 5px;
+    bottom: 2px;
     padding: 5px;
     font-size: 12px;
     font-style: italic;
     font-weight: bold;
     color: #e64545;
+    pointer-events: none;
+  }
+
+  .btn-submit {
+    width: 100%;
+    line-height: inherit;
+    transition: background-color 0.6s ease-in-out 0s, border-color 0.6s ease-in-out 0s;
   }
 }
 
-@media (min-width: 704px) {
-  .login .field-warp {
-    width: 400px;
-    padding: 60px 40px 60px;
-    background-color: #fff;
-    border-radius: 3px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0 0 10px;
+@media (min-width: 600px) {
+  .login {
+    background-color: #f2f3f5;
+
+    .fields {
+      width: 400px;
+      padding: 40px;
+      background-color: #fff;
+      border-radius: 3px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0 0 10px;
+    }
   }
 }
 
 @media (max-width: 600px) {
-  .login .field-warp {
-    width: 320px;
-    padding: 0 8px;
+  .login {
+    background-color: #fff;
+
+    .fields {
+      width: 320px;
+      padding: 0 8px;
+    }
   }
 }
 </style>

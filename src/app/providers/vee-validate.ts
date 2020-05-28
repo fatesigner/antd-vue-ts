@@ -13,6 +13,10 @@ Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
 });
 
+extend('required', {
+  message: '{_field_}必填'
+});
+
 localize('zh_CN', zh_CN);
 
 Vue.component('ValidationObserver', ValidationObserver);

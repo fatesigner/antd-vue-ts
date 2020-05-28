@@ -2,11 +2,7 @@
   <layout>
     <template slot="toolbar">
       <radio-buttons
-        v-for="item in radioButtons"
-        :key="item.name"
-        :label.sync="item.label"
-        :model.sync="item.value"
-        :options="item.options"
+        :data="table.query.radioButtons"
         @update:model="onRadioButtonsChange"
       />
     </template>

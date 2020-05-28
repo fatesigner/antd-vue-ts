@@ -1,11 +1,14 @@
 ﻿<template>
   <el-form label-width="80px">
-    <el-form-item :label="label">
-      <el-radio-group v-model="model_" class="vui-mr5">
+    <ele-loading v-if="loading" size="36" />
+    <el-form-item v-for="item in data_" :label="item.label">
+      <el-radio-group v-model="item.model" class="vui-mr5">
         <el-radio-button :label="null">全部</el-radio-button>
       </el-radio-group>
-      <el-radio-group v-model="model_">
-        <el-radio-button v-for="option in options_" :label="option.value" :disabled="!option.count">{{ option.label }}</el-radio-button>
+      <el-radio-group v-model="item.model">
+        <el-radio-button v-for="option in item.options" :label="option.value" :disabled="!option.count">{{
+          option.label
+        }}</el-radio-button>
       </el-radio-group>
     </el-form-item>
   </el-form>
@@ -14,53 +17,44 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
-import { IRadioButtonOption } from './model';
+import { IRadioButtons } from './model';
 
 @Component({
   name: 'RadioButtons'
 })
 export default class extends Vue {
-  @Prop({ default: '' }) label: string;
-  @Prop({ default: null }) model: string;
-  @Prop({ default: () => [] }) options: IRadioButtonOption[];
+  @Prop({ default: () => [] }) data: IRadioButtons[];
 
-  model_ = null;
-  options_: IRadioButtonOption[] = [];
+  data_: IRadioButtons[] = [];
 
-  @Watch('model', {
+  loading = true;
+
+  @Watch('data', {
     immediate: true
   })
-  onModelChange(val) {
+  onDataChange(val) {
     if (val) {
-      console.log(' watch model ');
-      this.model_ = val;
-    }
-  }
-
-  @Watch('model_')
-  onModel_Change(val) {
-    this.$emit('update:model', val);
-  }
-
-  @Watch('options', {
-    immediate: true
-  })
-  onOptionsChange(val) {
-    if (val) {
+      console.log(' watch data');
       let count = 0;
-      this.options_ = val.map((x) => {
-        count += parseInt(x.count);
+      this.data_ = val.map((x) => {
+        const options = x.options.map((x2) => {
+          count += parseInt(x2.count);
+          return {
+            label: x2.label + `(${x2.count})`,
+            value: x2.value,
+            count: x2.count
+          };
+        });
         return {
-          label: x.label + `(${x.count})`,
-          value: x.value,
-          count: x.count
+          label: x.label,
+          model: null,
+          options
         };
       });
+      this.$nextTick(() => {
+        this.loading = false;
+      });
     }
-  }
-
-  reset() {
-    this.model = null;
   }
 }
 </script>
