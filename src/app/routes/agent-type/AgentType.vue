@@ -4,11 +4,11 @@
     <ele-table
       :data="table.result.data"
       :columns="table.columns"
-      :indexed="true"
       :loading="table.result.loading"
       :total.sync="table.result.totalCount"
       :page-no.sync="table.query.pageNo"
       :page-size.sync="table.query.pageSize"
+      :refresher="true"
       @request="onRequest"
     >
       <template v-slot:orderProductList="{ row }">
@@ -83,13 +83,6 @@
               style="margin-top: -10px;"
               :data="tableProduct.result.data"
               :columns="tableProduct.columns"
-              :indexed="true"
-              :loading="tableProduct.result.loading"
-              :total.sync="tableProduct.result.totalCount"
-              :page-no.sync="tableProduct.query.pageNo"
-              :page-size.sync="tableProduct.query.pageSize"
-              :refresher="false"
-              :pagination="false"
               size="mini"
             >
               <template v-slot:check="{ row, $index }">
@@ -164,13 +157,10 @@
               style="margin-top: -10px;"
               :data="tableKhq.result.data"
               :columns="tableKhq.columns"
-              :indexed="true"
               :loading="tableKhq.result.loading"
               :total.sync="tableKhq.result.totalCount"
               :page-no.sync="tableKhq.query.pageNo"
               :page-size.sync="tableKhq.query.pageSize"
-              :refresher="false"
-              :pagination="false"
               size="mini"
               @request="onRequest"
             >
@@ -241,7 +231,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { IColumn, IRequestData, ITableOperationData } from '../../../lib/element-ui-helper/components/table';
+import {
+  IEleTableColumn,
+  IEleTableOperationData,
+  IEleTableRequestData
+} from '../../../lib/element-ui-helper/components/table';
 
 import { Layout } from '../../layout';
 import { ApiService } from '../../services/api.service';
@@ -271,7 +265,7 @@ export default class extends Vue {
   AgentLevel = AgentLevel;
   RewardType = RewardType;
 
-  table: ITableOperationData = {
+  table: IEleTableOperationData = {
     columns: [
       {
         label: '序号',
@@ -326,7 +320,7 @@ export default class extends Vue {
     }
   };
 
-  tableProduct: ITableOperationData = {
+  tableProduct: IEleTableOperationData = {
     columns: [
       {
         label: '#',
@@ -362,7 +356,7 @@ export default class extends Vue {
     }
   };
 
-  tableKhq: ITableOperationData = {
+  tableKhq: IEleTableOperationData = {
     columns: [
       {
         label: '免考期',
@@ -407,7 +401,7 @@ export default class extends Vue {
     }
   };
 
-  onRequest(request: IRequestData) {
+  onRequest(request: IEleTableRequestData) {
     this.table.query.pageNo = request.params.pageNo;
     this.table.query.pageSize = request.params.pageSize;
     this.loadData();
@@ -549,5 +543,3 @@ export default class extends Vue {
   }
 }
 </script>
-
-<style lang="scss"></style>

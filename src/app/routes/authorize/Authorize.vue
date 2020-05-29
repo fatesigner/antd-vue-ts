@@ -10,7 +10,7 @@
         <el-form-item label="筛选">
           <el-input
             class="vui-mr10"
-            v-model="table.query.rechargeNo"
+            v-model="table.query.orderNo"
             placeholder="输入充值单号..."
             style="width: 200px;"
             title=""
@@ -42,16 +42,15 @@
     >
       <template v-slot:agentName="{ row }">
         <div class="vui-pt10 vui-pb10">
-          {{ row.agentName }}&nbsp;&nbsp;&nbsp;&nbsp;{{ row.levelName }}<br />
+          {{ row.agentName }} {{ row.levelName }}<br />
           {{ row.phone }}<br />
           <p class="vui-g9">{{ row.createTime | dateFormat }}</p>
-          <p class="vui-g9">单号：{{ row.rechargeNo }}</p>
         </div>
       </template>
       <template v-slot:parentLevelName="{ row }">
-        级别：{{ row.levelName }}<br />
-        姓名：{{ row.parentName }}<br />
-        电话：{{ row.parentPhone }}
+        级别：{{ row.paramAgentName }}<br />
+        姓名：{{ row.paramLevelName }}<br />
+        电话：{{ row.paramPhone }}
       </template>
       <template v-slot:checkStatus="{ row }">
         <div :class="{ completed: row.checkStatus === CheckedStatus.enum.completed }">
@@ -64,20 +63,19 @@
         <div v-if="row.updateTime">{{ row.updateTime | dateFormat }}</div>
       </template>
       <template v-slot:actions="{ row }">
-        <el-link v-if="getAuditStatus(row)" type="warning" icon="el-icon-edit-outline" @click="onLook(row)"
+        <el-link v-if="true || getAuditStatus(row)" type="warning" icon="el-icon-edit-outline" @click="onLook(row)"
           >审核
         </el-link>
-        <el-link v-else type="primary" @click="onLook(row)">查看</el-link>
       </template>
     </ele-table>
     <ele-lazy-dialog
-      :visible.sync="actionDialog.visible"
-      :title="actionDialog.title"
-      :comp="actionDialog.comp"
-      :events="actionDialog.events"
-      :close-on-click-modal="actionDialog.closeOnClickModal"
-      :props="{ data: actionDialog.data, audioStatus: actionDialog.auditStatus }"
-      @close="actionDialog.onClose(currentContext)"
+      :visible.sync="auditDialog.visible"
+      :title="auditDialog.title"
+      :comp="auditDialog.comp"
+      :events="auditDialog.events"
+      :close-on-click-modal="auditDialog.closeOnClickModal"
+      :props="{ data: auditDialog.data, audioStatus: auditDialog.auditStatus }"
+      @close="auditDialog.onClose(currentContext)"
     />
   </layout>
 </template>
@@ -92,7 +90,8 @@ import { ApiService } from '../../services/api.service';
 import { SessionService } from '../../services/session.service';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { RadioButtons } from '../../shared/radio-buttons';
-import { AgentLevel, AgentType, CheckedStatus, PaidStatus, PaymentType, RechargeType, Role } from '../../global';
+import { AgentLevel, AgentType, CheckedStatus, PaidStatus, ReceiverType, Role, ShipType } from '../../global';
+import { DateFormatPipe } from '../../pipes/date-format.pipe';
 
 @Component({
   name: 'Prepaid',
@@ -120,81 +119,50 @@ export default class extends Vue {
           return index + 1;
         }
       },
-      { label: '提交人', name: 'agentName', width: 200 },
-      { label: '充值项', name: 'title', width: 150 },
+      { label: '申请人', name: 'agentName', width: 180 },
+      { label: '当前级别', name: 'levelName', width: 120 },
+      { label: '当前审核人/上级', name: 'parentLevelName', width: 180 },
       {
-        label: '充值金额',
-        name: 'actualAmount',
+        label: '上次授权时间',
+        name: 'authorizedTime',
         width: 150,
         template: (row) => {
-          return `${CurrencyPipe(row.actualAmount)}`;
+          return `${row.authorizedTime ? DateFormatPipe(row.authorizedTime) : ''}`;
         }
       },
       {
-        label: '充值方式',
-        name: 'payType',
-        width: 100,
-        template: (row) => {
-          return `${PaymentType.desc[row.payType]}`;
-        }
-      },
-      {
-        label: '充值后可用金额',
-        name: 'handleAmount',
-        width: 150,
-        template: (row) => {
-          return `${CurrencyPipe(row.handleAmount)}`;
-        }
-      },
-      {
-        label: '当前审核人/上级',
-        name: 'parentLevelName',
-        width: 180
-      },
-      {
-        label: '订单状态',
+        label: '状态',
         name: 'checkStatus',
         width: 150,
-        fixed: 'right',
-        template: (row) => {
-          return `${PaidStatus.desc[row.status]}`;
-        }
+        fixed: 'right'
       },
-      { label: '操作', name: 'actions', width: 80, fixed: 'right' }
+      { label: '操作', name: 'actions', width: 120, fixed: 'right' }
     ],
     query: {
       radioButtons: {
         rows: [
           {
-            label: '用户类型',
+            label: '类型',
             name: 'agentType',
             value: null,
             options: AgentType.arr.map((x) => ({ label: x.text, value: x.value, count: 0 }))
           },
           {
-            label: '级别',
-            name: 'agentLevel',
-            value: null,
-            options: AgentLevel.arr.map((x) => ({ label: x.text, value: x.value, count: 0 }))
-          },
-          {
             label: '状态',
-            name: 'status',
+            name: 'checkStatus',
             value: null,
-            options: PaidStatus.arr.map((x) => ({ label: x.text, value: x.value, count: 0 }))
-          },
-          {
-            label: '充值类型',
-            name: 'rechargeType',
-            value: null,
-            options: RechargeType.arr.map((x) => ({ label: x.text, value: x.value, count: 0 }))
+            options: [
+              { label: '待审核', value: 1, count: 0 },
+              { label: '已完成', value: 11, count: 0 },
+              { label: '已取消', value: 12, count: 0 }
+            ]
           }
         ],
         data: null,
         result: null
       },
       keyword: null,
-      rechargeNo: null,
+      orderNo: null,
       pageNo: 1,
       pageSize: 10
     },
@@ -217,7 +185,7 @@ export default class extends Vue {
       const params: any = {
         pageNo: this.query.pageNo,
         pageSize: this.query.pageSize,
-        rechargeNo: this.query.rechargeNo,
+        orderNo: this.query.orderNo,
         ...this.query.radioButtons.result
       };
       if (!IsNullOrUndefined(this.query.keyword)) {
@@ -228,7 +196,7 @@ export default class extends Vue {
         }
       }
       this.loading = true;
-      return ApiService.agentAccountFlow_page(params)
+      return ApiService.warrant_page(params)
         .then((res: any) => {
           if (res && res.rows) {
             this.result.data = res.rows;
@@ -247,8 +215,8 @@ export default class extends Vue {
     }
   };
 
-  actionDialog = {
-    comp: () => import('./PrepaidAudit.vue'),
+  auditDialog = {
+    comp: () => import('./AuthorizeAudit.vue'),
     visible: false,
     title: '',
     data: null,
@@ -264,7 +232,7 @@ export default class extends Vue {
   created() {
     this.table.loadData(this);
     // 获取 radio 选项
-    ApiService.agentAccountFlow_statistics().then((res) => {
+    ApiService.warrant_statistics().then((res) => {
       this.table.query.radioButtons.data = res;
     });
   }
@@ -275,32 +243,20 @@ export default class extends Vue {
     this.table.loadData(this);
   }
 
-  // 点击审核、查看
+  // 点击查看
   onLook(row) {
-    this.actionDialog.title = '查看详情';
-    this.actionDialog.visible = true;
-    this.actionDialog.data = row;
-    this.actionDialog.auditStatus = this.getAuditStatus(row);
+    this.auditDialog.title = '查看详情';
+    this.auditDialog.visible = true;
+    this.auditDialog.data = row;
+    this.auditDialog.auditStatus = this.getAuditStatus(row);
   }
 
-  // 判断指定订单的状态是否为专员或者财务待审核
+  // 判断指定订单的状态是否需要审核
   getAuditStatus(row) {
-    if (
+    return (
       SessionService.user.roles.indexOf(Role.enum.sale_commissioner) > -1 &&
-      (row.checkStatus == 1 || row.checkStatus == 14) &&
-      row.status == 2 &&
-      row.receiverId == 1
-    ) {
-      return 1;
-    } else if (
-      SessionService.user.roles.indexOf(Role.enum.sale_financial) > -1 &&
-      row.checkStatus == 11 &&
-      row.status == 2 &&
-      row.receiverId == 1
-    ) {
-      return 2;
-    }
-    return null;
+      (row.orderStatus == 0 || row.orderStatus == 1)
+    );
   }
 }
 </script>

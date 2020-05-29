@@ -70,7 +70,7 @@
       },
       {
         "id": "271e4099f3d0",
-        "label": "公司发货单",
+        "label": "发货管理",
         "children": [],
         "url": "/predelivery",
         "icon": ""
@@ -84,9 +84,16 @@
       },
       {
         "id": "3779f370e088",
-        "label": "后台充值订单列表",
+        "label": "充值管理",
         "children": [],
         "url": "/prepaid",
+        "icon": ""
+      },
+      {
+        "id": "3779f370fsda",
+        "label": "授权管理",
+        "children": [],
+        "url": "/authorize",
         "icon": ""
       }
     ],
@@ -101,7 +108,7 @@
         "id": "4cb9059e61b4",
         "label": "代理商管理",
         "children": [],
-        "url": "/agencies",
+        "url": "/agent-user",
         "icon": ""
       }
     ],

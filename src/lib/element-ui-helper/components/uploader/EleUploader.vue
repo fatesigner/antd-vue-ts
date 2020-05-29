@@ -25,6 +25,11 @@
             </dd>
           </transition-slide>
           <transition-zoom>
+            <dd class="uploader-warning" v-if="!file.uploading && file.error.visible" :title="file.error.message">
+              <span class="uploader-warning-in"><i class="el-icon-warning-outline" /></span>
+            </dd>
+          </transition-zoom>
+          <transition-zoom>
             <dd class="uploader-done" v-if="!file.uploading && file.value && !file.src" title="已上传">
               <span class="uploader-done-in"><i class="el-icon-check" /></span>
             </dd>
@@ -32,7 +37,7 @@
           <dd class="uploader-action" v-if="!file.uploading && file.value && !file.src">
             <el-button
               size="mini"
-              title="查看图片"
+              title="查看大图"
               type="primary"
               @click="previewImage(index)"
               icon="el-icon-view"
@@ -49,10 +54,10 @@
             </dd>
           </transition-zoom>
           <dd class="uploader-uploading" v-if="file.uploading">
-            <ele-loading size="26" />
+            <ele-loading color="#fff" size="26" />
           </dd>
           <transition-zoom>
-            <dd class="uploader-action" v-if="!file.uploading && file.src">
+            <dd class="uploader-action" v-if="!file.uploading && file.src && action">
               <el-button
                 size="mini"
                 title="开始上传"
@@ -68,7 +73,9 @@
       <li v-if="hasMore" :key="-1" :style="{ width: width + 'px', 'padding-bottom': width + 'px' }">
         <dl class="uploader-file" :class="{ error: error.visible }">
           <transition-slide>
-            <dd class="uploader-error" v-if="error.message" :title="error.message">{{ error.message }}</dd>
+            <dd class="uploader-error" v-if="error.message" :title="error.message">
+              <i class="el-icon-warning-outline" />{{ error.message }}
+            </dd>
           </transition-slide>
           <el-button
             class="uploader-choose"
@@ -98,7 +105,7 @@ import { FileChooserDirectiveForVue } from '../../../file-chooser/directives/fil
 import { TransitionGroupZoom } from '../../../vue-common/components/transition-group';
 import { TransitionSlide, TransitionZoom } from '../../../vue-common/components/transition';
 
-import { IUploaderActionParams, IUploaderContentType, IUploaderFile } from './interfaces';
+import { IEleUploaderActionParams, IEleUploaderContentType, IEleUploaderFile } from './interfaces';
 
 Vue.use(FileChooserDirectiveForVue);
 
@@ -111,7 +118,7 @@ Vue.use(FileChooserDirectiveForVue);
   }
 })
 export default class extends Vue {
-  @Prop({ default: () => [] }) files: IUploaderFile[];
+  @Prop({ default: () => [] }) files: IEleUploaderFile[];
   @Prop({ default: null, type: [Object, Promise, Function] }) action: Promise<any>;
   @Prop({ default: null }) data: any;
   @Prop({ default: false }) immediate: boolean;
@@ -128,7 +135,7 @@ export default class extends Vue {
   }
 
   files_ = [];
-  contentType = IUploaderContentType;
+  contentType = IEleUploaderContentType;
   error = {
     visible: false,
     message: ''
@@ -189,13 +196,13 @@ export default class extends Vue {
         } else {
           const index = self.files_.length;
           for (const file of res.files) {
-            const _file: IUploaderFile = {
+            const _file: IEleUploaderFile = {
               key: GetGUID(10),
               data: {},
               value: '',
               src: '',
               file: file,
-              type: IUploaderContentType.image,
+              type: IEleUploaderContentType.image,
               uploading: false,
               error: {
                 visible: false,
@@ -272,11 +279,11 @@ export default class extends Vue {
       Vue.set(self.files_, index, file);
     },
     async upload(index, self) {
-      const file = self.files_[index];
       if (self.action) {
+        const file = self.files_[index];
         file.uploading = true;
         Vue.set(self.files_, index, file);
-        const p: IUploaderActionParams = {
+        const p: IEleUploaderActionParams = {
           index,
           file: file.file,
           src: file.src,
@@ -296,11 +303,6 @@ export default class extends Vue {
           .finally(function () {
             file.uploading = false;
           });
-        Vue.set(self.files_, index, file);
-      } else {
-        file.value = file.src;
-        file.src = '';
-        file.uploading = false;
         Vue.set(self.files_, index, file);
       }
     }
@@ -367,14 +369,14 @@ export default class extends Vue {
   }
 
   add() {
-    const _file: IUploaderFile = {
+    const _file: IEleUploaderFile = {
       key: GetGUID(10),
       data: null,
       value: '',
       src:
         'http://rpbd-1257837343.cos.ap-shanghai.myqcloud.com/201911/jx_license_order_doc/d4f02777-02f3-47bb-986c-9353a1ebaa88.jpg',
       file: null,
-      type: IUploaderContentType.image,
+      type: IEleUploaderContentType.image,
       uploading: false,
       error: {
         visible: false,
@@ -485,6 +487,38 @@ export default class extends Vue {
   }
 }
 
+.uploader-warning {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid #ffd8d8;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.13);
+}
+
+.uploader-warning-in {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+
+  > i {
+    font-size: 14px;
+    font-weight: bold;
+    color: red;
+  }
+}
+
 .uploader-done {
   position: absolute;
   top: -5px;
@@ -498,7 +532,7 @@ export default class extends Vue {
   padding: 2px;
   cursor: pointer;
   background-color: green;
-  border: 1px solid #ddb5b5;
+  border: 1px solid #fff;
   border-radius: 50%;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.13);
 }
@@ -523,16 +557,17 @@ export default class extends Vue {
   top: 0;
   right: 0;
   left: 0;
-  max-height: 66px;
-  padding: 2px;
+  max-height: 100%;
+  padding: 2px 2px 2px 12px;
   overflow: hidden;
   font-size: 12px;
+  font-style: italic;
   line-height: 14px;
-  color: red;
+  color: #ffa2a2;
   word-break: break-all;
   pointer-events: none;
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .uploader-action {
@@ -558,8 +593,8 @@ export default class extends Vue {
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.4);
 
-  .mu-circle-wrapper {
-    vertical-align: top;
+  .el-icon-loading {
+    color: #fff;
   }
 }
 </style>

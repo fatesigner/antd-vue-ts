@@ -88,6 +88,9 @@ export default class extends Vue {
   onSubmit() {
     (this.$refs.validator as any).validate().then((success) => {
       if (success) {
+        if (this.form.validateCode !== this.grapCode) {
+          this.$notify.error('');
+        }
         this.uploading = true;
         this.$store.dispatch(ProgressBarStore.actionKeys.present);
         ApiService.login(this.form)
@@ -109,11 +112,7 @@ export default class extends Vue {
             });
           })
           .catch((err) => {
-            this.$notify({
-              title: 'error',
-              message: err.message,
-              type: 'error'
-            });
+            this.$notify.error(err.message);
           })
           .finally(() => {
             this.uploading = false;

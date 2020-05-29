@@ -5,6 +5,10 @@
 .vui-row {
   display: flex;
   padding: map-get($row, padding-width) / 2;
+
+  &.vui-row-offset {
+    margin: - map-get($row, padding-width);
+  }
 }
 
 .vui-justify-content-end {

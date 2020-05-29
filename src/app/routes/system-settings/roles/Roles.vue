@@ -4,7 +4,6 @@
       :data="result.data"
       :actions="actions"
       :columns="columns"
-      :indexed="true"
       :loading="result.loading"
       :total="result.totalCount"
       :page-no.sync="query.pageNo"
@@ -30,7 +29,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 import { FieldRuleRequired, FieldText } from '../../../../lib/form-renderer/field';
-import { EleTable, IColumn, IRequestData } from '../../../../lib/element-ui-helper/components/table';
+import { EleTable, IEleTableColumn, IEleTableRequestData } from '../../../../lib/element-ui-helper/components/table';
 
 import Layout from '../../../layout/Layout.vue';
 import { ApiService } from '../../../services/api.service';
@@ -65,7 +64,7 @@ export default class extends Vue {
     }
   ];
 
-  columns: IColumn<typeof columnsKey>[] = [
+  columns: IEleTableColumn<typeof columnsKey>[] = [
     { label: '序号', name: '__index' },
     {
       label: '角色名称',
@@ -100,7 +99,7 @@ export default class extends Vue {
 
   add() {}
 
-  onRequest(req: IRequestData<typeof columnsKey>) {
+  onRequest(req: IEleTableRequestData<typeof columnsKey>) {
     console.log(req.data);
     if (req.type === 'GET') {
       this.loadData();
@@ -133,5 +132,3 @@ export default class extends Vue {
   }
 }
 </script>
-
-<style lang="scss"></style>

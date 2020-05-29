@@ -1,5 +1,5 @@
 <template>
-  <div class="vui-row vui-justify-content-center">
+  <div class="vui-row">
     <div class="vui-padding vui-tc" v-if="loading">
       <ele-loading :size="40" />
     </div>
@@ -7,36 +7,24 @@
       <div class="vui-col-auto">
         <el-form class="vui-col" style="width: 320px;">
           <div class="top">
-            <h2 class="top-title">当前状态：{{ CheckedStatus.desc[data_.checkStatus] }}</h2>
-            <p>订单号：{{ data_.rechargeNo }}</p>
-            <p>时间：{{ data_.createTime | dateFormat }}</p>
+            <h2 class="top-title">当前状态：{{ CheckedStatus.desc[data.checkStatus] }}</h2>
+            <p>时间：{{ data.createTime | dateFormat }}</p>
           </div>
-          <h2>提现信息</h2>
-          <el-form-item label="提交人"> {{ data_.agentName }}&nbsp;&nbsp;&nbsp;{{ data_.phone }} </el-form-item>
-          <el-form-item label="提现金额">
-            {{ data_.rebateAmount | currency }}
+          <h2>申请信息</h2>
+          <el-form-item label="提交人"> {{ data.agentName }}&nbsp;&nbsp;&nbsp;{{ data.phone }} </el-form-item>
+          <h2>当前上级</h2>
+          <el-form-item label="级别">{{ data.paramAgentName }}</el-form-item>
+          <el-form-item label="姓名">{{ data.paramLevelName }}</el-form-item>
+          <el-form-item label="电话">{{ data.paramPhone }}</el-form-item>
+          <el-form-item label="状态">
+            {{ CheckedStatus.desc[data.checkStatus] }}
           </el-form-item>
-          <el-form-item label="提现前余额">
-            {{ data_.beforeAmount | currency }}
-          </el-form-item>
-          <el-form-item label="当前余额">
-            <div style="color: darkorange;">
-              {{ (data_.accRebateAmount + data_.amount) | currency }}
+          <template v-if="data.pictures && data.pictures.length">
+            <h2>支付凭证</h2>
+            <div class="img-item" v-for="item in data.pictures" :key="item.fileKey">
+              <img :src="item.url" alt="" title="" />
             </div>
-          </el-form-item>
-          <el-form-item label="姓名">
-            {{ data_.bankName }}
-          </el-form-item>
-          <el-form-item label="开户行">
-            {{ data_.bank }}
-          </el-form-item>
-          <h2>上级关系</h2>
-          <el-form-item label="开户号">
-            {{ data_.bankCard }}
-          </el-form-item>
-          <el-form-item label="开户地址">
-            {{ data_.bankAddress }}
-          </el-form-item>
+          </template>
         </el-form>
       </div>
       <div class="vui-col-auto" v-if="records.length" style="width: 300px;">
@@ -104,19 +92,21 @@ import { ApiService } from '../../services/api.service';
 import { SessionService } from '../../services/session.service';
 
 @Component({
-  name: 'WithdrawAudit'
+  name: 'AuthorizeAudit'
 })
 export default class extends Vue {
   @Prop({ default: null }) data: any;
   @Prop({ default: null }) audioStatus: number;
 
   CheckedStatus = CheckedStatus;
-
   data_: any;
   loading = true;
   title = '';
   remarkLengthLimit = 100;
   records = [];
+  currentStatus = '';
+  actuallyAmount = null;
+  financial = false;
 
   uploader: IEleUploaderOptions = {
     width: 100,
@@ -134,11 +124,16 @@ export default class extends Vue {
     this.data_ = val;
     this.loading = true;
     // 获取详情
-    ApiService.withdraw_detail(this.data_.id)
+    ApiService.warrant_get(this.data_.id)
       .then((data: any) => {
         this.data_.amount = data.amount;
         this.data_.pictures = data.pictures;
         this.data_.recommender = data.recommender;
+        this.actuallyAmount = data.actualAmount;
+
+        if (this.data_.checkStatus == CheckedStatus.enum.completed) {
+          this.currentStatus = '等待专员审核';
+        }
 
         const record = {
           title: '',
@@ -150,15 +145,13 @@ export default class extends Vue {
           approvalImage: []
         };
 
-        if (this.audioStatus === 2) {
-          record.checkStatus1 = CheckedStatus.enum.财务审核通过;
-          record.checkStatus2 = CheckedStatus.enum.财务审核不通过;
-          record.title = '财务审核 ' + SessionService.user.realname;
+        if (this.data_.checkStatus == CheckedStatus.enum.completed) {
+          record.checkStatus1 = CheckedStatus.enum.专员审核通过;
+          record.checkStatus2 = CheckedStatus.enum.专员审核不通过;
+          record.title = '专员审核 ' + SessionService.user.realname;
           record.desc = '提示；提交将视为已确认支付，进入仓储“待发货”';
         }
-
-        this.records = [...data.approvalFlows];
-
+        this.records = [...data.approvalFlowAdmins];
         if (record.title) {
           this.records.push(record);
         }
@@ -194,7 +187,7 @@ export default class extends Vue {
         ele.fileKey = ele.key;
       }
     );
-    ApiService.withdraw_update({
+    ApiService.warrant_update({
       id: this.data.id,
       checkStatus: status,
       flow: {

@@ -3,7 +3,6 @@
     <ele-table
       :data="result.items"
       :columns="columns"
-      :indexed="true"
       :loading="result.loading"
       :total.sync="result.totalCount"
       :page-no.sync="query.pageNo"
@@ -147,6 +146,4 @@ export default class extends Vue {
 }
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

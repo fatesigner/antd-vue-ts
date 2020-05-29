@@ -1,6 +1,6 @@
 ﻿<template>
   <div class="table-warp" :class="{ 'size-adapter': sizeAdaption }">
-    <div class="vui-row vui-row-wrap vui-align-items-center" v-if="refresher || pagination">
+    <div class="vui-row vui-row-wrap vui-align-items-center vui-justify-content-end" v-if="refresher || pagination">
       <div class="vui-col vui-col-fluid" v-if="refresher">
         <ele-loading v-if="loading" :size="20" />
         <el-button v-else type="text" @click="onRefresh" title="刷新"
@@ -9,7 +9,7 @@
         <!--<el-button type="text" @click="onAdd" title="新增"><i class="el-icon-plus"></i>&nbsp;新增</el-button>-->
       </div>
       <ele-pagination
-        v-if="pagination && !sizeAdaption"
+        v-if="total && pagination && !sizeAdaption"
         background
         :total="total"
         :page-no.sync="pageNo_"
@@ -54,7 +54,7 @@
       <div v-html="noDataLabel"></div>
     </div>
     <ele-pagination
-      v-if="pagination && !sizeAdaption"
+      v-if="total && pagination && !sizeAdaption"
       background
       :total="total"
       :page-no.sync="pageNo_"
@@ -117,7 +117,7 @@ import { FormRender } from '../../../form-renderer/vue';
 import { EleLoading } from '../loading';
 import { ElePagination } from '../pagination';
 
-import { IAction, IColumn, IPagination, IRequestData } from './interfaces';
+import { IEleTableAction, IEleTableColumn, IEleTablePagination, IEleTableRequestData } from './interfaces';
 
 @Component({
   name: 'EleTable',
@@ -129,15 +129,14 @@ import { IAction, IColumn, IPagination, IRequestData } from './interfaces';
 })
 export default class extends Vue {
   @Prop() data: any[];
-  @Prop() actions: IAction[];
-  @Prop() columns: IColumn[];
+  @Prop() actions: IEleTableAction[];
+  @Prop() columns: IEleTableColumn[];
   @Prop() pageNo: number;
   @Prop() pageSize: number;
   @Prop({ default: null }) maxHeight: number | string;
   @Prop({ default: 0 }) total: number;
-  @Prop({ default: false }) indexed: boolean;
   @Prop({ default: false }) loading: boolean;
-  @Prop({ default: true }) refresher: boolean;
+  @Prop({ default: false }) refresher: boolean;
   @Prop({ default: true }) pagination: boolean;
   @Prop({ default: '' }) size: string;
   @Prop({ default: false }) sizeAdaption: boolean;
@@ -145,11 +144,11 @@ export default class extends Vue {
   @Prop({ default: '暂无数据' }) noDataLabel: string;
 
   data_: any[] = [];
-  actions_: IAction[] = [];
-  columns_: IColumn[] = [];
+  actions_: IEleTableAction[] = [];
+  columns_: IEleTableColumn[] = [];
   pageNo_: number = this.pageNo;
   pageSize_: number = this.pageSize;
-  pagination_: IPagination = {
+  pagination_: IEleTablePagination = {
     sortBy: 'desc',
     descending: false,
     page: 1,
@@ -172,7 +171,7 @@ export default class extends Vue {
   };
 
   @Emit('request')
-  emitRequest(request: IRequestData) {}
+  emitRequest(request: IEleTableRequestData) {}
 
   @Watch('data', {
     immediate: true
@@ -180,9 +179,6 @@ export default class extends Vue {
   onDataChange(val) {
     if (val) {
       this.data_ = val;
-      if (this.indexed) {
-        this.data_ = this.data_.map((cur, index) => ({ ...cur, __index: index }));
-      }
     }
   }
 

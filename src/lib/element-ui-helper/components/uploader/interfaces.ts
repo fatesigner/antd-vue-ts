@@ -2,20 +2,18 @@
  * interfaces
  */
 
-import { Prop } from 'vue-property-decorator';
-
-export enum IUploaderContentType {
+export enum IEleUploaderContentType {
   image = 'application/image',
   pdf = 'application/pdf'
 }
 
-export interface IUploaderFile {
+export interface IEleUploaderFile {
   key: string;
   data?: any;
   value: string;
   src: string;
   file: File | Blob;
-  type: IUploaderContentType;
+  type: IEleUploaderContentType;
   uploading: boolean;
   error: {
     visible: boolean;
@@ -27,15 +25,15 @@ export interface IUploaderFile {
   };
 }
 
-export interface IUploaderActionParams {
+export interface IEleUploaderActionParams {
   index: number;
   file: File | Blob;
   src: string;
   data?: any;
 }
 
-export interface IUploaderOptions {
-  files?: IUploaderFile[];
+export interface IEleUploaderOptions {
+  files?: IEleUploaderFile[];
   action?: () => Promise<any>;
   data?: any;
   immediate?: boolean;

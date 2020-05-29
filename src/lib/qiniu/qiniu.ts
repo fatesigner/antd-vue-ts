@@ -15,8 +15,46 @@ let Provider: IQiniuProvider = {
   }
 };
 
+const axios = Axios.create({
+  baseURL: Provider.baseUrl,
+  timeout: 30000,
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8'
+  }
+});
+
+axios.interceptors.request.use((req) => {
+  req.headers['X-Access-Token'] = Provider.getAccessToken();
+  return req;
+});
+
+axios.interceptors.response.use(
+  (response: any) => {
+    if (response.status === 200) {
+      const res = response.data;
+      if (res.code === 0 || res.code === 200) {
+        return res.data || res.result;
+      } else {
+        return Promise.reject(new Error(res.msg || res.message || '请求错误！'));
+      }
+    } else {
+      return Promise.reject(new Error(response.message || response));
+    }
+  },
+  (err) => {
+    if (err.response) {
+      err = err.response;
+      if (err.data) {
+        err = err.data;
+      }
+    }
+    return Promise.reject(new Error(err.message || err.msg || err));
+  }
+);
+
 export function QiniuServiceInjector(provider: IQiniuProvider) {
   Provider = provider;
+  axios.defaults.baseURL = provider.baseUrl;
 }
 
 const _executeUpload = function (file, token, mediaType) {
@@ -54,54 +92,15 @@ const _executeUpload = function (file, token, mediaType) {
   });
 };
 
-let axios;
-
 class QiniuServiceStatic {
-  constructor() {
-    axios = Axios.create({
-      baseURL: Provider.baseUrl,
-      timeout: 30000,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8'
-      }
-    });
-
-    axios.interceptors.request.use((req) => {
-      req.headers['X-Access-Token'] = Provider.getAccessToken();
-      return req;
-    });
-
-    axios.interceptors.response.use(
-      (response) => {
-        if (response.status === 200) {
-          const res = response.data;
-          if (res.code === 0 || res.code === 200) {
-            return res.data || res.result;
-          } else {
-            return Promise.reject(res.msg || res.message || '请求错误！');
-          }
-        } else {
-          return Promise.reject(response.message || response);
-        }
-      },
-      (err) => {
-        if (err.response) {
-          err = err.response;
-          if (err.data) {
-            err = err.data;
-          }
-        }
-        return Promise.reject(err.message || err.msg || err);
-      }
-    );
-  }
+  constructor() {}
 
   async uploadMutiple(lines, mediaType, handleFn = undefined) {
     // 全部成功才能成功：
     const reqs = [];
     lines.forEach((line, ind) => {
       reqs.push(
-        this.uploadOne(line.file, mediaType).then((res) => {
+        this.uploadOne(line.file, mediaType).then((res: any) => {
           line.url = res.url;
           line.key = res.key;
           line.file = undefined;
@@ -119,7 +118,7 @@ class QiniuServiceStatic {
     const reqs = [];
     lines.forEach((line, ind) => {
       reqs.push(
-        this.uploadPrivateOne(line.file, mediaType).then((res) => {
+        this.uploadPrivateOne(line.file, mediaType).then((res: any) => {
           line.url = res.url;
           line.key = res.key;
           line.file = undefined;
@@ -137,8 +136,18 @@ class QiniuServiceStatic {
    * @param {*} file
    * @param {*} mediaType
    */
-  async uploadOne(file, mediaType) {
-    const tokenRes = await axios({
+  async uploadOne(
+    file,
+    mediaType
+  ): Promise<{
+    key: string;
+    mediaId: string;
+    mediaKey: string;
+    token: string;
+    url: string;
+    videoCover: string;
+  }> {
+    const tokenRes: any = await axios({
       url: '/qiniu/token?showPub=true',
       method: 'get'
     });
@@ -151,10 +160,12 @@ class QiniuServiceStatic {
       showPub: true
     };
 
-    return await axios({
+    return axios({
       method: 'get',
       url: '/qiniu/url',
       params
+    }).then((res: any) => {
+      return res;
     });
   }
 
@@ -164,7 +175,7 @@ class QiniuServiceStatic {
    * @param {*} mediaType
    */
   async uploadPrivateOne(file, mediaType) {
-    const tokenRes = await axios({
+    const tokenRes: any = await axios({
       url: `/qiniu/content/token?mediaType=${mediaType}`,
       method: 'get'
     });

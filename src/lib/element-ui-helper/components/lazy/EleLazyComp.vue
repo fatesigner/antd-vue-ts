@@ -15,7 +15,7 @@
       v-if="compLoaded"
       :style="{ 'max-width': width_, 'max-height': height_ }"
     >
-      <component :is="comp_" v-dynamic-events="events_" v-bind="props" />
+      <component :is="comp_" v-dynamic-events="events" v-bind="props" />
     </div>
     <div class="lazy-component-slot" key="slot" v-if="initialized">
       <slot :initialized="initialized" />
@@ -57,27 +57,12 @@ export default class extends Vue {
   initialized = false;
   compLoaded = false;
   comp_: any = null;
-  events_: any = [];
   width_: string | number = '';
   height_: string | number = '';
 
   @Watch('comp')
   onCompChange() {
     this.loadComp();
-  }
-
-  @Watch('events', {
-    immediate: true
-  })
-  onEventsChange(val) {
-    if (val && val.length) {
-      val.forEach((event) => {
-        this.events_[event] = 'ON' + event;
-        this[this.events_[event]] = (data) => {
-          this.$emit(event, data);
-        };
-      });
-    }
   }
 
   @Watch('width', {

@@ -28,6 +28,9 @@ export interface I18nkeysType extends IKeys {
     };
     dashboard: string;
     agentType: string;
+    agentUser: string;
+    authorize: string;
+    product: string;
     predelivery: string;
     rebate: string;
     prepaid: string;

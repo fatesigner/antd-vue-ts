@@ -148,7 +148,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
-import { IUploaderOptions } from '../../../lib/element-ui-helper/components/uploader';
+import { IEleUploaderOptions } from '../../../lib/element-ui-helper/components/uploader';
 
 import { CheckedStatus, PaymentType } from '../../global';
 import { ApiService } from '../../services/api.service';
@@ -156,7 +156,7 @@ import { SessionService } from '../../services/session.service';
 import { QiniuService } from '../../../lib/qiniu';
 
 @Component({
-  name: 'PrepaidAudit'
+  name: 'PredeliveryAudit'
 })
 export default class extends Vue {
   @Prop({ default: null }) data: any;
@@ -173,7 +173,7 @@ export default class extends Vue {
   actuallyAmount = null;
   financial = false;
 
-  uploader: IUploaderOptions = {
+  uploader: IEleUploaderOptions = {
     width: 100,
     maxCount: 3,
     // 图片尺寸限制 10mb 以下

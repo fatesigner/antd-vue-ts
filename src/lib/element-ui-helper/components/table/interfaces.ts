@@ -5,29 +5,31 @@
 import { IField } from '../../../form-renderer/field';
 import { UnionType, UnRequired } from '../../../ts-helper';
 
-export interface IAction {
+export interface IEleTableAction {
   name: string;
   title: string;
 }
 
-export interface ITableOperationData<
+export interface IEleTableOperationData<
   TQuery extends {
     [key in string]: any;
   } = any,
   TResult extends {
-    loading: boolean;
     totalCount?: number;
     data: any[];
-  } = any
+  } = any,
+  TCurrentContext = any
 > {
-  columns: IColumn[];
+  columns: IEleTableColumn[];
+  loading?: boolean;
   query?: TQuery;
   result: TResult;
-  loadData?: () => Promise<any[]>;
-  onRequest?: (request: IRequestData) => void;
+  loadData?: (currentContext: TCurrentContext) => Promise<any>;
+  onRequest?: (request: IEleTableRequestData, currentContext: TCurrentContext) => void;
+  onQueryChange?: (currentContext: TCurrentContext) => void;
 }
 
-export interface IColumn<T = any, T2 = any, T3 = any> {
+export interface IEleTableColumn<T = any, T2 = any, T3 = any> {
   label: string;
   name: '__index' | UnionType<T>;
   template?: (row: { [key in string]: any }, index: number) => string | number;
@@ -36,7 +38,7 @@ export interface IColumn<T = any, T2 = any, T3 = any> {
   width?: string | number;
 }
 
-export interface IRequestData<T extends readonly string[] = string[]> {
+export interface IEleTableRequestData<T extends readonly string[] = string[]> {
   type: 'GET' | 'POST' | 'PUT' | 'DELETE';
   params: {
     pageNo: number;
@@ -47,7 +49,7 @@ export interface IRequestData<T extends readonly string[] = string[]> {
   };
 }
 
-export interface IPagination {
+export interface IEleTablePagination {
   sortBy: 'desc';
   descending: boolean;
   page: number;

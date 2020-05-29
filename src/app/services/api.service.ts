@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { Http } from '../../lib/fetch/fetch';
 import { SessionService } from './session.service';
 import { CommonService } from './common.service';
+import { ReceiverType } from '../global';
 
 // 为请求 添加 access-token
 Http.interceptors.request.use(
@@ -61,7 +62,7 @@ export class ApiServiceStatic {
   }
 
   derate_update(params) {
-    return Http.post('/derate/update', params);
+    return Http.put('/derate/update', params);
   }
 
   derate_delete(id) {
@@ -260,19 +261,21 @@ export class ApiServiceStatic {
     return Http.put('/order/update', params);
   }
 
-  order_single = (orderId) => {
-    return Http.get(`/order/single/${orderId}`, {
+  order_single = (orderId, receiveType, orderNo) => {
+    return Http.get(`/order/single/${orderId}/${receiveType}`, {
       responseType: 'blob'
     }).then((res) => {
       const url = window.URL.createObjectURL(res);
       const link = document.createElement('a');
       link.style.display = 'none';
       link.href = url;
-      link.setAttribute('download', '发货单.xls');
+      link.setAttribute('download', `发货单_${orderNo}_${ReceiverType.desc[receiveType]}.xls`);
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link); // 下载完成移除元素
-      window.URL.revokeObjectURL(url); // 释放掉blob对象
+      // 下载完成移除元素
+      document.body.removeChild(link);
+      // 释放掉blob对象
+      window.URL.revokeObjectURL(url);
     });
   };
 
@@ -357,6 +360,22 @@ export class ApiServiceStatic {
       });
       return res;
     });
+  }
+
+  warrant_page(params) {
+    return Http.get('/warrant/page', { params });
+  }
+
+  warrant_get(id) {
+    return Http.get(`/warrant/get/${id}`);
+  }
+
+  warrant_statistics() {
+    return Http.get('/warrant/statistics');
+  }
+
+  warrant_update(params) {
+    return Http.put('/warrant/update', params);
   }
 }
 

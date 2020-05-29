@@ -18,8 +18,8 @@
       :height="height_"
       :timeout="timeout"
       :viewport="viewport"
+      v-dynamic-events="events"
       @loaded="onLoaded"
-      v-dynamic-events="events_"
     />
   </el-dialog>
 </template>
@@ -51,23 +51,8 @@ export default class extends Vue {
 
   comp_ = null;
   visible_ = false;
-  events_: any = {};
   width_: string | number = '';
   height_: string | number = '';
-
-  @Watch('events', {
-    immediate: true
-  })
-  onEventsChange(val) {
-    if (val && val.length) {
-      val.forEach((event) => {
-        this.events_[event] = 'ON' + event;
-        this[this.events_[event]] = (data) => {
-          this.$emit(event, data);
-        };
-      });
-    }
-  }
 
   @Watch('visible', {
     immediate: true

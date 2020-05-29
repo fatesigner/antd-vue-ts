@@ -15,7 +15,7 @@
             style="width: 200px;"
             title=""
             clearable
-            @change="onQueryChange"
+            @change="table.onQueryChange(currentContext)"
           />
           <el-input
             class="vui-mr10"
@@ -24,21 +24,21 @@
             style="width: 200px;"
             title=""
             clearable
-            @change="onQueryChange"
+            @change="table.onQueryChange(currentContext)"
           />
-          <el-button type="primary" @click="onQueryChange">搜索</el-button>
+          <el-button type="primary" @click="table.onQueryChange(currentContext)">搜索</el-button>
         </el-form-item>
       </el-form>
     </template>
     <ele-table
       :columns="table.columns"
       :data="table.result.data"
-      :indexed="true"
-      :loading="table.result.loading"
+      :loading="table.loading"
       :total.sync="table.result.totalCount"
       :page-no.sync="table.query.pageNo"
       :page-size.sync="table.query.pageSize"
-      @request="onRequest"
+      :refresher="true"
+      @request="table.onRequest($event, currentContext)"
     >
       <template v-slot:agentName="{ row }">
         <div class="vui-pt10 vui-pb10">
@@ -71,13 +71,13 @@
       </template>
     </ele-table>
     <ele-lazy-dialog
-      class="action-dialog"
-      :title="actionDialog.title"
-      :visible.sync="actionDialog.visible"
-      :props="{ data: actionDialog.data, audioStatus: actionDialog.auditStatus }"
-      :comp="actionDialog.comp"
-      :close-on-click-modal="false"
-      :events="{ close: onDialogClose }"
+      :visible.sync="auditDialog.visible"
+      :title="auditDialog.title"
+      :comp="auditDialog.comp"
+      :events="auditDialog.events"
+      :close-on-click-modal="auditDialog.closeOnClickModal"
+      :props="{ data: auditDialog.data, audioStatus: auditDialog.auditStatus }"
+      @close="auditDialog.onClose(currentContext)"
     />
   </layout>
 </template>
@@ -85,7 +85,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { IsNullOrUndefined, IsNumber } from '@forgleaner/utils/type-check';
 
-import { ITableOperationData } from '../../../lib/element-ui-helper/components/table';
+import { IEleTableOperationData } from '../../../lib/element-ui-helper/components/table';
 
 import { Layout } from '../../layout';
 import { ApiService } from '../../services/api.service';
@@ -102,9 +102,14 @@ import { AgentType, CheckedStatus, PaidStatus, Role } from '../../global';
   }
 })
 export default class extends Vue {
+  get currentContext() {
+    return this;
+  }
+
   CheckedStatus = CheckedStatus;
 
-  table: ITableOperationData = {
+  table: IEleTableOperationData = {
+    loading: false,
     columns: [
       {
         label: '序号',
@@ -182,96 +187,96 @@ export default class extends Vue {
       pageSize: 10
     },
     result: {
-      loading: false,
       totalCount: 0,
       data: []
+    },
+    onQueryChange() {
+      this.query.pageNo = 1;
+      this.loadData();
+    },
+    onRequest(requestData, currentContext) {
+      if (requestData.type === 'GET') {
+        this.query.pageNo = requestData.params.pageNo;
+        this.query.pageSize = requestData.params.pageSize;
+        this.loadData(currentContext);
+      }
+    },
+    loadData(currentContext) {
+      const params: any = {
+        pageNo: this.query.pageNo,
+        pageSize: this.query.pageSize,
+        rechargeNo: this.query.rechargeNo,
+        ...this.query.radioButtons.result
+      };
+      if (!IsNullOrUndefined(this.query.keyword)) {
+        if (IsNumber(this.query.keyword)) {
+          params.phone = this.query.keyword;
+        } else {
+          params.agentName = this.query.keyword || null;
+        }
+      }
+      this.loading = true;
+      return ApiService.withdraw_page(params)
+        .then((res: any) => {
+          if (res && res.rows) {
+            this.result.data = res.rows;
+            this.result.totalCount = res.totalCount;
+          } else {
+            this.result.data = [];
+            this.result.totalCount = 0;
+          }
+        })
+        .catch((err) => {
+          currentContext.$notify.error(err.message);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   };
 
-  actionDialog = {
+  auditDialog = {
     comp: () => import('./WithdrawAudit.vue'),
     visible: false,
     title: '',
     data: null,
-    auditStatus: null
+    auditStatus: null,
+    events: ['close'],
+    closeOnClickModal: false,
+    onClose(currentContext) {
+      this.visible = false;
+      currentContext.table.loadData();
+    }
   };
 
-  onDialogClose() {
-    this.loadData();
-    this.actionDialog.visible = false;
-  }
-
-  onQueryChange() {
-    this.table.query.pageNo = 1;
-    this.loadData();
+  created() {
+    this.table.loadData(this);
+    // 获取 radio 选项
+    ApiService.withdraw_statistics().then((res) => {
+      this.table.query.radioButtons.data = res;
+    });
   }
 
   onRadioButtonsChange(res) {
     this.table.query.pageNo = 1;
     this.table.query.radioButtons.result = res;
-    this.loadData();
+    this.table.loadData(this);
   }
 
-  onRequest(requestData) {
-    if (requestData.type === 'GET') {
-      this.table.query.pageNo = requestData.params.pageNo;
-      this.table.query.pageSize = requestData.params.pageSize;
-      this.loadData();
-    }
-  }
-
-  async created() {
-    this.loadData();
-    // 获取 radio 选项
-    this.table.query.radioButtons.data = await ApiService.withdraw_statistics();
-  }
-
-  // 点击查看
+  // 点击审核、查看
   onLook(row) {
-    this.actionDialog.title = '查看详情';
-    this.actionDialog.visible = true;
-    this.actionDialog.data = row;
-    this.actionDialog.auditStatus = this.getAuditStatus(row);
+    this.auditDialog.title = '查看详情';
+    this.auditDialog.visible = true;
+    this.auditDialog.data = row;
+    this.auditDialog.auditStatus = this.getAuditStatus(row);
   }
 
-  // 判断指定订单的状态是否为专员或者财务待审核
+  // 判断指定订单的状态是否为待审核
   getAuditStatus(row) {
     if (SessionService.user.roles.indexOf(Role.enum.sale_financial) > -1 && row.checkStatus == 1 && row.status == 2) {
       return 2;
     }
     return null;
   }
-
-  loadData() {
-    const params: any = {
-      pageNo: this.table.query.pageNo,
-      pageSize: this.table.query.pageSize,
-      rechargeNo: this.table.query.rechargeNo,
-      ...this.table.query.radioButtons.result
-    };
-    if (!IsNullOrUndefined(this.table.query.keyword)) {
-      if (IsNumber(this.table.query.keyword)) {
-        params.phone = this.table.query.keyword;
-      } else {
-        params.agentName = this.table.query.keyword || null;
-      }
-    }
-    this.table.result.loading = true;
-    return ApiService.withdraw_page(params)
-      .then((res: any) => {
-        if (res && res.rows) {
-          this.table.result.data = res.rows;
-          this.table.result.totalCount = res.totalCount;
-        } else {
-          this.table.result.data = [];
-          this.table.result.totalCount = 0;
-        }
-      })
-      .finally(() => {
-        this.table.result.loading = false;
-      });
-  }
 }
 </script>
-
-<style lang="scss" scoped></style>

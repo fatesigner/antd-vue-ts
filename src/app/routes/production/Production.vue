@@ -4,10 +4,11 @@
     <ele-table
       :columns="table.columns"
       :data="table.result.data"
-      :loading="table.loading"
+      :loading="table.result.loading"
       :total.sync="table.result.totalCount"
       :page-no.sync="table.query.pageNo"
       :page-size.sync="table.query.pageSize"
+      :refresher="true"
       @request="table.onRequest($event, currentContext)"
     >
       <template v-slot:actions="{ row }">
@@ -30,8 +31,8 @@
       :comp="actionDialog.comp"
       :events="actionDialog.events"
       :close-on-click-modal="actionDialog.closeOnClickModal"
-      :props="{ data: actionDialog.data, audioStatus: actionDialog.auditStatus }"
-      @close="actionDialog.onClose(currentContext)"
+      :props="{ data: actionDialog.data }"
+      @close="actionDialog.onClose(context)"
     />
   </layout>
 </template>
@@ -41,17 +42,13 @@ import { Component, Vue } from 'vue-property-decorator';
 import { IEleTableOperationData } from '../../../lib/element-ui-helper/components/table';
 
 import { Layout } from '../../layout';
-import { DerateCondition, DerateStatus, DerateType, PaidStatus } from '../../global';
 import { ApiService } from '../../services/api.service';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
-import { RadioButtons } from '../../shared/radio-buttons';
-import { DateFormatPipe } from '../../pipes/date-format.pipe';
 
 @Component({
-  name: 'Mitigate',
+  name: 'Production',
   components: {
-    Layout,
-    RadioButtons
+    Layout
   }
 })
 export default class extends Vue {
@@ -71,56 +68,17 @@ export default class extends Vue {
           return index + 1;
         }
       },
+      { label: '产品名', name: 'productName', width: 160 },
+      { label: '产品版本', name: 'productVersion', width: 160 },
       {
-        label: '减免类型',
-        name: 'derateType',
-        width: 100,
+        label: '产品价格',
+        name: 'salesPrice',
+        width: 160,
         template: (row) => {
-          return `${DerateType.desc[row.derateType]}`;
+          return `${CurrencyPipe(row.salesPrice)}`;
         }
       },
-      {
-        label: '减免条件',
-        name: 'derateCondition',
-        width: 100,
-        template: (row) => {
-          return `${DerateCondition.desc[row.derateCondition]}`;
-        }
-      },
-      {
-        label: '减免金额',
-        name: 'derateMoney',
-        width: 150,
-        template: (row) => {
-          return `${CurrencyPipe(row.derateMoney)}`;
-        }
-      },
-      {
-        label: '开始时间',
-        name: 'startTime',
-        width: 180,
-        template: (row) => {
-          return `${DateFormatPipe(row.startTime)}`;
-        }
-      },
-      {
-        label: '截止时间',
-        name: 'endTime',
-        width: 180,
-        template: (row) => {
-          return `${DateFormatPipe(row.endTime)}`;
-        }
-      },
-      {
-        label: '状态',
-        name: 'status',
-        width: 150,
-        fixed: 'right',
-        template: (row) => {
-          return `${row.status ? DerateStatus.desc[row.status] : ''}`;
-        }
-      },
-      { label: '操作', name: 'actions', width: 80, fixed: 'right' }
+      { label: '操作', name: 'actions', width: 160, fixed: 'right' }
     ],
     query: {
       pageNo: 1,
@@ -129,6 +87,10 @@ export default class extends Vue {
     result: {
       totalCount: 0,
       data: []
+    },
+    onQueryChange() {
+      this.query.pageNo = 1;
+      this.loadData();
     },
     onRequest(requestData, currentContext) {
       if (requestData.type === 'GET') {
@@ -143,7 +105,7 @@ export default class extends Vue {
         pageSize: this.query.pageSize
       };
       this.loading = true;
-      return ApiService.derate_page(params)
+      return ApiService.product_page(params)
         .then((res: any) => {
           if (res && res.rows) {
             this.result.data = res.rows;
@@ -163,16 +125,16 @@ export default class extends Vue {
   };
 
   actionDialog = {
-    comp: () => import('./MitigateForm.vue'),
+    comp: () => import('./ProductionForm.vue'),
     visible: false,
     title: '',
     data: null,
     auditStatus: null,
     events: ['close'],
     closeOnClickModal: false,
-    onClose(currentContext) {
+    onClose(context) {
       this.visible = false;
-      currentContext.table.loadData();
+      context.loadData();
     }
   };
 
@@ -181,25 +143,18 @@ export default class extends Vue {
   }
 
   add() {
-    this.actionDialog.title = '新增减免设置';
-    this.actionDialog.data = null;
     this.actionDialog.visible = true;
   }
 
   update(row) {
-    this.actionDialog.title = '编辑减免设置';
     this.actionDialog.data = row;
     this.actionDialog.visible = true;
   }
 
   remove(row) {
-    ApiService.derate_delete(row.id)
+    ApiService.product_delete(row.id)
       .then(() => {
-        this.$notify({
-          title: 'success',
-          message: '删除成功！',
-          type: 'success'
-        });
+        this.$notify.success('删除成功！');
         this.table.loadData(this);
       })
       .catch((err) => {

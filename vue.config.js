@@ -36,7 +36,7 @@ module.exports = {
     }
   },
   devServer: {
-    host: 'localhost',
+    host: '192.168.8.6',
     port: 8080,
     open: true,
     overlay: {
@@ -50,10 +50,11 @@ module.exports = {
         // target: 'http://192.168.8.233:8080/',
         // target: 'http://192.168.8.3:8080/',
         // target: 'http://192.168.8.173:8182/',
-        target: 'http://test.sales.muyuhuajiaoyu.com/',
+        target: 'http://2315x73e04.iok.la:11681/',
+        // target: 'http://test.sales.muyuhuajiaoyu.com/salesSystem',
         changeOrigin: true,
         pathRewrite: {
-          // '^/salesSystem': ''
+          '^/salesSystem': ''
         }
       }
     }

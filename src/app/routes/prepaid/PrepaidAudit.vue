@@ -1,26 +1,26 @@
 <template>
-  <div class="prepaid-audit">
+  <div class="vui-row vui-justify-content-center">
     <div class="vui-padding vui-tc" v-if="loading">
       <ele-loading :size="40" />
     </div>
-    <div v-else class="vui-row">
+    <template v-else>
       <div class="vui-col-auto">
-        <el-form class="vui-col" label-width="80px" style="width: 320px;">
+        <el-form class="vui-col" style="width: 320px;">
           <div class="top">
-            <h2 class="top-title">当前状态：{{ currentStatus }}</h2>
-            <p>订单号：{{ data.rechargeNo }}</p>
-            <p>时间：{{ data.createTime | dateFormat }}</p>
+            <h2 class="top-title">当前状态：{{ CheckedStatus.desc[data_.checkStatus] }}</h2>
+            <p>订单号：{{ data_.rechargeNo }}</p>
+            <p>时间：{{ data_.createTime | dateFormat }}</p>
           </div>
           <h2>充值信息</h2>
-          <el-form-item label="提交人"> {{ data.agentName }}&nbsp;&nbsp;&nbsp;{{ data.phone }} </el-form-item>
+          <el-form-item label="提交人"> {{ data_.agentName }}&nbsp;&nbsp;&nbsp;{{ data_.phone }} </el-form-item>
           <el-form-item label="充值方式">
-            {{ PaymentType.desc[data.payType] }}
+            {{ PaymentType.desc[data_.payType] }}
           </el-form-item>
           <el-form-item label="充值金额">
-            {{ data.handleAmount | currency }}
+            {{ data_.handleAmount | currency }}
           </el-form-item>
           <el-form-item label="应付金额">
-            {{ data.handleAmount | currency }}
+            {{ data_.handleAmount | currency }}
           </el-form-item>
           <el-form-item label="实付金额">
             <el-input
@@ -30,63 +30,63 @@
               style="width: 150px;"
               title=""
             />
-            <div class="vui-orange" v-else>{{ data.actualAmount | currency }}</div>
+            <div class="vui-orange" v-else>{{ data_.actualAmount | currency }}</div>
             <!--<p>在2020年5月31日前成为战略服务商可一次性享受19880元创业金</p>
             <p>成为校长级或者升级为校长级可一次性享有6680元创业金</p>-->
           </el-form-item>
-          <el-form-item label="当前余额" v-if="data.amount">
-            {{ (data.amount.amount + data.amount.rebateAmount) | currency }}
+          <el-form-item label="当前余额" v-if="data_.amount">
+            {{ (data_.amount.amount + data_.amount.rebateAmount) | currency }}
           </el-form-item>
           <el-form-item label="充值后余额">
-            {{ data.rechargeRearAmount | currency }}
+            {{ data_.rechargeRearAmount | currency }}
           </el-form-item>
           <h2>上级关系</h2>
           <el-form-item label="当前上级">
-            {{ data.parentName }}
+            {{ data_.parentName }}
           </el-form-item>
           <el-form-item label="电话">
-            {{ data.parentPhone }}
+            {{ data_.parentPhone }}
           </el-form-item>
           <h2>
             推荐关系
             <p>(邀请当前提交人申请本次服务商的用户)</p>
           </h2>
           <el-form-item label="推荐人">
-            {{ data.parentName }}
+            {{ data_.parentName }}
           </el-form-item>
           <el-form-item label="电话">
-            {{ data.parentPhone }}
+            {{ data_.parentPhone }}
           </el-form-item>
-          <el-form-item label="推荐人上级" v-if="data.recommender">
-            <div v-if="data.recommender.parentAgentName">姓名：{{ data.recommender.parentAgentName }}</div>
-            <div v-if="!data.recommender.parentAgentLevel">内部销售没有上级</div>
-            <div v-else>级别：{{ data.recommender.parentAgentLevel }}级</div>
+          <el-form-item label="推荐人上级" v-if="data_.recommender">
+            <div v-if="data_.recommender.parentAgentName">姓名：{{ data_.recommender.parentAgentName }}</div>
+            <div v-if="!data_.recommender.parentAgentLevel">内部销售没有上级</div>
+            <div v-else>级别：{{ data_.recommender.parentAgentLevel }}级</div>
           </el-form-item>
           <el-form-item label="电话">
-            {{ data.parentPhone }}
+            {{ data_.parentPhone }}
           </el-form-item>
-          <template v-if="data.picture && data.picture.length">
+          <template v-if="data_.picture && data_.picture.length">
             <h2>支付凭证</h2>
-            <div class="img-item" v-for="item in data.picture" :key="item.fileKey">
+            <div class="img-item" v-for="item in data_.picture" :key="item.fileKey">
               <img :src="item.url" alt="" title="" />
             </div>
           </template>
-          <template v-if="data.positivePicUrl">
+          <template v-if="data_.positivePicUrl">
             <h2>身份证正面</h2>
             <div class="img-item">
-              <img :src="data.positivePicUrl" alt="" title="" />
+              <img :src="data_.positivePicUrl" alt="" title="" />
             </div>
           </template>
-          <template v-if="data.reversePicUrl">
+          <template v-if="data_.reversePicUrl">
             <h2>身份证反面</h2>
             <div class="img-item">
-              <img :src="data.reversePicUrl" alt="" title="" />
+              <img :src="data_.reversePicUrl" alt="" title="" />
             </div>
           </template>
-          <template v-if="data.licensePicUrl">
+          <template v-if="data_.licensePicUrl">
             <h2>营业执照</h2>
             <div class="img-item">
-              <img :src="data.licensePicUrl" alt="" title="" />
+              <img :src="data_.licensePicUrl" alt="" title="" />
             </div>
           </template>
         </el-form>
@@ -116,8 +116,8 @@
                 style="width: 300px;"
               />
             </div>
-            <div v-if="record.pictures">
-              <div class="img-item" v-for="item in record.pictures" :key="item.fileKey">
+            <div v-if="record.id">
+              <div class="img-item" v-for="item in record.approvalImage" :key="item.fileKey">
                 <img :src="item.url" alt="" title="" />
               </div>
             </div>
@@ -130,6 +130,7 @@
                 :max-count="uploader.maxCount"
                 :max-size="uploader.maxSize"
                 :immediate="uploader.immediate"
+                :action="onUploadStart"
                 @failed="onUploaderFailed($event)"
               />
               <p class="vui-mt10 vui-g9">最多上传三张，单张10M之内</p>
@@ -142,13 +143,13 @@
           </template>
         </el-form>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
-import { IUploaderOptions } from '../../../lib/element-ui-helper/components/uploader';
+import { IEleUploaderOptions } from '../../../lib/element-ui-helper/components/uploader';
 
 import { CheckedStatus, PaymentType } from '../../global';
 import { ApiService } from '../../services/api.service';
@@ -162,6 +163,7 @@ export default class extends Vue {
   @Prop({ default: null }) data: any;
   @Prop({ default: null }) audioStatus: number;
 
+  CheckedStatus = CheckedStatus;
   PaymentType = PaymentType;
 
   data_: any;
@@ -169,11 +171,10 @@ export default class extends Vue {
   title = '';
   remarkLengthLimit = 100;
   records = [];
-  currentStatus = '';
   actuallyAmount = null;
   financial = false;
 
-  uploader: IUploaderOptions = {
+  uploader: IEleUploaderOptions = {
     width: 100,
     maxCount: 3,
     // 图片尺寸限制 10mb 以下
@@ -191,21 +192,12 @@ export default class extends Vue {
     // 获取详情
     ApiService.agentAccountFlow_detail(this.data_.id)
       .then((data: any) => {
-        this.data_.amount = data.amount;
-        this.data_.picture = data.picture;
-        this.data_.recommender = data.recommender;
+        Object.assign(this.data_, {
+          amount: data.amount,
+          picture: data.picture,
+          recommender: data.recommender
+        });
         this.actuallyAmount = data.actualAmount;
-
-        if (
-          this.data_.checkStatus == CheckedStatus.enum.completed ||
-          this.data_.checkStatus == CheckedStatus.enum.财务审核不通过
-        ) {
-          this.currentStatus = '等待专员审核';
-        } else if (this.data_.checkStatus == CheckedStatus.enum.专员审核通过) {
-          this.currentStatus = '等待财务审核';
-        } else {
-          this.currentStatus = CheckedStatus.desc[this.data_.checkStatus];
-        }
 
         const record = {
           title: '',
@@ -229,8 +221,7 @@ export default class extends Vue {
           record.desc = '提示；提交将视为已确认支付，进入仓储“待发货”';
           this.financial = true;
         }
-        this.records = [];
-        // this.records = [...data.approvalFlows];
+        this.records = [...data.approvalFlows];
         if (record.title) {
           this.records.push(record);
         }
@@ -238,6 +229,14 @@ export default class extends Vue {
       .finally(() => {
         this.loading = false;
       });
+  }
+
+  // 图片准备上传
+  onUploadStart(file) {
+    return QiniuService.uploadOne(file, 1).then((res) => {
+      file.data.fileKey = res.key;
+      file.data.url = res.url;
+    });
   }
 
   // 图片上传失败回调
@@ -259,7 +258,7 @@ export default class extends Vue {
       this.$notify.warning(`备注超出字数，允许的字符长度为${this.remarkLengthLimit}`);
       return;
     }
-    let actuallyAmount = this.data.actualAmount;
+    let actuallyAmount = this.data_.actualAmount;
     if (this.financial && !this.actuallyAmount) {
       this.$notify.warning('请输入实付金额');
       return;
@@ -269,15 +268,8 @@ export default class extends Vue {
     } else {
       actuallyAmount = this.actuallyAmount;
     }
-    await QiniuService.uploadMutiple(
-      record.approvalImage.filter((ele) => ele.file),
-      1,
-      (res, ele) => {
-        ele.fileKey = ele.key;
-      }
-    );
     ApiService.agentAccountFlow_update({
-      id: this.data.id,
+      id: this.data_.id,
       checkStatus: status,
       actuallyAmount: actuallyAmount,
       flow: {
@@ -286,39 +278,42 @@ export default class extends Vue {
         remark: record.remark,
         title: record.title
       },
-      approvalImage: record.approvalImage.map((x) => ({
-        url: x.url,
-        fileKey: x.fileKey
+      approvalImage: record.approvalImage.map((file) => ({
+        url: file.data.url,
+        fileKey: file.data.fileKey
       }))
-    }).then(() => {
-      this.$notify.success('操作成功!');
-      this.$emit('close');
-    });
+    })
+      .then(() => {
+        this.$notify.success('操作成功!');
+        this.$emit('close');
+      })
+      .catch((err) => {
+        this.$notify.error(err.message);
+        this.$emit('close');
+      });
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.prepaid-audit {
-  .top {
-    text-align: center;
-  }
+.top {
+  text-align: center;
+}
 
-  .top-title {
-    font-size: 20px;
-    color: green;
-  }
+.top-title {
+  font-size: 20px;
+  color: green;
+}
 
-  .el-form-item {
-    padding: 5px 10px;
-    margin: 10px 0;
-    background-color: #eee;
-    border-radius: 4px;
-  }
+.el-form-item {
+  padding: 5px 10px;
+  margin: 10px 0;
+  background-color: #eee;
+  border-radius: 4px;
+}
 
-  h2 {
-    padding: 10px 5px;
-    font-size: 14px;
-  }
+h2 {
+  padding: 10px 5px;
+  font-size: 14px;
 }
 </style>

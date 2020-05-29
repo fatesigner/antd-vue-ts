@@ -10,8 +10,5 @@ const formatter = new Intl.NumberFormat('en-US', {
 });
 
 export function CurrencyPipe(value) {
-  if (value) {
-    return formatter.format(value).replace('$', '￥');
-  }
-  return value;
+  return formatter.format(value).replace('$', '￥');
 }

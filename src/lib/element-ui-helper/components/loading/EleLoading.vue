@@ -1,5 +1,5 @@
 <template>
-  <span class="loading-wrap" :style="{ 'font-size': size ? size + 'px' : '' }">
+  <span class="loading-wrap" :style="{ color: color ? color : '', 'font-size': size ? size + 'px' : '' }">
     <i class="el-icon-loading"></i>
   </span>
 </template>
@@ -11,6 +11,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
   name: 'EleLoading'
 })
 export default class extends Vue {
+  @Prop({ default: null }) color: string;
   @Prop({ default: null }) size: number;
 }
 </script>
@@ -18,7 +19,7 @@ export default class extends Vue {
 <style lang="scss" scoped>
 .loading-wrap {
   padding: 10px;
-  text-align: right;
   overflow: hidden;
+  text-align: right;
 }
 </style>
