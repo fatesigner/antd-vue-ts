@@ -8,36 +8,45 @@
           @change="onRadioButtonsChange"
         />
         <el-form-item label="筛选">
-          <el-input
-            class="vui-mr10"
-            v-model="table.query.orderNo"
-            placeholder="输入充值单号..."
-            style="width: 200px;"
-            title=""
-            clearable
-            @change="table.onQueryChange(currentContext)"
-          />
-          <el-input
-            class="vui-mr10"
-            v-model="table.query.keyword"
-            placeholder="输入关键字..."
-            style="width: 200px;"
-            title=""
-            clearable
-            @change="table.onQueryChange(currentContext)"
-          />
-          <el-button type="primary" @click="table.onQueryChange(currentContext)">搜索</el-button>
+          <div class="vui-row vui-row-offset vui-row-wrap">
+            <div class="vui-col-auto">
+              <el-input
+                class="vui-mr10"
+                v-model="table.query.orderNo"
+                placeholder="输入单号..."
+                style="width: 200px;"
+                title=""
+                clearable
+                @change="table.onQueryChange(currentContext)"
+              />
+            </div>
+            <div class="vui-col-auto">
+              <el-input
+                class="vui-mr10"
+                v-model="table.query.keyword"
+                placeholder="输入关键字..."
+                style="width: 200px;"
+                title=""
+                clearable
+                @change="table.onQueryChange(currentContext)"
+              />
+            </div>
+            <div class="vui-col-auto">
+              <el-button type="primary" @click="table.onQueryChange(currentContext)">搜索</el-button>
+            </div>
+          </div>
         </el-form-item>
       </el-form>
     </template>
     <ele-table
       :columns="table.columns"
       :data="table.result.data"
-      :loading="table.result.loading"
+      :loading="table.loading"
       :total.sync="table.result.totalCount"
       :page-no.sync="table.query.pageNo"
       :page-size.sync="table.query.pageSize"
-      @request="table.onRequest($event, context)"
+      :refresher="true"
+      @request="table.onRequest($event, currentContext)"
     >
       <template v-slot:agentName="{ row }">
         <div class="vui-pt10 vui-pb10">
@@ -75,7 +84,7 @@
           >审核
         </el-link>
         <template v-if="getIsExport(row)">
-          <el-link type="success" @click="exportExcel(row)" icon="el-icon-download">导出发货单</el-link>
+          <el-link type="success" icon="el-icon-download" @click="exportExcel(row)">导出发货单</el-link>
           <el-upload
             ref="upload"
             action="#"
@@ -95,7 +104,7 @@
       :events="auditDialog.events"
       :close-on-click-modal="auditDialog.closeOnClickModal"
       :props="{ data: auditDialog.data, audioStatus: auditDialog.auditStatus }"
-      @close="auditDialog.onClose(context)"
+      @close="auditDialog.onClose(currentContext)"
     />
     <ele-lazy-dialog
       :visible.sync="deliveryDialog.visible"
@@ -103,7 +112,7 @@
       :comp="deliveryDialog.comp"
       :events="deliveryDialog.events"
       :close-on-click-modal="deliveryDialog.closeOnClickModal"
-      :props="{ order: deliveryDialog.order, items: deliveryDialog.items, errors: deliveryDialog.errors }"
+      :props="{ data: deliveryDialog.data, items: deliveryDialog.items, errors: deliveryDialog.errors }"
       @close="deliveryDialog.onClose(currentContext)"
       @done="deliveryDialog.onDone(currentContext)"
     />
@@ -246,9 +255,9 @@ export default class extends Vue {
       totalCount: 0,
       data: []
     },
-    onQueryChange() {
+    onQueryChange(currentContext) {
       this.query.pageNo = 1;
-      this.loadData();
+      this.loadData(currentContext);
     },
     onRequest(requestData, currentContext) {
       if (requestData.type === 'GET') {
@@ -300,9 +309,9 @@ export default class extends Vue {
     auditStatus: null,
     events: ['close'],
     closeOnClickModal: false,
-    onClose(context) {
+    onClose(currentContext) {
       this.visible = false;
-      context.loadData();
+      currentContext.table.loadData();
     }
   };
 
@@ -311,15 +320,14 @@ export default class extends Vue {
     visible: false,
     title: '发货确认',
     data: null,
+    items: [],
+    errors: [],
     auditStatus: null,
     events: ['close'],
     closeOnClickModal: false,
-    order: null,
-    items: [],
-    errors: [],
-    onClose(context) {
+    onClose(currentContext) {
       this.visible = false;
-      context.loadData();
+      currentContext.table.loadData();
     },
     onDone() {}
   };
@@ -385,7 +393,7 @@ export default class extends Vue {
           if (!res.errorSet.length) {
             this.$notify.success('发货单校验成功');
           }
-          this.deliveryDialog.order = row;
+          this.deliveryDialog.data = row;
           this.deliveryDialog.items = res.orderDtos;
           this.deliveryDialog.errors = res.errorSet;
           this.deliveryDialog.visible = true;

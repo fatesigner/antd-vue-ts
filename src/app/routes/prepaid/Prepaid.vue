@@ -8,25 +8,33 @@
           @change="onRadioButtonsChange"
         />
         <el-form-item label="筛选">
-          <el-input
-            class="vui-mr10"
-            v-model="table.query.rechargeNo"
-            placeholder="输入充值单号..."
-            style="width: 200px;"
-            title=""
-            clearable
-            @change="table.onQueryChange(currentContext)"
-          />
-          <el-input
-            class="vui-mr10"
-            v-model="table.query.keyword"
-            placeholder="输入关键字..."
-            style="width: 200px;"
-            title=""
-            clearable
-            @change="table.onQueryChange(currentContext)"
-          />
-          <el-button type="primary" @click="table.onQueryChange(currentContext)">搜索</el-button>
+          <div class="vui-row vui-row-offset vui-row-wrap">
+            <div class="vui-col-auto">
+              <el-input
+                class="vui-mr10"
+                v-model="table.query.rechargeNo"
+                placeholder="输入充值单号..."
+                style="width: 200px;"
+                title=""
+                clearable
+                @change="table.onQueryChange(currentContext)"
+              />
+            </div>
+            <div class="vui-col-auto">
+              <el-input
+                class="vui-mr10"
+                v-model="table.query.keyword"
+                placeholder="输入关键字..."
+                style="width: 200px;"
+                title=""
+                clearable
+                @change="table.onQueryChange(currentContext)"
+              />
+            </div>
+            <div class="vui-col-auto">
+              <el-button type="primary" @click="table.onQueryChange(currentContext)">搜索</el-button>
+            </div>
+          </div>
         </el-form-item>
       </el-form>
     </template>
@@ -202,9 +210,9 @@ export default class extends Vue {
       totalCount: 0,
       data: []
     },
-    onQueryChange() {
+    onQueryChange(currentContext) {
       this.query.pageNo = 1;
-      this.loadData();
+      this.loadData(currentContext);
     },
     onRequest(requestData, currentContext) {
       if (requestData.type === 'GET') {

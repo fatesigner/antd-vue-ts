@@ -2,14 +2,14 @@
   <layout class="mitigate-settings">
     <el-button class="vui-mb10" type="primary" icon="el-icon-plus" @click="add">新增</el-button>
     <ele-table
-      :data="table.result.data"
       :columns="table.columns"
-      :loading="table.result.loading"
+      :data="table.result.data"
+      :loading="table.loading"
       :total.sync="table.result.totalCount"
       :page-no.sync="table.query.pageNo"
       :page-size.sync="table.query.pageSize"
       :refresher="true"
-      @request="onRequest"
+      @request="table.onRequest($event, currentContext)"
     >
       <template v-slot:orderProductList="{ row }">
         <div class="vui-row" v-for="item in row.orderProductList" :key="item.id">
@@ -54,6 +54,7 @@
                 v-model="actionDialog.form.name"
                 style="width: 160px;"
                 title=""
+                clearable
               />
               <p class="invalid-message" v-if="errors.length">{{ errors[0] }}</p>
             </ValidationProvider>
@@ -66,6 +67,7 @@
                 placeholder="选择等级"
                 v-model="actionDialog.form.level"
                 title=""
+                clearable
                 style="width: 160px;"
               >
                 <el-option
@@ -81,8 +83,8 @@
           <el-form-item label="订货数量">
             <ele-table
               style="margin-top: -10px;"
-              :data="tableProduct.result.data"
               :columns="tableProduct.columns"
+              :data="tableProduct.result.data"
               size="mini"
             >
               <template v-slot:check="{ row, $index }">
@@ -108,15 +110,8 @@
                   title=""
                 />
               </template>
-              <template v-slot:orderPrice="{ row, $index }">
-                <el-input
-                  class="vui-hnm"
-                  v-if="actionDialog.form.productList[$index].checked"
-                  type="number"
-                  size="mini"
-                  v-model.number="actionDialog.form.productList[$index].orderPrice"
-                  title=""
-                />
+              <template v-slot:salesPrice="{ row, $index }">
+                <span v-if="actionDialog.form.productList[$index].checked">{{ row.salesPrice | currency }}</span>
               </template>
             </ele-table>
           </el-form-item>
@@ -153,17 +148,7 @@
             <p class="vui-g9">按每台奖励：推荐当前级别代理订货数（每台）奖励</p>
           </el-form-item>
           <el-form-item label="考核期">
-            <ele-table
-              style="margin-top: -10px;"
-              :data="tableKhq.result.data"
-              :columns="tableKhq.columns"
-              :loading="tableKhq.result.loading"
-              :total.sync="tableKhq.result.totalCount"
-              :page-no.sync="tableKhq.query.pageNo"
-              :page-size.sync="tableKhq.query.pageSize"
-              size="mini"
-              @request="onRequest"
-            >
+            <ele-table style="margin-top: -10px;" :columns="tableKhq.columns" :data="tableKhq.result.data" size="mini">
               <template v-slot:exemption="{ row }">
                 <ValidationProvider name="免考期" rules="required" v-slot="{ classes, errors }">
                   <el-input class="vui-hnm" type="number" size="mini" v-model.number="row.exemption" title=""
@@ -253,6 +238,7 @@ import {
   RewardType
 } from '../../global';
 import { DateFormatPipe, DateFormatPipeKey } from '../../pipes/date-format.pipe';
+import { IsNullOrUndefined, IsNumber } from '@forgleaner/utils/type-check';
 
 @Component({
   name: 'Mitigate',
@@ -262,10 +248,15 @@ import { DateFormatPipe, DateFormatPipeKey } from '../../pipes/date-format.pipe'
   }
 })
 export default class extends Vue {
+  get currentContext() {
+    return this;
+  }
+
   AgentLevel = AgentLevel;
   RewardType = RewardType;
 
   table: IEleTableOperationData = {
+    loading: false,
     columns: [
       {
         label: '序号',
@@ -317,10 +308,41 @@ export default class extends Vue {
       loading: false,
       totalCount: 0,
       data: []
+    },
+    onRequest(requestData, currentContext) {
+      if (requestData.type === 'GET') {
+        this.query.pageNo = requestData.params.pageNo;
+        this.query.pageSize = requestData.params.pageSize;
+        this.loadData(currentContext);
+      }
+    },
+    loadData(currentContext) {
+      const params: any = {
+        pageNo: this.query.pageNo,
+        pageSize: this.query.pageSize
+      };
+      this.loading = true;
+      return ApiService.agentLevel_page(params)
+        .then((res: any) => {
+          if (res && res.rows) {
+            this.result.data = res.rows;
+            this.result.totalCount = res.totalCount;
+          } else {
+            this.result.data = [];
+            this.result.totalCount = 0;
+          }
+        })
+        .catch((err) => {
+          currentContext.$notify.error(err.message);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   };
 
   tableProduct: IEleTableOperationData = {
+    loading: false,
     columns: [
       {
         label: '#',
@@ -343,7 +365,7 @@ export default class extends Vue {
       },
       {
         label: '订货价格(￥)',
-        name: 'orderPrice',
+        name: 'salesPrice',
         width: 120
       }
     ],
@@ -353,6 +375,27 @@ export default class extends Vue {
     },
     result: {
       data: []
+    },
+    loadData(currentContext) {
+      const params: any = {
+        pageNo: 1,
+        pageSize: 10000
+      };
+      this.loading = true;
+      return ApiService.product_list(params)
+        .then((res: any) => {
+          if (res) {
+            this.result.data = res;
+          } else {
+            this.result.data = [];
+          }
+        })
+        .catch((err) => {
+          currentContext.$notify.error(err.message);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   };
 
@@ -401,12 +444,6 @@ export default class extends Vue {
     }
   };
 
-  onRequest(request: IEleTableRequestData) {
-    this.table.query.pageNo = request.params.pageNo;
-    this.table.query.pageSize = request.params.pageSize;
-    this.loadData();
-  }
-
   getProductName(productId) {
     const item = this.tableProduct.result.data.find((x) => x.id === productId);
     if (item) {
@@ -416,7 +453,7 @@ export default class extends Vue {
   }
 
   created() {
-    this.loadData();
+    Promise.all([this.table.loadData(this), this.tableProduct.loadData(this)]);
   }
 
   add() {
@@ -450,14 +487,10 @@ export default class extends Vue {
           message: '删除成功！',
           type: 'success'
         });
-        this.loadData();
+        this.table.loadData(this);
       })
       .catch((err) => {
-        this.$notify({
-          title: 'error',
-          message: err.message,
-          type: 'error'
-        });
+        this.$notify.error(err.message);
       })
       .finally(() => {});
   }
@@ -480,7 +513,7 @@ export default class extends Vue {
                 type: 'success'
               });
               this.actionDialog.visible = false;
-              this.loadData();
+              this.table.loadData(this);
             })
             .catch((err) => {
               this.$notify({
@@ -502,7 +535,7 @@ export default class extends Vue {
                 type: 'success'
               });
               this.actionDialog.uploading = false;
-              this.loadData();
+              this.table.loadData(this);
             })
             .catch((err) => {
               this.$notify({
@@ -518,28 +551,6 @@ export default class extends Vue {
         }
       }
     });
-  }
-
-  loadData() {
-    this.table.result.loading = true;
-    return Promise.all([
-      ApiService.product_list({ pageNo: 1, pageSize: 10000 }),
-      ApiService.agentLevel_page({ pageNo: this.table.query.pageNo, pageSize: this.table.query.pageSize })
-    ])
-      .then((res: any) => {
-        const [data1, data2] = res;
-        this.tableProduct.result.data = data1;
-        if (data2 && data2.rows) {
-          this.table.result.data = data2.rows;
-          this.table.result.totalCount = data2.totalCount;
-        } else {
-          this.table.result.data = [];
-          this.table.result.totalCount = 0;
-        }
-      })
-      .finally(() => {
-        this.table.result.loading = false;
-      });
   }
 }
 </script>

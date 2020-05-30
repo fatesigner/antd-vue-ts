@@ -11,7 +11,8 @@
           <div class="vui-row vui-row-offset vui-row-wrap">
             <div class="vui-col-auto">
               <el-input
-                v-model="table.query.rechargeNo"
+                class="vui-mr10"
+                v-model="table.query.orderNo"
                 placeholder="输入单号..."
                 style="width: 200px;"
                 title=""
@@ -21,6 +22,7 @@
             </div>
             <div class="vui-col-auto">
               <el-input
+                class="vui-mr10"
                 v-model="table.query.keyword"
                 placeholder="输入关键字..."
                 style="width: 200px;"
@@ -46,34 +48,22 @@
       :refresher="true"
       @request="table.onRequest($event, currentContext)"
     >
-      <template v-slot:agentName="{ row }">
-        <div class="vui-pt10 vui-pb10">
-          {{ row.agentName }}&nbsp;&nbsp;&nbsp;&nbsp;{{ row.levelName }}<br />
-          {{ row.phone }}<br />
-          <p class="vui-g9">{{ row.createTime | dateFormat }}</p>
-          <p class="vui-g9">单号：{{ row.rechargeNo }}</p>
-        </div>
-      </template>
-      <template v-slot:parentLevelName="{ row }">
-        级别：{{ row.levelName }}<br />
-        姓名：{{ row.parentName }}<br />
-        电话：{{ row.parentPhone }}
-      </template>
-      <template v-slot:checkStatus="{ row }">
-        <div :class="{ completed: row.checkStatus === CheckedStatus.enum.completed }">
-          {{ CheckedStatus.desc[row.checkStatus] }}
-        </div>
-        <div v-if="row.updateBy">
-          <div v-if="row.checkStatus === CheckedStatus.enum.completed">审核人；{{ row.updateBy }}</div>
-          <div v-if="row.checkStatus === CheckedStatus.enum.canceled">取消人；{{ row.updateBy }}</div>
-        </div>
-        <div v-if="row.updateTime">{{ row.updateTime | dateFormat }}</div>
-      </template>
       <template v-slot:actions="{ row }">
         <el-link v-if="getAuditStatus(row)" type="warning" icon="el-icon-edit-outline" @click="onLook(row)"
           >审核
         </el-link>
-        <el-link v-else type="primary" @click="onLook(row)">查看</el-link>
+        <template v-if="getIsExport(row)">
+          <el-link type="success" @click="exportExcel(row)" icon="el-icon-download">导出发货单</el-link>
+          <el-upload
+            ref="upload"
+            action="#"
+            accept="application/vnd.ms-excel"
+            :show-file-list="false"
+            :before-upload="importExcel(row)"
+          >
+            <el-link slot="trigger" type="primary" icon="el-icon-upload">导入发货单</el-link>
+          </el-upload>
+        </template>
       </template>
     </ele-table>
     <ele-lazy-dialog
@@ -84,6 +74,16 @@
       :close-on-click-modal="auditDialog.closeOnClickModal"
       :props="{ data: auditDialog.data, audioStatus: auditDialog.auditStatus }"
       @close="auditDialog.onClose(currentContext)"
+    />
+    <ele-lazy-dialog
+      :visible.sync="deliveryDialog.visible"
+      :title="deliveryDialog.title"
+      :comp="deliveryDialog.comp"
+      :events="deliveryDialog.events"
+      :close-on-click-modal="deliveryDialog.closeOnClickModal"
+      :props="{ data: deliveryDialog.data, items: deliveryDialog.items, errors: deliveryDialog.errors }"
+      @close="deliveryDialog.onClose(currentContext)"
+      @done="deliveryDialog.onDone(currentContext)"
     />
   </layout>
 </template>
@@ -98,10 +98,11 @@ import { ApiService } from '../../services/api.service';
 import { SessionService } from '../../services/session.service';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { RadioButtons } from '../../shared/radio-buttons';
-import { AgentType, CheckedStatus, PaidStatus, Role } from '../../global';
+import { AgentType, CheckedStatus, Role } from '../../global';
+import { DateFormatPipe } from '../../pipes/date-format.pipe';
 
 @Component({
-  name: 'Withdraw',
+  name: 'Retails',
   components: {
     Layout,
     RadioButtons
@@ -126,69 +127,87 @@ export default class extends Vue {
           return index + 1;
         }
       },
-      { label: '提交人', name: 'agentName', width: 200 },
-      { label: '级别', name: 'levelName', width: 100 },
       {
-        label: '提现金额',
-        name: 'rebateAmount',
-        width: 150,
+        label: '订单',
+        name: 'orderNo',
+        width: 250,
         template: (row) => {
-          return `${CurrencyPipe(row.rebateAmount)}`;
+          return `订单号：${row.orderNo}<br/>申请时间：${DateFormatPipe(row.createTime)}`;
         }
       },
       {
-        label: '提现前金额',
-        name: 'beforeAmount',
+        label: '产品',
+        name: 'orderProduct',
         width: 150,
         template: (row) => {
-          return `${CurrencyPipe(row.beforeAmount)}`;
+          return `${row.itemDTOS[0].productName}`;
         }
       },
       {
-        label: '当前余额',
-        name: 'accRebateAmount',
-        width: 150,
+        label: '数量（台）',
+        name: 'count',
+        width: 120,
         template: (row) => {
-          return `${CurrencyPipe(row.accRebateAmount + row.amount)}`;
+          return `${row.itemDTOS[0].number}`;
         }
       },
       {
-        label: '当前审核人/上级',
-        name: 'parentLevelName',
-        width: 180
-      },
-      {
-        label: '订单状态',
-        name: 'checkStatus',
-        width: 150,
-        fixed: 'right',
+        label: '单价（￥）',
+        name: 'price',
+        width: 120,
         template: (row) => {
-          return `${PaidStatus.desc[row.status]}`;
+          return `${CurrencyPipe(row.itemDTOS[0].productPrice)}`;
         }
       },
-      { label: '操作', name: 'actions', width: 80, fixed: 'right' }
+      {
+        label: '总价（￥）',
+        name: 'totalAmount',
+        width: 120,
+        template: (row) => {
+          return `${CurrencyPipe(row.itemDTOS[0].number * row.itemDTOS[0].productPrice)}`;
+        }
+      },
+      {
+        label: '收货人',
+        name: 'receive',
+        width: 220,
+        template: (row) => {
+          return `姓名：${row.receiverName}<br/>电话：${row.receiverPhone}<br/>地址：${
+            row.receiverProvice + row.receiverCity + row.receiverRegion + row.receiverDetailAddress
+          }<br/>`;
+        }
+      },
+      {
+        label: '接收人/类型',
+        name: 'recommend',
+        width: 200,
+        template: (row) => {
+          let str = `类型：${{ 1: '内部销售', 2: '代理商' }[row.applySource]}<br/>`;
+          if (row.parentLevel) {
+            str += `等级：${row.parentLevel}级<br/>`;
+          }
+          str += `姓名：${row.parentName}<br/>`;
+          return str;
+        }
+      },
+      { label: '申请状态', name: 'checkStatusName', width: 150 },
+      { label: '操作', name: 'actions', width: 120, fixed: 'right' }
     ],
     query: {
       radioButtons: {
         rows: [
           {
-            label: '用户类型',
-            name: 'agentType',
+            label: '订单来源',
+            name: 'applySource',
             value: null,
             options: AgentType.arr.map((x) => ({ label: x.text, value: x.value, count: 0 }))
-          },
-          {
-            label: '状态',
-            name: 'status',
-            value: null,
-            options: PaidStatus.arr.map((x) => ({ label: x.text, value: x.value, count: 0 }))
           }
         ],
         data: null,
         result: null
       },
       keyword: null,
-      rechargeNo: null,
+      orderNo: null,
       pageNo: 1,
       pageSize: 10
     },
@@ -211,7 +230,9 @@ export default class extends Vue {
       const params: any = {
         pageNo: this.query.pageNo,
         pageSize: this.query.pageSize,
-        rechargeNo: this.query.rechargeNo,
+        orderNo: this.query.orderNo,
+        orderType: 3,
+        listOrderStatus: currentContext.getListOrderStatus(),
         ...this.query.radioButtons.result
       };
       if (!IsNullOrUndefined(this.query.keyword)) {
@@ -222,7 +243,7 @@ export default class extends Vue {
         }
       }
       this.loading = true;
-      return ApiService.withdraw_page(params)
+      return ApiService.order_retail_page(params)
         .then((res: any) => {
           if (res && res.rows) {
             this.result.data = res.rows;
@@ -242,7 +263,7 @@ export default class extends Vue {
   };
 
   auditDialog = {
-    comp: () => import('./WithdrawAudit.vue'),
+    comp: () => import('./RetailAudit.vue'),
     visible: false,
     title: '',
     data: null,
@@ -255,10 +276,27 @@ export default class extends Vue {
     }
   };
 
+  deliveryDialog = {
+    comp: () => import('./RetailConfirm.vue'),
+    visible: false,
+    title: '发货确认',
+    data: null,
+    items: [],
+    errors: [],
+    auditStatus: null,
+    events: ['close'],
+    closeOnClickModal: false,
+    onClose(currentContext) {
+      this.visible = false;
+      currentContext.table.loadData();
+    },
+    onDone() {}
+  };
+
   created() {
     this.table.loadData(this);
     // 获取 radio 选项
-    ApiService.withdraw_statistics().then((res) => {
+    ApiService.order_retail_statistics(this.getListOrderStatus()).then((res) => {
       this.table.query.radioButtons.data = res;
     });
   }
@@ -269,7 +307,7 @@ export default class extends Vue {
     this.table.loadData(this);
   }
 
-  // 点击审核、查看
+  // 点击查看
   onLook(row) {
     this.auditDialog.title = '查看详情';
     this.auditDialog.visible = true;
@@ -277,12 +315,62 @@ export default class extends Vue {
     this.auditDialog.auditStatus = this.getAuditStatus(row);
   }
 
-  // 判断指定订单的状态是否为待审核
-  getAuditStatus(row) {
-    if (SessionService.user.roles.indexOf(Role.enum.sale_financial) > -1 && row.checkStatus == 1 && row.status == 2) {
-      return 2;
+  getListOrderStatus() {
+    let listOrderStatus = [];
+    if (SessionService.user.roles.indexOf(Role.enum.sale_commissioner) > -1) {
+      listOrderStatus = [0, 1, 4, 5, 6];
+    } else if (SessionService.user.roles.indexOf(Role.enum.sale_financial) > -1) {
+      listOrderStatus = [2, 4, 5, 6];
+    } else if (SessionService.user.roles.indexOf(Role.enum.sale_warehouse) > -1) {
+      listOrderStatus = [3, 4, 5, 6];
     }
-    return null;
+    return listOrderStatus;
+  }
+
+  // 判断指定订单的状态是否需要审核
+  getAuditStatus(row) {
+    return (
+      (SessionService.user.roles.indexOf(Role.enum.sale_commissioner) > -1 &&
+        (row.orderStatus == 0 || row.orderStatus == 1)) ||
+      (SessionService.user.roles.indexOf(Role.enum.sale_financial) > -1 && row.orderStatus == 2) ||
+      // || (this.userType === 'warehouse' && row.orderStatus == 3)
+      (SessionService.user.roles.indexOf(Role.enum.sale_operate) > -1 &&
+        (row.orderStatus == 1 || row.orderStatus == 2 || row.orderStatus == 3))
+    );
+  }
+
+  // 判断是否有发货权限
+  getIsExport(row) {
+    return (
+      SessionService.user.roles.indexOf(Role.enum.sale_warehouse) > -1 && row.checkStatus == 13 && row.orderStatus == 3
+    );
+  }
+
+  // 导入发货单
+  importExcel(row) {
+    return (file) => {
+      ApiService.order_check_ship(file, row.id)
+        .then((res: any) => {
+          if (!res.errorSet.length) {
+            this.$notify.success('发货单校验成功');
+          }
+          this.deliveryDialog.data = row;
+          this.deliveryDialog.items = res.orderDtos;
+          this.deliveryDialog.errors = res.errorSet;
+          this.deliveryDialog.visible = true;
+        })
+        .catch((err) => {
+          this.$notify.error(err.message);
+        });
+      return false;
+    };
+  }
+
+  // 导出发货单
+  exportExcel(row) {
+    ApiService.order_single(row.id, row.receiveType, row.orderNo).catch((err) => {
+      this.$notify.error(err.message);
+    });
   }
 }
 </script>

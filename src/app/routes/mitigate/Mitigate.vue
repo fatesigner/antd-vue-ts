@@ -1,5 +1,5 @@
 <template>
-  <layout class="mitigate-settings">
+  <layout>
     <el-button class="vui-mb10" type="primary" icon="el-icon-plus" @click="add">新增</el-button>
     <ele-table
       :columns="table.columns"

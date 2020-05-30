@@ -1,0 +1,53 @@
+[
+  {
+    "id": "8a14311aa7aa",
+    "label": "首页",
+    "children": [],
+    "url": "/",
+    "icon": ""
+  },
+  {
+    "id": "99ee47bbc467",
+    "label": "审单/查单",
+    "children": [
+      {
+        "id": "271e4099f3d0",
+        "label": "发货管理",
+        "children": [],
+        "url": "/predelivery",
+        "icon": ""
+      },
+      {
+        "id": "3779f370e088",
+        "label": "充值管理",
+        "children": [],
+        "url": "/prepaid",
+        "icon": ""
+      },
+      {
+        "id": "f70efcbe4e98",
+        "label": "零售订单",
+        "children": [],
+        "url": "/retail",
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "7e601504103e",
+    "label": "产品库存",
+    "children": [
+      {
+        "id": "20d15687e7ef",
+        "label": "公司库存",
+        "children": [],
+        "url": "/inventory",
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  }
+]

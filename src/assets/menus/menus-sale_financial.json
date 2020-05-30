@@ -1,0 +1,53 @@
+[
+  {
+    "id": "8a14311aa7aa",
+    "label": "首页",
+    "children": [],
+    "url": "/",
+    "icon": ""
+  },
+  {
+    "id": "114d57ebaaac",
+    "label": "相关设置",
+    "children": [
+      {
+        "id": "fa52ad12fc6g",
+        "label": "提现管理",
+        "children": [],
+        "url": "/withdraw",
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "99ee47bbc467",
+    "label": "审单/查单",
+    "children": [
+      {
+        "id": "271e4099f3d0",
+        "label": "发货管理",
+        "children": [],
+        "url": "/predelivery",
+        "icon": ""
+      },
+      {
+        "id": "3779f370e088",
+        "label": "充值管理",
+        "children": [],
+        "url": "/prepaid",
+        "icon": ""
+      },
+      {
+        "id": "f70efcbe4e98",
+        "label": "零售订单",
+        "children": [],
+        "url": "/retail",
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  }
+]

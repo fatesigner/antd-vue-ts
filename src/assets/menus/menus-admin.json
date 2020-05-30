@@ -44,14 +44,6 @@
         "children": [],
         "url": "/withdraw",
         "icon": ""
-      },
-      {
-        "id": "e9a9e4f66f20",
-        "label": "baidu",
-        "children": [],
-        "url": "http://www.baidu.com",
-        "icon": "",
-        "comp": null
       }
     ],
     "url": null,

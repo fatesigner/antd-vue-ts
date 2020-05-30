@@ -110,7 +110,7 @@ export class ApiServiceStatic {
   /**
    * 获取商品列表
    */
-  product_list(params) {
+  product_list(params?) {
     return Http.get('/product/list', {
       params
     });

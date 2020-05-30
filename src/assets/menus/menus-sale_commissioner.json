@@ -1,0 +1,103 @@
+[
+  {
+    "id": "8a14311aa7aa",
+    "label": "首页",
+    "children": [],
+    "url": "/",
+    "icon": ""
+  },
+  {
+    "id": "114d57ebaaac",
+    "label": "相关设置",
+    "children": [
+      {
+        "id": "1c5399c1aa0d",
+        "label": "代理设置",
+        "children": [],
+        "url": "/agent-type",
+        "icon": ""
+      },
+      {
+        "id": "1c5399c1aa0f",
+        "label": "减免设置",
+        "children": [],
+        "url": "/mitigate",
+        "icon": ""
+      },
+      {
+        "id": "8f52ad12ffs4",
+        "label": "产品设置",
+        "children": [],
+        "url": "/production",
+        "icon": ""
+      },
+      {
+        "id": "8f52ad12fc64",
+        "label": "返利设置",
+        "children": [],
+        "url": "/rebate",
+        "icon": ""
+      },
+      {
+        "id": "fa52ad12fc6g",
+        "label": "提现管理",
+        "children": [],
+        "url": "/withdraw",
+        "icon": ""
+      },
+      {
+        "id": "3779f370fsda",
+        "label": "授权管理",
+        "children": [],
+        "url": "/authorize",
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "99ee47bbc467",
+    "label": "审单/查单",
+    "children": [
+      {
+        "id": "271e4099f3d0",
+        "label": "发货管理",
+        "children": [],
+        "url": "/predelivery",
+        "icon": ""
+      },
+      {
+        "id": "3779f370e088",
+        "label": "充值管理",
+        "children": [],
+        "url": "/prepaid",
+        "icon": ""
+      },
+      {
+        "id": "f70efcbe4e98",
+        "label": "零售订单",
+        "children": [],
+        "url": "/retail",
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  },
+  {
+    "id": "6826e3f3f2de",
+    "label": "代理商信息",
+    "children": [
+      {
+        "id": "4cb9059e61b4",
+        "label": "代理商管理",
+        "children": [],
+        "url": "/agent-user",
+        "icon": ""
+      }
+    ],
+    "url": null,
+    "icon": ""
+  }
+]

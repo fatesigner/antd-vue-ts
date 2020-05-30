@@ -285,6 +285,19 @@ export const ShipType = ConvertModelArrToEnum([
   }
 ]);
 
+export const ReceiveType = ConvertModelArrToEnum([
+  {
+    value: 1,
+    text: '物流',
+    name: '物流'
+  },
+  {
+    value: 2,
+    text: '自取',
+    name: '自取'
+  }
+]);
+
 export const ReceiverType = ConvertModelArrToEnum([
   {
     value: 1,

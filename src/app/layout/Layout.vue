@@ -31,7 +31,7 @@ import { VisitedTags } from './components/visited-tags';
 import { ApplyBind, Debounce } from '@forgleaner/utils';
 
 // refer to Bootstrap's responsive design
-const WIDTH = 996;
+const WIDTH = 666;
 
 @Component({
   name: 'Layout',

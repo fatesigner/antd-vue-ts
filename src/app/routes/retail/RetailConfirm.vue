@@ -14,7 +14,7 @@
         <el-button type="text" @click="close">取消</el-button>
       </div>
     </div>
-    <ele-table :columns="table.columns" :data="items">
+    <ele-table :columns="table.columns" :data="items" :refresher="false">
       <template v-slot:logisticsCompany="{ row }">
         <div :style="{ color: row['logisticsCompanyError'] ? 'red' : '' }">{{ row.logisticsCompany }}</div>
       </template>
@@ -36,7 +36,7 @@ import { ApiService } from '../../services/api.service';
 import { ReceiveType } from '../../global';
 
 @Component({
-  name: 'PredeliveryConfirm'
+  name: 'RetailConfirm'
 })
 export default class extends Vue {
   @Prop({ default: () => {} }) data: { [key in string]: any };

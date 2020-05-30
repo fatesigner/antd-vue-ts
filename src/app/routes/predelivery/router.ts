@@ -11,7 +11,7 @@ const Router: IAppRouteConfig = {
   name: 'predelivery',
   component: () => import('./Predelivery.vue'),
   meta: {
-    auth: [Role.enum.admin, Role.enum.sale_commissioner],
+    auth: [Role.enum.admin, Role.enum.sale_commissioner, Role.enum.sale_financial, Role.enum.sale_warehouse],
     label: I18nkeys.route.predelivery
   }
 };

@@ -4,7 +4,7 @@
     <ele-table
       :columns="table.columns"
       :data="table.result.data"
-      :loading="table.result.loading"
+      :loading="table.loading"
       :total.sync="table.result.totalCount"
       :page-no.sync="table.query.pageNo"
       :page-size.sync="table.query.pageSize"
@@ -32,7 +32,7 @@
       :events="actionDialog.events"
       :close-on-click-modal="actionDialog.closeOnClickModal"
       :props="{ data: actionDialog.data }"
-      @close="actionDialog.onClose(context)"
+      @close="actionDialog.onClose(currentContext)"
     />
   </layout>
 </template>
@@ -88,10 +88,6 @@ export default class extends Vue {
       totalCount: 0,
       data: []
     },
-    onQueryChange() {
-      this.query.pageNo = 1;
-      this.loadData();
-    },
     onRequest(requestData, currentContext) {
       if (requestData.type === 'GET') {
         this.query.pageNo = requestData.params.pageNo;
@@ -132,9 +128,9 @@ export default class extends Vue {
     auditStatus: null,
     events: ['close'],
     closeOnClickModal: false,
-    onClose(context) {
+    onClose(currentContext) {
       this.visible = false;
-      context.loadData();
+      currentContext.table.loadData();
     }
   };
 

@@ -277,9 +277,9 @@ export default class extends Vue {
       totalCount: 0,
       data: []
     },
-    onQueryChange() {
+    onQueryChange(currentContext) {
       this.query.pageNo = 1;
-      this.loadData();
+      this.loadData(currentContext);
     },
     onRequest(requestData, currentContext) {
       if (requestData.type === 'GET') {

@@ -31,7 +31,10 @@ export interface I18nkeysType extends IKeys {
     agentUser: string;
     authorize: string;
     product: string;
+    login: string;
     predelivery: string;
+    retail: string;
+    inventory: string;
     rebate: string;
     prepaid: string;
     menus: string;

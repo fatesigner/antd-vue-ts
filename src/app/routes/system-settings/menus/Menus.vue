@@ -444,7 +444,7 @@ export default class extends Vue {
         readonly: true,
         url: null,
         icon: 'dashboard',
-        children: require('../../../../assets/json/system-menus.json')
+        children: require('../../../../assets/menus/system-menus3.json')
       }
     ];
     /* this.tree.nodes = this.strutree.parseNode([

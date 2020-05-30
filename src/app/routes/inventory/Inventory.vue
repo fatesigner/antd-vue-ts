@@ -1,149 +1,177 @@
 <template>
   <layout>
+    <el-button class="vui-mb10" type="primary" icon="el-icon-plus" @click="add">新增批次</el-button>
     <ele-table
-      :data="result.items"
-      :columns="columns"
-      :loading="result.loading"
-      :total.sync="result.totalCount"
-      :page-no.sync="query.pageNo"
-      :page-size.sync="query.pageSize"
-      @request="onRequest"
-    ></ele-table>
+      :columns="table.columns"
+      :data="table.result.data"
+      :loading="table.loading"
+      :total.sync="table.result.totalCount"
+      :page-no.sync="table.query.pageNo"
+      :page-size.sync="table.query.pageSize"
+      :refresher="true"
+      @request="table.onRequest($event, currentContext)"
+    >
+      <template v-slot:actions="{ row }">
+        <el-upload ref="upload" action="#" :show-file-list="false" :before-upload="importExcel(row)">
+          <el-link type="primary" icon="el-icon-upload">扫码入库</el-link>
+        </el-upload>
+        <el-link type="success" @click="detail(row)">库存详情</el-link>
+        <el-popconfirm
+          confirmButtonText="好的"
+          cancelButtonText="不用了"
+          icon="el-icon-info"
+          iconColor="red"
+          title="确定删除吗？"
+          @onConfirm="remove(row)"
+        >
+          <el-link type="danger" icon="el-icon-delete" slot="reference">删除</el-link>
+        </el-popconfirm>
+      </template>
+    </ele-table>
+    <ele-lazy-dialog
+      :visible.sync="actionDialog.visible"
+      :title="actionDialog.title"
+      :comp="actionDialog.comp"
+      :events="actionDialog.events"
+      :close-on-click-modal="actionDialog.closeOnClickModal"
+      :props="{ data: actionDialog.data, audioStatus: actionDialog.auditStatus }"
+      @close="actionDialog.onClose(currentContext)"
+    />
   </layout>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { IsNullOrUndefined, IsNumber } from '@forgleaner/utils/type-check';
+import { Component, Vue } from 'vue-property-decorator';
 
+import { IEleTableOperationData } from '../../../lib/element-ui-helper/components/table';
+
+import { Layout } from '../../layout';
 import { ApiService } from '../../services/api.service';
 import { RadioButtons } from '../../shared/radio-buttons';
-import { DateFormatPipe, DateFormatPipeKey } from '../../pipes/date-format.pipe';
-import { EleTable } from '../../../lib/element-ui-helper/components/table';
-import Layout from '../../layout/Layout.vue';
 
 @Component({
-  name: 'Inventory.vue',
+  name: 'Inventory',
   components: {
     Layout,
-    EleTable,
     RadioButtons
-  },
-  filters: {
-    [DateFormatPipeKey]: DateFormatPipe
   }
 })
 export default class extends Vue {
-  query = {
-    keyword: null,
-    orderNo: null,
-    pageNo: 1,
-    pageSize: 10
-  };
+  get currentContext() {
+    return this;
+  }
 
-  result = {
+  table: IEleTableOperationData = {
     loading: false,
-    items: [],
-    totalCount: 0
+    columns: [
+      {
+        label: '序号',
+        name: 'id',
+        width: 50,
+        fixed: true,
+        template: (row, index) => {
+          return index + 1;
+        }
+      },
+      { label: '产品', name: 'productName', width: 150 },
+      { label: '批次', name: 'produceBatch', width: 150 },
+      { label: '生产数（台）', name: 'produceNum', width: 150 },
+      { label: '入库数（台）', name: 'incomeNum', width: 150 },
+      { label: '出库数（台）', name: 'outNum', width: 150 },
+      { label: '当前库存（台）', name: 'currentNum', width: 150 },
+      { label: '当前出库中（台）', name: 'outNumIng', width: 150 },
+      { label: '操作', name: 'actions', width: 120, fixed: 'right' }
+    ],
+    query: {
+      pageNo: 1,
+      pageSize: 10
+    },
+    result: {
+      totalCount: 0,
+      data: []
+    },
+    onRequest(requestData, currentContext) {
+      if (requestData.type === 'GET') {
+        this.query.pageNo = requestData.params.pageNo;
+        this.query.pageSize = requestData.params.pageSize;
+        this.loadData(currentContext);
+      }
+    },
+    loadData(currentContext) {
+      const params: any = {
+        pageNo: this.query.pageNo,
+        pageSize: this.query.pageSize
+      };
+      this.loading = true;
+      return ApiService.stock_page(params)
+        .then((res: any) => {
+          if (res && res.rows) {
+            this.result.data = res.rows;
+            this.result.totalCount = res.totalCount;
+          } else {
+            this.result.data = [];
+            this.result.totalCount = 0;
+          }
+        })
+        .catch((err) => {
+          currentContext.$notify.error(err.message);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    }
   };
 
-  radioButtons = [
-    {
-      title: '审核状态',
-      name: 'checkStatus',
-      value: null,
-      options: [
-        { title: '待审', value: 1, count: 0 },
-        { title: '完成', value: 2, count: 0 }
-      ]
-    },
-    {
-      title: '充值状态',
-      name: 'status',
-      value: null,
-      options: [
-        { title: '完成', value: 1, count: 0 },
-        { title: '待审', value: 2, count: 0 },
-        { title: '取消', value: 3, count: 0 }
-      ]
-    },
-    {
-      title: '支付方式',
-      name: 'type',
-      value: null,
-      options: [
-        { title: '微信', value: 1, count: 0 },
-        { title: '转账', value: 2, count: 0 }
-      ]
+  actionDialog = {
+    comp: () => import('./InventoryForm.vue'),
+    visible: false,
+    title: '新增批次',
+    data: null,
+    auditStatus: null,
+    events: ['close'],
+    closeOnClickModal: false,
+    onClose(currentContext) {
+      this.visible = false;
+      currentContext.table.loadData();
     }
-  ];
-
-  columns = [
-    {
-      label: '序号',
-      name: '__index',
-      template: (row, index) => {
-        return `${this.query.pageSize * (this.query.pageNo - 1) + 1 + index}`;
-      }
-    },
-    { label: '产品', name: 'productName' },
-    { label: '批次', name: 'produceBatch' },
-    { label: '生产数（台）', name: 'produceNum' },
-    { label: '入库数（台）', name: 'incomeNum' },
-    { label: '出库数（台）', name: 'outNum' },
-    { label: '当前库存（台）', name: 'currentNum' },
-    { label: '当前出库中（台）', name: 'outNumIng' }
-  ];
-
-  @Watch('radioButtons')
-  onRadioButtonsChange(val) {
-    console.log(val);
-    this.query.pageNo = 1;
-    this.loadData();
-  }
-
-  onRequest({ pageNo }) {
-    this.query.pageNo = pageNo;
-    this.loadData();
-  }
-
-  loadData() {
-    let params: any = {};
-    if (!IsNullOrUndefined(this.query.keyword)) {
-      if (IsNumber(this.query.keyword)) {
-        params.phone = this.query.keyword;
-      } else {
-        params.agentName = this.query.keyword || null;
-      }
-    }
-    params = this.radioButtons.reduce((prev, cur) => {
-      prev[cur.name] = cur.value;
-      return prev;
-    }, params);
-    this.result.loading = true;
-    return ApiService.stock_page({
-      pageNo: this.query.pageNo,
-      pageSize: this.query.pageSize,
-      rechargeNo: this.query.keyword,
-      ...params
-    })
-      .then((res: any) => {
-        if (res && res.data.data.rows) {
-          this.result.items = res.data.data.rows;
-          this.result.totalCount = res.data.data.totalCount;
-        } else {
-          this.result.items = [];
-          this.result.totalCount = 0;
-        }
-      })
-      .finally(() => {
-        this.result.loading = false;
-      });
-  }
+  };
 
   created() {
-    this.loadData();
+    this.table.loadData(this);
+  }
+
+  add() {
+    this.actionDialog.title = '新增减免设置';
+    this.actionDialog.data = null;
+    this.actionDialog.visible = true;
+  }
+
+  detail() {}
+
+  update(row) {
+    this.actionDialog.title = '编辑减免设置';
+    this.actionDialog.data = row;
+    this.actionDialog.visible = true;
+  }
+
+  // 扫码入库
+  importExcel(row) {
+    return (file) => {
+      ApiService.singleProduct_add({
+        produceBatch: row.produceBatch,
+        produceBatchId: row.produceBatchId,
+        productId: row.productId,
+        vos: file
+      })
+        .then((res: any) => {
+          if (!res.errorSet.length) {
+            this.$notify.success('数据导入成功');
+          }
+        })
+        .catch((err) => {
+          this.$notify.error(err.message);
+        });
+      return false;
+    };
   }
 }
 </script>
-
-<style lang="scss"></style>
