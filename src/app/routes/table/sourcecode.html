@@ -1,0 +1,201 @@
+<pre class='hljs'>
+<code clas="html">
+  &lt;as-table v-bind=&quot;table&quot;&gt;
+      &lt;template #toolbar&gt;
+        &lt;a-button class=&quot;vui-mr10&quot; type=&quot;primary&quot; @click=&quot;addItem&quot;&gt;添加&lt;/a-button&gt;
+      &lt;/template&gt;
+      &lt;template v-slot:ydczje.editing=&quot;{ record }&quot;&gt;
+        &lt;div class=&quot;vui-row&quot;&gt;
+          &lt;div class=&quot;vui-col-auto&quot;&gt;
+            &lt;validation-provider vid=&quot;minValue&quot; rules=&quot;required&quot; v-slot=&quot;{ classes, errors }&quot;&gt;
+              &lt;a-input
+                :class=&quot;classes&quot;
+                class=&quot;vui-hnm&quot;
+                type=&quot;number&quot;
+                v-model.number=&quot;record.minValue&quot;
+                style=&quot;width: 140px;&quot;
+                &gt;&lt;template slot=&quot;addonAfter&quot;&gt;元&lt;/template&gt;&lt;/a-input
+              &gt;
+              &lt;div class=&quot;invalid-message&quot; v-if=&quot;errors.length&quot;&gt;{{ errors[0] }}&lt;/div&gt;
+            &lt;/validation-provider&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;vui-col-auto&quot;&gt;~&lt;/div&gt;
+          &lt;div class=&quot;vui-col-auto&quot;&gt;
+            &lt;validation-provider vid=&quot;maxValue&quot; rules=&quot;required&quot; v-slot=&quot;{ classes, errors }&quot;&gt;
+              &lt;a-input
+                :class=&quot;classes&quot;
+                class=&quot;vui-hnm&quot;
+                type=&quot;number&quot;
+                v-model.number=&quot;record.maxValue&quot;
+                style=&quot;width: 140px;&quot;
+                &gt;&lt;template slot=&quot;addonAfter&quot;&gt;元&lt;/template&gt;&lt;/a-input
+              &gt;
+              &lt;div class=&quot;invalid-message&quot; v-if=&quot;errors.length&quot;&gt;{{ errors[0] }}&lt;/div&gt;
+            &lt;/validation-provider&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/template&gt;
+      &lt;template v-slot:rebateRatio.editing=&quot;{ record }&quot;&gt;
+        &lt;validation-provider vid=&quot;rebateRatio&quot; rules=&quot;required|decimal:1|max_value:100&quot; v-slot=&quot;{ classes, errors }&quot;&gt;
+          &lt;a-input
+            :class=&quot;classes&quot;
+            class=&quot;vui-hnm&quot;
+            type=&quot;number&quot;
+            v-model.number=&quot;record.rebateRatio&quot;
+            style=&quot;width: 120px;&quot;
+          &gt;
+            &lt;template slot=&quot;addonAfter&quot;&gt;%&lt;/template&gt;
+          &lt;/a-input&gt;
+          &lt;transition-collapse&gt;
+            &lt;div class=&quot;invalid-message&quot; v-if=&quot;errors.length&quot;&gt;{{ errors[0] }}&lt;/div&gt;
+          &lt;/transition-collapse&gt;
+        &lt;/validation-provider&gt;
+      &lt;/template&gt;
+      &lt;template v-slot:actions=&quot;{ editAction, deleteAction }&quot;&gt;
+        &lt;as-action-edit :handler=&quot;editAction&quot; /&gt;
+        &lt;a-divider type=&quot;vertical&quot; /&gt;
+        &lt;as-action-delete :handler=&quot;deleteAction&quot; /&gt;
+      &lt;/template&gt;
+      &lt;template v-slot:actions=&quot;{ editAction, deleteAction }&quot;&gt;
+        &lt;as-action-edit :handler=&quot;editAction&quot; /&gt;
+        &lt;a-divider type=&quot;vertical&quot; /&gt;
+        &lt;as-action-delete :handler=&quot;deleteAction&quot; /&gt;
+      &lt;/template&gt;
+      &lt;template v-slot:actions.editing=&quot;{ submitEditAction, cancelEditAction }&quot;&gt;
+        &lt;as-action-confirm :handler=&quot;submitEditAction&quot; /&gt;
+        &lt;a-divider type=&quot;vertical&quot; /&gt;
+        &lt;as-action-cancel :handler=&quot;cancelEditAction&quot; /&gt;
+      &lt;/template&gt;
+    &lt;/as-table&gt;
+</code>
+<code>
+import { cloneDeep, merge } from 'lodash';
+import { Button } from 'ant-design-vue';
+import { Component, Vue } from 'vue-property-decorator';
+import { IsNullOrUndefined } from '@fatesigner/utils/type-check';
+import { TransitionCollapse } from '@fatesigner/vue-lib/components/transition';
+import { AsTable, CreateAsTable } from '../../../lib/antdv-ui/components/table';
+import { AsActionCancel, AsActionConfirm, AsActionDelete, AsActionEdit } from '../../../lib/antdv-ui/components/button-action';
+
+import '../../providers/highlight';
+import { CurrencyPipe } from '../../pipes/currency.pipe';
+import { ApiService } from '../../services/api.service';
+
+Vue.use(Button);
+
+@Component({
+  name: 'Table',
+  components: {
+    AsTable,
+    AsActionCancel,
+    AsActionConfirm,
+    AsActionEdit,
+    AsActionDelete,
+    TransitionCollapse
+  }
+})
+export default class extends Vue {
+  getContext() {
+    return this;
+  }
+
+  table = CreateAsTable({
+    getContext: this.getContext,
+    props: {
+      refreshable: true,
+      columns: [
+        {
+          label: '序号',
+          name: 'id',
+          width: 80,
+          fixed: true,
+          template(record, index, query) {
+            return `${(query.pageNo - 1) * query.pageSize + index + 1}`;
+          }
+        },
+        {
+          label: '月度充值金额',
+          name: 'ydczje',
+          width: 200,
+          template(record: any) {
+            return `${CurrencyPipe(record.minValue)} ~ ${CurrencyPipe(record.maxValue)}`;
+          }
+        },
+        {
+          label: '返利比例',
+          name: 'rebateRatio',
+          width: 150,
+          template(record: any) {
+            return `${record.rebateRatio !== null ? (record.rebateRatio * 100).toFixed() : ''}`;
+          }
+        },
+        { label: '操作', name: 'actions', width: 200, fixed: 'right', textAlign: 'center' }
+      ],
+      schema: {
+        addingMap() {
+          return {
+            id: null,
+            minValue: null,
+            maxValue: null,
+            rebateRatio: null
+          };
+        },
+        editingMap(record) {
+          const data_ = cloneDeep(record);
+          // 返利金额字段，小数转换为百分比整数
+          if (!IsNullOrUndefined(data_.rebateRatio)) {
+            data_.rebateRatio = (data_.rebateRatio * 100).toFixed() as any;
+          }
+          return data_;
+        }
+      },
+      transport: {
+        parameterMap(options, type) {
+          if (type === 'PUT' || type === 'POST') {
+            options.record = merge({}, options.record, {
+              // 返利金额字段，转换为小数
+              rebateRatio: (options.record.rebateRatio / 100).toFixed(3)
+            });
+          }
+          return options;
+        },
+        get(options) {
+          return ApiService.getRebate(options.query).then((res: any) => {
+            return {
+              data: res?.rows ?? [],
+              total: res?.totalCount ?? 0
+            };
+          });
+        },
+        post(options) {
+          return ApiService.addRebate(options.record).then(() => {
+            return options.record;
+          });
+        },
+        put(options) {
+          return ApiService.updateRebate(options.record).then(() => {
+            return options.record;
+          });
+        },
+        delete(options) {
+          return ApiService.deleteRebate(options.record.id);
+        }
+      }
+    },
+    listeners: {
+      added() {
+        // 行内新增后，刷新数据
+        this.table.handler.refresh();
+      }
+    }
+  });
+
+  addItem() {
+    this.table.handler.addItem(null, {
+      editing: true,
+      prepend: true
+    });
+  }
+}
+</code>
+</pre>

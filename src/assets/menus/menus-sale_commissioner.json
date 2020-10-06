@@ -1,0 +1,238 @@
+[
+  {
+    "id": "f76020586bf6",
+    "label": "首页",
+    "name": "Dashboard",
+    "url": "/",
+    "target": null,
+    "icon": "el-icon-star-off",
+    "children": []
+  },
+  {
+    "id": "ed9d4d63a0d2",
+    "label": "相关设置",
+    "url": null,
+    "target": null,
+    "icon": "el-icon-setting",
+    "children": [
+      {
+        "id": "b796690e6975",
+        "label": "代理设置",
+        "name": "AgentType",
+        "url": "/agent-type",
+        "target": null,
+        "icon": "",
+        "children": []
+      },
+      {
+        "id": "8c7188ce113f",
+        "label": "减免设置",
+        "name": "Mitigate",
+        "url": "/mitigate",
+        "target": null,
+        "icon": "",
+        "children": []
+      },
+      {
+        "id": "af85a6debd21",
+        "label": "产品设置",
+        "name": "Product",
+        "url": "/product",
+        "target": null,
+        "icon": "",
+        "children": []
+      },
+      {
+        "id": "53945bb0a34f",
+        "label": "返利设置",
+        "name": "Rebate",
+        "url": "/rebate",
+        "target": null,
+        "icon": "",
+        "children": [
+          {
+            "id": "1265c01ad8e0",
+            "label": "月度返利",
+            "name": "RebateMonth",
+            "url": "/rebate/month",
+            "target": null,
+            "icon": "",
+            "children": []
+          },
+          {
+            "id": "3fbf13c6a84c",
+            "label": "主账号加科返利",
+            "name": "RebateParent",
+            "url": "/rebate/parent",
+            "target": null,
+            "icon": "",
+            "children": []
+          },
+          {
+            "id": "40bf8ec8a775",
+            "label": "子账号加科返利",
+            "name": "RebateChild",
+            "url": "/rebate/child",
+            "target": null,
+            "icon": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "a3d43ea917cd",
+        "label": "提现管理",
+        "name": "Withdraw",
+        "url": "/withdraw",
+        "target": null,
+        "icon": "",
+        "children": []
+      },
+      {
+        "id": "b18a8f2ed14f",
+        "label": "授权管理",
+        "name": "Authorize",
+        "url": "/authorize",
+        "target": null,
+        "icon": "",
+        "children": []
+      },
+      {
+        "id": "8532e439d1db",
+        "label": "账号价格设置",
+        "name": "AccountPrice",
+        "url": "/account-price",
+        "target": null,
+        "icon": "",
+        "children": [
+          {
+            "id": "1265c01ad8e0d",
+            "label": "主号",
+            "name": "AccountPricePrimary",
+            "url": "/account-price/primary",
+            "target": null,
+            "icon": "",
+            "children": []
+          },
+          {
+            "id": "3fbf13c6a84cf",
+            "label": "副号",
+            "name": "AccountPriceSecondary",
+            "url": "/account-price/secondary",
+            "target": null,
+            "icon": "",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "c95f0e6eed07",
+    "label": "审单/查单",
+    "url": null,
+    "target": null,
+    "icon": "el-icon-suitcase",
+    "children": [
+      {
+        "id": "c8eed4d1e6c1",
+        "label": "发货管理",
+        "name": "Predelivery",
+        "url": "/predelivery",
+        "target": null,
+        "icon": "",
+        "children": []
+      },
+      {
+        "id": "65d63123cfd0",
+        "label": "充值管理",
+        "name": "Prepaid",
+        "url": "/prepaid",
+        "target": null,
+        "icon": "",
+        "children": []
+      },
+      {
+        "id": "e818b05bd39f",
+        "label": "零售订单",
+        "name": "Retail",
+        "url": "/retail",
+        "target": null,
+        "icon": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "a02e09ed6d99",
+    "label": "产品库存",
+    "name": null,
+    "url": null,
+    "target": null,
+    "icon": "el-icon-shopping-bag-2",
+    "children": [
+      {
+        "id": "7deb13dc40eb",
+        "label": "公司库存",
+        "name": "Inventory",
+        "url": "/inventory",
+        "target": "_self",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "225f3fcb4e2e",
+    "label": "代理商信息",
+    "url": null,
+    "target": null,
+    "icon": "el-icon-notebook-2",
+    "children": [
+      {
+        "id": "ea37f04e044c",
+        "label": "代理商管理",
+        "name": "AgentUser",
+        "url": "/agent-user",
+        "target": null,
+        "icon": "",
+        "children": []
+      },
+      {
+        "id": "8e3f7c192252",
+        "label": "协议管理",
+        "name": "Agreement",
+        "url": "/agreement",
+        "target": null,
+        "icon": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "0de468996de8",
+    "label": "系统设置",
+    "name": null,
+    "url": null,
+    "target": null,
+    "icon": "el-icon-setting",
+    "children": [
+      {
+        "id": "b724c8a0b1ad",
+        "label": "菜单管理",
+        "name": "Menus",
+        "url": "/menus-setting",
+        "target": "_self",
+        "icon": "",
+        "children": []
+      },
+      {
+        "id": "ae5b3b625fc0",
+        "label": "角色授权",
+        "name": "Auth",
+        "url": "/auth-setting",
+        "target": "_self",
+        "children": []
+      }
+    ]
+  }
+]

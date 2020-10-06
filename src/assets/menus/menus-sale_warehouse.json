@@ -1,0 +1,65 @@
+[
+  {
+    "id": "f76020586bf6",
+    "label": "首页",
+    "name": "Dashboard",
+    "url": "/",
+    "target": null,
+    "icon": "el-icon-star-off",
+    "children": []
+  },
+  {
+    "id": "c95f0e6eed07",
+    "label": "审单/查单",
+    "url": null,
+    "target": null,
+    "icon": "el-icon-suitcase",
+    "children": [
+      {
+        "id": "c8eed4d1e6c1",
+        "label": "发货管理",
+        "name": "Predelivery",
+        "url": "/predelivery",
+        "target": null,
+        "icon": "",
+        "children": []
+      },
+      {
+        "id": "65d63123cfd0",
+        "label": "充值管理",
+        "name": "Prepaid",
+        "url": "/prepaid",
+        "target": null,
+        "icon": "",
+        "children": []
+      },
+      {
+        "id": "e818b05bd39f",
+        "label": "零售订单",
+        "name": "Retail",
+        "url": "/retail",
+        "target": null,
+        "icon": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "a02e09ed6d99",
+    "label": "产品库存",
+    "name": null,
+    "url": null,
+    "target": null,
+    "icon": "el-icon-shopping-bag-2",
+    "children": [
+      {
+        "id": "7deb13dc40eb",
+        "label": "公司库存",
+        "name": "Inventory",
+        "url": "/inventory",
+        "target": "_self",
+        "children": []
+      }
+    ]
+  }
+]
