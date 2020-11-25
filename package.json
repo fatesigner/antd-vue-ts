@@ -50,7 +50,7 @@
     "vue-i18n": "8.18.1",
     "vue-progressbar": "0.7.5",
     "vue-property-decorator": "8.4.2",
-    "vue-router": "3.3.1",
+    "vue-router": "3.4.8",
     "vue-svgicon": "3.2.6",
     "vuex": "3.4.0",
     "vuex-module-decorators": "0.17.0",
