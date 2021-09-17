@@ -48,7 +48,7 @@
     "@fatesigner/utils": "1.6.1",
     "@fatesigner/vue-lib": "1.0.2",
     "@fatesigner/wx-jssdk": "1.0.0",
-    "ant-design-vue": "1.6.2",
+    "ant-design-vue": "1.7.8",
     "await-to-js": "2.1.1",
     "axios": "0.19.2",
     "core-js": "3.6.5",
